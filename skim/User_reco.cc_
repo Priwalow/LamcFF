@@ -1,0 +1,403 @@
+#include "User_reco.h"
+#include "userinfo.h"
+#include EVTCLS_H //R2 distribution
+
+
+
+using namespace Belle;
+namespace Belle {
+void User_reco::hist_def( void )
+{
+};
+//***********************************************************************
+
+  
+  void withdRdZcut(class std::vector<Particle> &p_list,double ip_position=0., double drcut = 2., double dzcut = 4.);
+  void makeLam(std::vector<Particle> &lam0, std::vector<Particle> &lam0b);
+  void makeProton (std::vector<Particle> &p, std::vector<Particle> &pbar);
+
+
+void User_reco::event ( BelleEvent* evptr, int* status )
+{
+  static int nevent=0,skimmed=0,skimmedPi0=0, skimmed2=0, skimmed3=0, skimmed4=0;
+   nevent++;
+
+
+*status=0;
+
+ 
+   Belle_runhead_Manager& rhdmgr = Belle_runhead_Manager::get_manager();
+   Belle_runhead_Manager::const_iterator rhd = rhdmgr.begin();
+  
+
+   double elec=8.0, posi=3.5;
+   if(rhd!=rhdmgr.end() && rhd->EHER() > 5.){
+     elec = rhd->EHER();
+     posi = rhd->ELER();
+   }
+   HepLorentzVector pUPS= HepLorentzVector (elec*sin(0.022), 0.,elec*cos(0.022)-posi, elec+posi);
+
+   Evtcls_hadron_info_Manager&  ehimgr =
+     Evtcls_hadron_info_Manager::get_manager();
+   
+
+
+   std::vector<Evtcls_hadron_info>::iterator iti = ehimgr.begin();
+   const HepPoint3D&   runIp     = IpProfile::position();
+   
+   double fox=0;
+   int ntrk=0;
+   if( iti !=  ehimgr.end() && *iti )
+     {
+       fox = (*iti).R2();
+       //       ntrk = (*iti).Ntrk();
+     }
+
+
+
+   //----------------------------------------------------------
+
+   std::vector<Particle> lam, lamb; 
+   makeLam(lam,lamb);
+
+   for(std::vector<Particle>::iterator l = lam.begin(); l!=lam.end(); ++l)
+     {
+       HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
+       Vector3 P(l->px(),l->py(),0);
+       V=V-runIp;
+       V.setZ(0.);
+       if (abs(l->mass()-1.115683)>0.015 || V.perp()<0.1 ||
+  	   V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
+  	 lam.erase(l); --l;
+       }
+     }
+
+   for(std::vector<Particle>::iterator l = lamb.begin(); l!=lamb.end(); ++l)
+     {
+       HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
+       Vector3 P(l->px(),l->py(),0);
+       V=V-runIp;
+       V.setZ(0.);
+       if (abs(l->mass()-1.115683)>0.015 || V.perp()<0.1 ||
+  	   V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
+  	 lamb.erase(l); --l;
+       }
+     }
+
+
+   
+   if (lam.size()+lamb.size()==0)
+     return;
+
+
+   std::vector<Particle>  e_p,e_m,mu_p,mu_m;
+   makeLepton(e_p,e_p,mu_p,mu_m);
+   withMuId(mu_p);
+   withMuId(mu_m);
+
+   withEId(e_p);
+   withEId(e_m);
+
+   std::vector<Particle>  k_p, k_m, pi_p, pi_m;
+   makeKPi(k_p, k_m, pi_p, pi_m,1);
+   ntrk=k_p.size()+k_m.size();
+   
+   withdRdZcut(k_p,runIp.z());
+   withdRdZcut(pi_p,runIp.z());
+   withdRdZcut(k_m,runIp.z());
+   withdRdZcut(pi_m,runIp.z());
+
+   withKaonId(k_p,0.6,3,1,5);
+   withKaonId(k_m,0.6,3,1,5);
+
+
+
+
+   
+   vector <Particle> Lc, Lcb; 
+   combination (Lc,ptype_Lamc, lam, pi_p,0.06);
+   combination (Lcb,ptype_Lamc, lamb, pi_m,0.06);
+
+   combination (Lc,ptype_Lamc, lam, e_p);
+   combination (Lcb,ptype_Lamc, lamb, e_m);
+   combination (Lc,ptype_Lamc, lam, mu_p);
+   combination (Lcb,ptype_Lamc, lamb, mu_m);
+   for(std::vector<Particle>::iterator l = Lc.begin(); l!=Lc.end(); ++l)
+     if (l->mass()>ptype_Lamc.mass()+0.06)
+       {Lc.erase(l); --l;}
+   for(std::vector<Particle>::iterator l = Lcb.begin(); l!=Lcb.end(); ++l)
+     if (l->mass()>ptype_Lamc.mass()+0.06)
+       {Lcb.erase(l); --l;}
+	 
+   if (Lc.size()+Lcb.size()==0)
+     return;
+
+   std::vector<Particle> p_p, p_m; 
+   makeProton(p_p,p_m);
+
+      
+   std::vector<Particle>  pi0;
+   makePi0(pi0);
+   
+   for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
+     if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
+	i->mdstPi0().gamma(1).ecl().energy()<0.05||
+  	abs(i->mdstPi0().mass()-.135)>0.015)
+       {pi0.erase(i); --i;}
+   
+   //   setPi0Error(pi0);
+   
+   std::vector<Particle> k_s;
+   makeKs(k_s);
+   for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
+     {
+       HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
+       Vector3 P(l->px(),l->py(),0);
+       V=V-runIp;
+       V.setZ(0.);
+       if (abs(l->mass()-0.4977)>0.015 || V.perp()<0.1 ||
+  	   V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
+  	 k_s.erase(l); --l;
+       }
+     }
+   //   doMassVertexFit(k_s);   
+
+   
+   
+   for (std::vector<Particle>::iterator l=Lc.begin(); l!=Lc.end();++l)
+     {
+       for (std::vector<Particle>::iterator p=p_m.begin(); p!=p_m.end();++p)
+	 {
+	   if (checkSame(*l,*p)) continue;
+
+	   // charged k
+	   for (std::vector<Particle>::iterator k=k_p.begin(); k!=k_p.end();++k)
+	     {
+	       if ( checkSame(*l,*k) || checkSame(*p,*k)) continue;
+	       HepLorentzVector momentum=p->p()+k->p();
+	       int charge=l->child(0).charge()+l->child(1).charge()+p->charge()+k->charge();
+
+	       for (std::vector<Particle>::iterator pi=pi_p.begin(); pi!=pi_p.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+
+	       for (std::vector<Particle>::iterator pi=pi_m.begin(); pi!=pi_m.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+	       
+	       if (charge!=0) continue;
+	       double rm =(pUPS-momentum).mag();
+	       if ((pUPS-(momentum+l->p())).mag()<2 && (1<rm && rm <3)) 
+		 {
+		   *status=1; skimmed++; return ;
+		 }
+	       
+	       for (std::vector<Particle>::iterator pi_0=pi0.begin(); pi_0!=pi0.end();++pi_0)
+		 {
+		   HepLorentzVector momentumPi0=momentum+pi_0->p();
+		   rm =(pUPS-momentumPi0).mag();
+		   if ((pUPS-(momentumPi0+l->p())).mag()<2 && (1<rm && rm <3))
+		     {
+		       *status=1; skimmedPi0++; return ;
+		     }
+		 }
+	     }
+
+
+	   //neutral k
+	   for (std::vector<Particle>::iterator k=k_s.begin(); k!=k_s.end();++k)
+	     {
+	       if ( checkSame(*l,*k) || checkSame(*p,*k)) continue;
+	       HepLorentzVector momentum=p->p()+k->p();
+	       int charge=l->child(0).charge()+l->child(1).charge()+p->charge()+k->charge();
+
+	       for (std::vector<Particle>::iterator pi=pi_p.begin(); pi!=pi_p.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+
+	       for (std::vector<Particle>::iterator pi=pi_m.begin(); pi!=pi_m.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+	       
+	       if (charge!=0) continue;
+	       double rm =(pUPS-momentum).mag();
+	       if ((pUPS-(momentum+l->p())).mag()<2 && (1<rm && rm <3)) 
+		 {
+		   *status=1; skimmed++; return ;
+		 }
+
+	       for (std::vector<Particle>::iterator pi_0=pi0.begin(); pi_0!=pi0.end();++pi_0)
+		 {
+		   HepLorentzVector momentumPi0=momentum+pi_0->p();
+		   rm =(pUPS-momentumPi0).mag();
+		   if ((pUPS-(momentumPi0+l->p())).mag()<2 && (1<rm && rm <3))
+		     {
+		       *status=1; skimmedPi0++; return ;
+		     }
+		 }
+
+	     }
+	 }
+     }
+   
+
+
+   // Lc bar
+   for (std::vector<Particle>::iterator l=Lcb.begin(); l!=Lcb.end();++l)
+     {
+       for (std::vector<Particle>::iterator p=p_p.begin(); p!=p_p.end();++p)
+	 {
+	   if (checkSame(*l,*p)) continue;
+
+	   // charged k
+	   for (std::vector<Particle>::iterator k=k_m.begin(); k!=k_m.end();++k)
+	     {
+	       if ( checkSame(*l,*k) || checkSame(*p,*k)) continue;
+	       HepLorentzVector momentum=p->p()+k->p();
+	       int charge=l->child(0).charge()+l->child(1).charge()+p->charge()+k->charge();
+
+	       for (std::vector<Particle>::iterator pi=pi_p.begin(); pi!=pi_p.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+
+	       for (std::vector<Particle>::iterator pi=pi_m.begin(); pi!=pi_m.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+	       
+	       if (charge!=0) continue;
+	       double rm =(pUPS-momentum).mag();
+	       if ((pUPS-(momentum+l->p())).mag()<2 && (1<rm && rm <3)) 
+		 {
+		   *status=1; skimmed++; return ;
+		 }
+	       
+	       for (std::vector<Particle>::iterator pi_0=pi0.begin(); pi_0!=pi0.end();++pi_0)
+		 {
+		   HepLorentzVector momentumPi0=momentum+pi_0->p();
+		   rm =(pUPS-momentumPi0).mag();
+		   if ((pUPS-(momentumPi0+l->p())).mag()<2 && (1<rm && rm <3))
+		     {
+		       *status=1; skimmedPi0++; return ;
+		     }
+		 }
+	     }
+
+
+	   //neutral k
+	   for (std::vector<Particle>::iterator k=k_s.begin(); k!=k_s.end();++k)
+	     {
+	       if ( checkSame(*l,*k) || checkSame(*p,*k)) continue;
+	       HepLorentzVector momentum=p->p()+k->p();
+	       int charge=l->child(0).charge()+l->child(1).charge()+p->charge()+k->charge();
+
+	       for (std::vector<Particle>::iterator pi=pi_p.begin(); pi!=pi_p.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+
+	       for (std::vector<Particle>::iterator pi=pi_m.begin(); pi!=pi_m.end();++pi)
+		 {
+		   if ( checkSame(*k,*pi) || checkSame(*p,*pi) || checkSame(*l,*pi)) continue;
+		   momentum+=pi->p();
+		   charge+=pi->charge();
+		 }
+	       
+	       if (charge!=0) continue;
+	       double rm =(pUPS-momentum).mag();
+	       if ((pUPS-(momentum+l->p())).mag()<2 && (1<rm && rm <3)) 
+		 {
+		   *status=1; skimmed++; return ;
+		 }
+
+	       for (std::vector<Particle>::iterator pi_0=pi0.begin(); pi_0!=pi0.end();++pi_0)
+		 {
+		   HepLorentzVector momentumPi0=momentum+pi_0->p();
+		   rm =(pUPS-momentumPi0).mag();
+		   if ((pUPS-(momentumPi0+l->p())).mag()<2 && (1<rm && rm <3))
+		     {
+		       *status=1; skimmedPi0++; return ;
+		     }
+		 }
+
+	     }
+	 }
+     }
+
+   if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"    SkimmedPi0: "<<skimmedPi0<<'\n';
+}
+
+
+void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
+{
+    for(std::vector<Particle>::iterator i=p.begin(); i!=p.end();++i)
+      if (abs(i->mdstCharged().trk().mhyp(3).helix(0))>drcut||
+	       abs(i->mdstCharged().trk().mhyp(3).helix(3)-ip_position)>dzcut)
+	     {p.erase(i);--i;}
+}
+  
+  
+  void makeLam(std::vector<Particle> &lam, std::vector<Particle> &lamb)
+  {
+    Mdst_vee2_Manager &veeMgr = Mdst_vee2_Manager::get_manager();
+    for(std::vector<Mdst_vee2>::iterator i = veeMgr.begin(); i != veeMgr.end(); ++i)
+      {
+	if(i->kind() == 2)
+	  {
+	  Particle tmp(*i);
+	  lam.push_back(Particle(*i));
+	  }
+	if(i->kind() == 3)
+	  {
+	    Particle tmp(*i);
+	    lamb.push_back(Particle(*i));
+	  }
+      }
+  }
+  
+  
+  void makeProton (std::vector<Particle> &p, std::vector<Particle> &pbar)
+  {
+    Mdst_charged_Manager& ChgMgr = Mdst_charged_Manager::get_manager();
+    for(std::vector<Mdst_charged>::iterator it = ChgMgr.begin(); it != ChgMgr.end(); ++it)
+      {
+	if(good_charged(*it) == 0) continue;
+	double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
+	if(prob_kpr > 0.9 ) continue;
+	Ptype ptype_PP("P+");
+	Ptype ptype_AP("AP+");
+
+	if((*it).charge() > 0.)
+	  {
+	    Particle tmp1(*it, ptype_PP);
+	    p.push_back(tmp1);
+	  }
+	else
+	  {
+	    Particle tmp1(*it, ptype_AP);
+	    pbar.push_back(tmp1);
+	  }
+      }
+  }
+  
+
+}

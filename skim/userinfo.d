@@ -1,0 +1,34 @@
+userinfo.o: userinfo.cc userinfo.h \
+ /opt/belle/b20090127_0910/belle/include/belle.h \
+ /opt/belle/b20090127_0910/belle/include/belle-default.h \
+ /opt/belle/b20090127_0910/belle/include/particle/Particle.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Vector/ThreeVector.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/config/CLHEP.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/config/CLHEP-default.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Vector/ThreeVector.icc \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Vector/LorentzVector.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Vector/LorentzVector.icc \
+ /opt/belle/b20090127_0910/belle/include/particle/Ptype.h \
+ /opt/belle/b20090127_0910/belle/include/particle/constant.h \
+ /opt/belle/b20090127_0910/belle/include/tables/qq.h \
+ /opt/belle/b20090127_0910/belle/include/panther/panther.h \
+ /opt/belle/b20090127_0910/belle/include/panther/panther_config.h \
+ /opt/belle/b20090127_0910/belle/include/panther/panther_rectypes.h \
+ /opt/belle/b20090127_0910/belle/include/panther/panther_manager.h \
+ /opt/belle/b20090127_0910/belle/include/panther/panther_id.h \
+ /opt/belle/b20090127_0910/belle/include/panther/Panther_String.h \
+ /opt/belle/b20090127_0910/belle/include/particle/PID.h \
+ /opt/belle/b20090127_0910/belle/include/particle/Momentum.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/Vector.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/GenMatrix.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/Pile.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/GenMatrix.icc \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/Matrix.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/Matrix.icc \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/Vector.icc \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/SymMatrix.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Matrix/SymMatrix.icc \
+ /opt/belle/b20090127_0910/belle/include/helix/Helix.h \
+ /opt/belle/b20090127_0910/belle/include/belleCLHEP/Geometry/Point3D.h \
+ /opt/belle/b20090127_0910/belle/include/particle/Relation.h \
+ /opt/belle/b20090127_0910/belle/include/particle/ParticleUserInfo.h
