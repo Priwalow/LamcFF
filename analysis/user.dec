@@ -1,0 +1,9 @@
+;                 ID stable                                      min    max
+;         name   code code   mass  charge spin   c*tau    width  mass   mass
+
+
+PARTICLE  LC2595 111113   -1  2.595  1.0   0.5   0.000000
+PARTICLE  ALC2595 111114  -1  2.595  -1.0   0.5   0.000000
+
+PARTICLE  LC2625 111111   -1  2.625  1.0   0.5   0.000000
+PARTICLE  ALC2625 111112  -1  2.625  -1.0   0.5   0.000000
