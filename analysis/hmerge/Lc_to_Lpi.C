@@ -26,7 +26,7 @@
  
 
     hdat -> GetXaxis()->SetTitle("M(#Lambda_{c}), GeV");
-    hdat -> GetYaxis()->SetTitle(Form("Events / %.1f MeV",binw*1e3));
+    hdat -> GetYaxis()->SetTitle(Form("Events / %.4f GeV",binw));
     hdat -> SetMarkerStyle(20);
     hdat -> SetMarkerSize(1);
     hdat -> SetMarkerColor(1);

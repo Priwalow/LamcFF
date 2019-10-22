@@ -3,30 +3,29 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add("*.root");
     
-    double lend=2.21, rend=2.36, MLambdac=2.28646;
+    double lend=0, rend=1;
     int Nbins=100;
-    TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",740,600);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} invariant mass",Nbins,lend,rend);
+    TCanvas *c1 = new TCanvas("c1","Muon neutrino invariant mass",740,600);
+    TH1D* hdat = new TH1D("hdat","#nu_{mu} invariant mass",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
-    
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    ch1dat -> Draw("mlc>>+hdat","lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<1","goff"); //"lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<0.25"
+    ch1dat -> Draw("rm*rm>>hdat","lcch == 4","goff"); 
     
     hdat -> Scale(1,"width");
     
-    TF1* fdat = new TF1("fdat","[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",lend,rend);
+    /*TF1* fdat = new TF1("fdat","[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",lend,rend);
     
 
     fdat -> SetParameters(600,MLambdac,0.1,3000,-700);
     fdat -> SetParLimits(1,MLambdac-0.2,MLambdac+0.2);
 
-    hdat -> Fit("fdat","L S M N Q","goff"); //L S M N Q
+    hdat -> Fit("fdat","L S M N Q","goff"); //L S M N Q */
 
  
 
-    hdat -> GetXaxis()->SetTitle("M(#Lambda_{c}), GeV");
-    hdat -> GetYaxis()->SetTitle(Form("Events / %.1f MeV",binw*1e3));
+    hdat -> GetXaxis()->SetTitle("M(#mu_{nu}), GeV");
+    hdat -> GetYaxis()->SetTitle(Form("Events / %.4f GeV",binw));
     hdat -> SetMarkerStyle(20);
     hdat -> SetMarkerSize(1);
     hdat -> SetMarkerColor(1);
@@ -35,7 +34,7 @@
     hdat -> DrawCopy("ep");
    
     
-    Nsig = fdat->GetParameter(0);
+    /*Nsig = fdat->GetParameter(0);
     dNsig = fdat->GetParError(0);
     
     double a = fdat -> GetParameter(3), b = fdat -> GetParameter(4), da = fdat -> GetParError(3), db = fdat -> GetParError(4); 
@@ -63,7 +62,7 @@
     fsig -> SetLineColor(3);
     fsig -> SetLineWidth(3);
     fsig -> Draw("same");
-    */
+    
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(3);
@@ -73,7 +72,7 @@
     leg->AddEntry("hdat","Data","lep");
     leg->AddEntry("fdat","Signal + background","l");
     leg->AddEntry("fbkg","Background","l");
-    leg->Draw("same");
+    leg->Draw("same"); */
     
 } 
  
