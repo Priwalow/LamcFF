@@ -49,7 +49,10 @@
     cout << "Total number of events: " << Ntot << endl;
     cout << "N Lambda: " << (int) Nsig <<" +- " << (int) dNsig << endl;
     cout << "N background: " << (int) Nbkg << " +- " << (int) dNbkg << endl;
-
+    
+    double chisq = fdat->GetChisquare(); 
+    int ndf = Nbins - fdat ->GetNumberFreeParameters(); // nbins - npar
+    cout << "ChiSquare / ndf: " << chisq << " / " << ndf << " = " << chisq/ndf << endl;
     
   
     

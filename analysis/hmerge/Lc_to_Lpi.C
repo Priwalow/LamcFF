@@ -6,12 +6,12 @@
     double lend=2.21, rend=2.36, MLambdac=2.28646;
     int Nbins=100;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",740,600);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} invariant mass",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","#Lambda_{c} invariant mass in #Lambda_{c} #rightarrow #Lambda#pi decay",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    ch1dat -> Draw("mlc>>+hdat","lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<1","goff"); //"lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<0.25"
+    ch1dat -> Draw("mlc>>+hdat","lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<1.44","goff"); //"lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<0.25"
     
     hdat -> Scale(1,"width");
     
@@ -43,9 +43,12 @@
     dNbkg = hwidth*sqrt(da*da+ db*db*((rend+lend)*(rend+lend)/4+2.3*2.3));
     
     //cout << "Total number of events: " << Ntot << endl;
-    cout << "N Lambda: " << (int) Nsig <<" +- " << (int) dNsig << endl;
+    cout << "N Lambda_c: " << (int) Nsig <<" +- " << (int) dNsig << endl;
     cout << "N background: " << (int) Nbkg << " +- " << (int) dNbkg << endl;
-
+ 
+    double chisq = fdat->GetChisquare(); 
+    int ndf = Nbins - fdat ->GetNumberFreeParameters(); // nbins - npar
+    cout << "ChiSquare / ndf: " << chisq << " / " << ndf << " = " << chisq/ndf << endl;
     
   
     
