@@ -265,7 +265,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 	   t1->column("mlc",LamC.mass());// lambdac mass                                                                                                                                                                               
 	   t1->column("p",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
 	   t1->column("m",(momentum+LamC.p()).mag());// p
-	   t1->column("emcs",pUPS.mag());
+	   t1->column("ecms",pUPS.mag());
 	   
 	   
 	   // lamc heli
@@ -319,7 +319,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
 	   t2->column("p",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
 	   t2->column("m",(momentum+LamC.p()).mag());// p
-	   t2->column("emcs",pUPS.mag());
+	   t2->column("ecms",pUPS.mag());
 
 	       // lamc heli
 	   t2->column("hlc",cos(heli(LamC.child(0).p(),momentum,pUPS-momentum)));
