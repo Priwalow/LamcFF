@@ -3,8 +3,8 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add("*.root");
     
-    double lend=-1, rend=1;
-    int Nbins=100;
+    double lend=-0.5, rend=0.5;
+    int Nbins=25;
     TCanvas *c1 = new TCanvas("c1","Muon neutrino invariant mass",740,600);
     TH1D* hdat = new TH1D("hdat","Squared recoil mass of #nu_{#mu}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
@@ -24,7 +24,7 @@
 
  
 
-    hdat -> GetXaxis()->SetTitle("M(#nu_{#nu}), GeV");
+    hdat -> GetXaxis()->SetTitle("RM^{2}(#nu_{#mu}), GeV");
     hdat -> GetYaxis()->SetTitle(Form("Events / %.2f",binw));
     hdat -> SetMarkerStyle(20);
     hdat -> SetMarkerSize(1);
@@ -41,7 +41,7 @@
     dNbkg = sqrt(fdat -> GetParError(3)*fdat -> GetParError(3)+fdat -> GetParError(6)*fdat -> GetParError(6));
     
     //cout << "Total number of events: " << Ntot << endl;
-    cout << "N nu_mu: " << (int) Nsig <<" +- " << (int) dNsig << endl;
+    cout << "N nu_mu: " << Nsig <<" +- " <<  dNsig << endl;
     cout << "N background: " << Nbkg << " +- " <<  dNbkg << endl;
     
     double chisq = fdat->GetChisquare(); 
