@@ -11,38 +11,43 @@
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    ch1dat -> Draw("mlc>>+hdat","lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<1.44","goff"); //"lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<0.25"
+    TCut Mwindow = Form("mlc > %lf && mlc < %lf",lend,rend);
+    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<1.44"+Mwindow,"goff"); //"lcch == 1 && ml>1.105 && ml<1.125 && rm*rm<0.25"
     
-    hdat -> Scale(1,"width");
     
-    TF1* fdat = new TF1("fdat","[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",lend,rend);
+    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",binw),lend,rend);
+    TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
+    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.3)",lend,rend);    
     
 
-    fdat -> SetParameters(600,MLambdac,0.1,3000,-700);
-    fdat -> SetParLimits(1,MLambdac-0.2,MLambdac+0.2);
+    fdat -> SetParameters(1000,MLambdac,0.1,3000,-700);
+    fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
+    fdat -> SetParLimits(0,0,1e5);
 
-    hdat -> Fit("fdat","L S M N Q","goff"); //L S M N Q
+    TFitResultPtr fitResult;
+    fitResult = hdat -> Fit("fdat","L S M N Q","goff"); //L S M N Q
+    TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
+    TMatrixDSym covSignal, covBackground;
+    covFit.GetSub(0,2,covSignal);
+    covFit.GetSub(3,4,covBackground);
+    double * par = fdat -> GetParameters();
 
- 
-
-    hdat -> GetXaxis()->SetTitle("M(#Lambda_{c}), GeV");
-    hdat -> GetYaxis()->SetTitle(Form("Events / %.4f",binw));
-    hdat -> SetMarkerStyle(20);
-    hdat -> SetMarkerSize(1);
-    hdat -> SetMarkerColor(1);
-    hdat -> SetLineColor(1);
-    hdat -> SetLineWidth(2);
-    hdat -> DrawCopy("ep");
    
+    fsig -> SetParameters(par);
+    fbkg -> SetParameters(par+3);
+
     
     Nsig = fdat->GetParameter(0);
     dNsig = fdat->GetParError(0);
     
-    double a = fdat -> GetParameter(3), b = fdat -> GetParameter(4), da = fdat -> GetParError(3), db = fdat -> GetParError(4); 
-    Nbkg = (a-b*2.3)*hwidth+b*(rend*rend-lend*lend)/2;
-    dNbkg = hwidth*sqrt(da*da+ db*db*((rend+lend)*(rend+lend)/4+2.3*2.3));
+   
     
-    //cout << "Total number of events: " << Ntot << endl;
+    Nsig = fsig -> Integral(lend,rend)/binw; 
+    dNsig = fsig -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
+    Nbkg = fbkg -> Integral(lend,rend)/binw; 
+    dNbkg = fbkg -> IntegralError(lend,rend,par+3,covBackground.GetMatrixArray())/binw;
+    
+    cout << "Total number of events: " << Ntot << endl;
     cout << "N Lambda_c: " << (int) Nsig <<" +- " << (int) dNsig << endl;
     cout << "N background: " << (int) Nbkg << " +- " << (int) dNbkg << endl;
  
@@ -52,31 +57,39 @@
     
   
     
-    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.3)",lend,rend);    
-    fbkg -> SetParameters(fdat->GetParameter(3),fdat->GetParameter(4));
+  
+    hdat -> GetXaxis()->SetTitle("M(#Lambda_{c}), GeV");
+    hdat -> GetYaxis()->SetTitle(Form("Events / %.4f",binw));
+    hdat -> SetMarkerStyle(20);
+    hdat -> SetMarkerSize(1);
+    hdat -> SetMarkerColor(1);
+    hdat -> SetLineColor(1);
+    hdat -> SetLineWidth(2);
+    hdat -> DrawCopy("ep");
+    
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(3);
     fbkg -> DrawCopy("same");
     
-    /*
-     * TF1* fsig = new TF1("fsig","[0]*TMath::Gaus(x,[1],[2],true)+[3]*TMath::Gaus(x,[4],[5],true)+[6]*TMath::Gaus(x,[7],[8],true)",lend,rend);
-    fsig -> SetParameters(fdat -> GetParameter(0), fdat -> GetParameter(1), fdat -> GetParameter(2), fdat -> GetParameter(4), fdat -> GetParameter(5),
-                           fdat -> GetParameter(6), fdat -> GetParameter(7), fdat -> GetParameter(8), fdat -> GetParameter(9));
-    fsig -> SetLineColor(3);
+    
+    fsig -> SetLineColor(4);
     fsig -> SetLineWidth(3);
     fsig -> Draw("same");
-    */
+    
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(3);
     fdat-> DrawCopy("same");
     
+    
     TLegend* leg = new TLegend(0.7,0.8,0.9,0.9);
     leg->AddEntry("hdat","Data","lep");
-    leg->AddEntry("fdat","Signal + background","l");
+    leg->AddEntry("fsig","Signal","l");
     leg->AddEntry("fbkg","Background","l");
+    leg->AddEntry("fdat","Signal + background","l");
     leg->Draw("same");
+
     
 } 
  

@@ -74,6 +74,7 @@
     leg->AddEntry("fdat","Signal + background","l");
     leg->AddEntry("fbkg","Background","l");
     leg->Draw("same"); 
+    c1 -> Draw();
     
 } 
  
