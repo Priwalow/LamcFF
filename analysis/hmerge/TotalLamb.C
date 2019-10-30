@@ -1,4 +1,4 @@
-{
+   {
     gStyle->SetOptStat(0);
     TChain* ch2dat = new TChain("h2"); //with pi0
     ch2dat -> Add("*.root");
@@ -108,4 +108,4 @@
     leg->Draw("same");
 
     
-} 
+}

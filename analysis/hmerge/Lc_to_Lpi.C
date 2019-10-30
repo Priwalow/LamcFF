@@ -35,12 +35,6 @@
    
     fsig -> SetParameters(par);
     fbkg -> SetParameters(par+3);
-
-    
-    Nsig = fdat->GetParameter(0);
-    dNsig = fdat->GetParError(0);
-    
-   
     
     Nsig = fsig -> Integral(lend,rend)/binw; 
     dNsig = fsig -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
@@ -75,7 +69,7 @@
     
     fsig -> SetLineColor(4);
     fsig -> SetLineWidth(3);
-    fsig -> Draw("same");
+    //fsig -> Draw("same");
     
     
     fdat -> SetLineColor(2);
@@ -85,11 +79,9 @@
     
     TLegend* leg = new TLegend(0.7,0.8,0.9,0.9);
     leg->AddEntry("hdat","Data","lep");
-    leg->AddEntry("fsig","Signal","l");
+    //leg->AddEntry("fsig","Signal","l");
     leg->AddEntry("fbkg","Background","l");
     leg->AddEntry("fdat","Signal + background","l");
     leg->Draw("same");
-
     
 } 
- 
