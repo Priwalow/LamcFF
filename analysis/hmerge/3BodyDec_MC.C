@@ -58,7 +58,7 @@ void p2calc(double p1, double & p2, double & ct)
 
 void test(unsigned int Nevtot)
 {
-    TFile *f = new TFile("Nu_MC.root", "recreate");
+    TFile *f = new TFile("3BodyDec_mc.root", "recreate");
     TTree *tmc = new TTree("mc", "True values");
     TTree *td = new TTree("data", "Values with detector response");
     
@@ -70,7 +70,7 @@ void test(unsigned int Nevtot)
     
     td->Branch("m12", &m12, "m12/D");
     td->Branch("m23", &m23, "m23/D");
-    td->Branch("rm", &rm, "sqrm/D");
+    td->Branch("rm", &rm, "rm/D");
     
     
     TLorentzVector P_0, P_1, P_2, P_3; //P_0 = P_1 + P_2 + P_3
