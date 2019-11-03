@@ -11,7 +11,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
 	TCut Mwindow = Form("rm*fabs(rm) > %lf && rm*fabs(rm) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rm*fabs(rm)>>hdat","lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -5 && m*m-10.58*10.58+2*10.58*p-rm*rm < 5 && p>0.1 && mlc<2.2"+Mwindow,"goff");  
+    Ntot = ch1dat -> Draw("rm*fabs(rm)>>hdat","lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2 && p>0.1 && mlc<2.2"+Mwindow,"goff");  
     //"lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2"
     
    
