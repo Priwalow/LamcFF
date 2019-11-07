@@ -11,7 +11,7 @@ void User_reco::hist_def( void )
 
   extern BelleTupleManager* BASF_Histogram;
   t1 = BASF_Histogram->ntuple ("without pi0","ch  ml lcch rm rmx npi mlc npi0 ml1  hlc hl p m ecms" );   
-  t2 = BASF_Histogram->ntuple ("with pi0","ch  ml lcch rm npi mlc npi0 ml1  hlc hl p m ecms bestpi0" );   
+  t2 = BASF_Histogram->ntuple ("with pi0","ch  ml lcch rm rmx npi mlc npi0 ml1  hlc hl p m ecms bestpi0" );   
 
 };
 //***********************************************************************
@@ -315,6 +315,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 		 t2->column("ml1",0);
 	       t2->column("lcch",dynamic_cast<UserInfo&>(LamC.userInfo()).channel());
 	       t2->column("rm",rm);
+           t2->column("rmx",rmx);
 	       t2->column("npi",n_pi);
 	       t2->column("mlc",LamC.mass());// lambdac mass                                                                                                                                                                               
 
