@@ -27,7 +27,7 @@ unset BELLE_USE_TMP
 export QQ_USER_TABLE="./user.dec"
 
 
-filelist=`find /gpfs/home/belle/uglov/LamCFF/mdst -name $file\*mdst -size +0c|sort`
+filelist=`find /gpfs/home/belle/uglov/LamcFF/mdst -name $file\*mdst -size +0c|sort`
 
 
 outfile=hbk/$file.h

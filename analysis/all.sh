@@ -11,19 +11,19 @@ else
 fi
 
 
-for mdstfile in `ls ../mdst`
+for mdstfile in `ls /gpfs/home/belle/uglov/LamcFF/mdst/$2*`
 do
-    nproc=`ps -u uglov|wc -l`
+    nproc=`ps -u privalov|wc -l`
     while  (( $nproc > $maxproc )) 
     do 
 	sleep 1 
-	nproc=`ps -u uglov|wc -l`
+	nproc=`ps -u privalov|wc -l`
     done
 
     
     file=`basename $mdstfile .mdst`
     echo running: $file   processes: $nproc / $maxproc
-    if test -f ../mdst/$file.mdst
+    if test -f /gpfs/home/belle/uglov/LamcFF/mdst/$file.mdst
 	    then
 	rm */$file.* >&/dev/null
 	nice   ./run_mdst.sh $file &
