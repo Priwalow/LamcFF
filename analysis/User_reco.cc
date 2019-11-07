@@ -10,8 +10,8 @@ void User_reco::hist_def( void )
 {
 
   extern BelleTupleManager* BASF_Histogram;
-  t1 = BASF_Histogram->ntuple ("without pi0","ch  ml lcch rm  npi mlc npi0 ml1  hlc hl p m ecms" );   
-  t2 = BASF_Histogram->ntuple ("with pi0","ch  ml lcch rm  npi mlc npi0 ml1  hlc hl p m ecms bestpi0" );   
+  t1 = BASF_Histogram->ntuple ("without pi0","ch  ml lcch rm rmX npi mlc npi0 ml1  hlc hl p m ecms" );   
+  t2 = BASF_Histogram->ntuple ("with pi0","ch  ml lcch rm npi mlc npi0 ml1  hlc hl p m ecms bestpi0" );   
 
 };
 //***********************************************************************
@@ -250,6 +250,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        // final selection 
        if (charge!=0) continue;
        double rm =(pUPS-(momentum+LamC.p())).mag();
+       double rmX = (pUPS-momentum).mag();
        if (abs(rm)<1.5)
 	 {
 	   int ch=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
@@ -261,6 +262,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 	     t1->column("ml1",0);
 	   t1->column("lcch",dynamic_cast<UserInfo&>(LamC.userInfo()).channel());
 	   t1->column("rm",rm);
+	   t1->column("rmX",rmX);
 	   t1->column("npi",n_pi);
 	   t1->column("mlc",LamC.mass());// lambdac mass                                                                                                                                                                               
 	   t1->column("p",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
