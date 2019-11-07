@@ -1,7 +1,8 @@
 {
     gStyle->SetOptStat(0);
+    TString datapath = "../analysis/hmerge/";    
     TChain* ch1dat = new TChain("h1"); //without pi0
-    ch1dat -> Add("*.root");
+    ch1dat -> Add(datapath+"*.root");
     
     double lend=2.21, rend=2.36, MLambdac=2.28646;
     int Nbins=100;
