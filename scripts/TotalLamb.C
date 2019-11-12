@@ -4,15 +4,15 @@
 	TChain* ch2dat = new TChain("h1"); //without pi0
     ch2dat -> Add(datapath+"*.root");
     
-    double lend=1.101, rend=1.131, MLambda=1.115683;
-    int Nbins=100;
+    double lend=1.106, rend=1.126, MLambda=1.115683;
+    int Nbins=36;
     TCanvas *c1 = new TCanvas("c1","Lambda invariant mass",740,600);
     TH1D* hdat = new TH1D("hdat","#Lambda invariant mass",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    ch2dat -> Draw("ml>>+hdat","","goff"); //rm*rm<0.25
+    ch2dat -> Draw("ml>>+hdat","lcch==1 && rmx < 2.6 && rmx > 2.1","goff"); //rm*rm<0.25
     Ntot = hdat -> GetEntries();
     
     
@@ -22,13 +22,13 @@
     
     
     
-    fdat -> SetParameters(20000*3,MLambda,0.0001,20000*3,MLambda,0.001,200*3,MLambda,0.01,4000*3);
+    fdat -> SetParameters(2000,MLambda,0.0001,1000,MLambda,0.001,500,MLambda,0.01,50);
     fdat -> SetParLimits(1,MLambda-0.1,MLambda+0.1);
     fdat -> SetParLimits(4,MLambda-0.1,MLambda+0.1);
     fdat -> SetParLimits(7,MLambda-0.1,MLambda+0.1);
-    fdat -> SetParLimits(0,0,1e7);
-    fdat -> SetParLimits(3,0,1e7);
-    fdat -> SetParLimits(6,0,1e7);
+    fdat -> SetParLimits(0,0,1e4);
+    fdat -> SetParLimits(3,0,1e4);
+    fdat -> SetParLimits(6,0,1e4);
 
     
     

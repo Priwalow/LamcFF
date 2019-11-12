@@ -1,5 +1,11 @@
 {
-    gStyle->SetOptStat(0);
+   gStyle->SetOptStat(0);
+    gStyle->SetLineWidth(2);
+    gStyle->SetPadRightMargin(0.05);
+    gStyle->SetPadTopMargin(0.07);
+   
+    double axisFontSize = 0.045;
+    
     TString datapath = "../analysis/hmerge/";    
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
@@ -12,7 +18,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
 	TCut Mwindow = Form("rm*fabs(rm) > %lf && rm*fabs(rm) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rm*fabs(rm)>>hdat","lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2 && p>0.1 && mlc<2.2"+Mwindow,"goff");  
+    Ntot = ch1dat -> Draw("rm*fabs(rm)>>hdat","lcch == 4 && p>0.1 && mlc<2.2"+Mwindow,"goff");  
     //"lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2"
     
    
@@ -59,35 +65,55 @@
 
     
     hdat -> GetXaxis()->SetTitle("RM^{2}(#nu_{#mu}), GeV^{2}");
+    hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
+    hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()->SetTitle(Form("Events / %.2f",binw));
+    hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
+    hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
+    hdat -> GetYaxis()-> SetTitleOffset(1);
+    //hdat -> GetYaxis()->CenterTitle(true);
+    hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
-    hdat -> SetMarkerSize(1);
+    hdat -> SetMarkerSize(1.5);
     hdat -> SetMarkerColor(1);
     hdat -> SetLineColor(1);
     hdat -> SetLineWidth(2);
-    hdat -> DrawCopy("ep");
+    hdat -> Draw("e p");
 
-    fbkg -> SetLineStyle(2);
+     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
-    fbkg -> SetLineWidth(3);
-    fbkg -> DrawCopy("same");	    
-
-
-    fdat -> SetLineColor(2);
-    fdat -> SetLineWidth(3);
-    fdat-> DrawCopy("same");
-
-    fsig -> SetLineColor(4);
-    fsig -> SetLineWidth(3);
-    fsig -> Draw("same");
+    fbkg -> SetLineWidth(4);
+    fbkg -> DrawCopy("same");
     
-    TLegend* leg = new TLegend(0.7,0.8,0.9,0.9);
-    leg->AddEntry("hdat","Data","lep");
-	leg->AddEntry("fsig","Signal","l");    
-	leg->AddEntry("fbkg","Background","l");	
-	leg->AddEntry("fdat","Signal + background","l");
-    leg->Draw("same"); 
-    c1 -> Draw();
+    
+    fsig -> SetLineColor(4);
+    fsig -> SetLineWidth(4);
+   // fsig -> Draw("same");
+    
+    
+    fdat -> SetLineColor(2);
+    fdat -> SetLineWidth(4);
+    fdat-> DrawCopy("same");
+    
+    TLegend* leg = new TLegend(0.7,0.75,0.9,0.9);
+    leg -> AddEntry("hdat","Data","E P");
+    //leg->AddEntry("fsig","Signal","l");
+    leg -> AddEntry("fdat","Fit","l");
+    leg -> AddEntry("fbkg","Background","l");
+    leg -> SetBorderSize(0);
+    leg -> SetTextSize(0.045);
+    leg -> Draw("same");
+    
+    
+     TLatex *tstatfit = new TLatex();
+    tstatfit -> SetNDC();
+    tstatfit -> SetTextColor(1);
+    tstatfit -> SetTextSize(0.045);
+    tstatfit -> SetTextAngle(0);
+    tstatfit -> DrawLatex(0.17, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
+   // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
+    tstatfit -> DrawLatex(0.17, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
+    tstatfit -> DrawLatex(0.17, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
     
 }
  
