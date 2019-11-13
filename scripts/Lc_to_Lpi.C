@@ -4,7 +4,7 @@
     gStyle->SetPadRightMargin(0.05);
     gStyle->SetPadTopMargin(0.07);
    
-    double axisFontSize = 0.045;
+    double axisFontSize = 0.065;
     
     
     
@@ -14,7 +14,7 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=2.21, rend=2.36, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=30;
+    int Nbins=15;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
@@ -22,7 +22,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("mlc > %lf && mlc < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch == 1 && ch==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch == 1 && rmx<2.3612 && rmx > 2.2276 && ch==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
     
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",binw),lend,rend);
@@ -66,7 +66,7 @@
     hdat -> GetXaxis()-> SetTitle("M(#Lambda#pi) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.2f )",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(1);
@@ -87,7 +87,7 @@
     
     fsig -> SetLineColor(4);
     fsig -> SetLineWidth(4);
-   // fsig -> Draw("same");
+    //fsig -> Draw("same");
     
     
     fdat -> SetLineColor(2);
@@ -95,19 +95,19 @@
     fdat-> DrawCopy("same");
     
     
-    TLegend* leg = new TLegend(0.77,0.75,0.89,0.89);
+    TLegend* leg = new TLegend(0.77,0.75,0.89,0.95);
     leg -> AddEntry("hdat","Data","E P");
-    //leg->AddEntry("fsig","Signal","l");
+   // leg->AddEntry("fsig","Signal","l");
     leg -> AddEntry("fdat","Fit","l");
     leg -> AddEntry("fbkg","Background","l");
     leg -> SetBorderSize(0);
-    leg -> SetTextSize(0.045);
+    leg -> SetTextSize(axisFontSize);
     leg -> Draw("same");
     
     TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
-    tstatfit -> SetTextSize(0.045);
+    tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
     tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //

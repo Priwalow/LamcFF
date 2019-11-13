@@ -4,7 +4,7 @@
     gStyle->SetPadRightMargin(0.05);
     gStyle->SetPadTopMargin(0.07);
    
-    double axisFontSize = 0.045;
+    double axisFontSize = 0.065;
     
     
     
@@ -15,7 +15,7 @@
     
     double lend=2.0, rend=2.6, MLambdac=2.28646; //lend=2.21, rend=2.36
     int Nbins=12;
-    TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
+    TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
@@ -95,19 +95,19 @@
     fdat-> DrawCopy("same");
     
     
-    TLegend* leg = new TLegend(0.17,0.75,0.29,0.89);
+    TLegend* leg = new TLegend(0.17,0.70,0.29,0.89);
     leg -> AddEntry("hdat","Data","E P");
     //leg->AddEntry("fsig","Signal","l");
     leg -> AddEntry("fdat","Fit","l");
     leg -> AddEntry("fbkg","Background","l");
     leg -> SetBorderSize(0);
-    leg -> SetTextSize(0.045);
+    leg -> SetTextSize(axisFontSize);
     leg -> Draw("same");
     
     TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
-    tstatfit -> SetTextSize(0.045);
+    tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
     tstatfit -> DrawLatex(0.67, 0.45, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
