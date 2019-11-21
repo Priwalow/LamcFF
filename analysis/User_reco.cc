@@ -215,9 +215,15 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    setUserInfo(L_b,2);
 
    for (std::vector<Particle>::iterator i=lam.begin(); i!=lam.end();++i)
-     L_.push_back(*i);
+   {
+     Particle * tmp = new Particle(*i);
+     L_.push_back(tmp);
+   }
    for (std::vector<Particle>::iterator i=lamb.begin(); i!=lamb.end();++i)
-     L_b.push_back(*i);
+   {
+     Particle * tmp = new Particle(*i);
+     L_b.push_back(tmp);
+   }
 
    setUserInfo(L_,3);
    setUserInfo(L_b,3);
