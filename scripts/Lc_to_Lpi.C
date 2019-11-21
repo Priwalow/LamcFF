@@ -3,7 +3,7 @@
     gStyle->SetLineWidth(2);
     gStyle->SetPadRightMargin(0.05);
     gStyle->SetPadTopMargin(0.07);
-   
+    gStyle->SetErrorX(0);
     double axisFontSize = 0.065;
     
     
@@ -77,6 +77,7 @@
     hdat -> SetMarkerColor(1);
     hdat -> SetLineColor(1);
     hdat -> SetLineWidth(2);
+    hdat -> SetMinimum(0);
     hdat -> Draw("e p");
     
     fbkg -> SetLineStyle(2);
