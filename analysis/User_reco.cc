@@ -10,7 +10,7 @@ namespace Belle {
 	{
 		
 		extern BelleTupleManager* BASF_Histogram;
-		t1 = BASF_Histogram->ntuple ("with pi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis hl hlc phi q2" ); 
+		t1 = BASF_Histogram->ntuple ("with pi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis hl hlc phi q" ); // ALL momenta in CMS! 
 		
 	};
 	//***********************************************************************
@@ -259,7 +259,7 @@ namespace Belle {
 					momentum0+=j->p();
 				}
 				
-				double rm =(pUPS-(momentum0+LamC.p()+pi->p())).mag();
+				double rm =abs((pUPS-(momentum0+LamC.p()+pi->p())).mag());
 				if (best_rm>rm)
 				{
 					best_rm=rm;
@@ -308,6 +308,8 @@ namespace Belle {
 					else
 					    t1->column("plc",-1);
 					
+                    
+                    
 					t1->column("mvis",(momentum0+LamC.p()).mag());// p
 					t1->column("mx",momentum0.mag());
 					t1->column("ecms",pUPS.mag());
@@ -323,6 +325,13 @@ namespace Belle {
 						p_proton_from_lam=LamC.child(0).child(1).p(); 
 					t1->column("hl",cos(heli (p_proton_from_lam, HepLorentzVector(-LamC.child(0).p(), LamC.child(0).e()),  LamC.child(0).p())));
 					
+                    //q = sqrt((P_Lc - P_L)^2)
+                    if ((lcch==1) || (lcch==2))
+						t1->column("q",(LamC.p()-LamC.child(0).p()).mag());
+					else
+					    t1->column("q",(pUPS-LamC.child(0).p()-momentum0).mag());
+                    
+                    
 					t1->dumpData();
 				}
 			}
