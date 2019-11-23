@@ -274,7 +274,7 @@ namespace Belle {
 				HepLorentzVector momentum0 = momentum;
 				for(std::vector<Particle>::iterator j=pi0.begin(); j!=pi0.end();++j)
 				{
-					if (j==pi) continue;
+					if ( (j==pi) || checkSame(*a,*j)) continue;
 					momentum0+=j->p();
 				}
 				
