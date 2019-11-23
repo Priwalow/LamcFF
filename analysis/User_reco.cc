@@ -253,9 +253,9 @@ namespace Belle {
 			for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
 			{
 				HepLorentzVector momentum0 = momentum;
-				for(std::vector<Particle>::iterator j=pi0.begin(); j=pi0.end();++pi)
+				for(std::vector<Particle>::iterator j=pi0.begin(); j!=pi0.end();++j)
 				{
-					if (*j==*pi) continue;
+					if (j==pi) continue;
 					momentum0+=j->p();
 				}
 				
@@ -272,9 +272,9 @@ namespace Belle {
 				if ( checkSame(*a,*pi) ) continue;
 				
 				HepLorentzVector momentum0 = momentum;
-				for(std::vector<Particle>::iterator j=pi0.begin(); j=pi0.end();++pi)
+				for(std::vector<Particle>::iterator j=pi0.begin(); j!=pi0.end();++j)
 				{
-					if (*j==*pi) continue;
+					if (j==pi) continue;
 					momentum0+=j->p();
 				}
 				
