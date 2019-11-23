@@ -255,7 +255,7 @@ namespace Belle {
 				HepLorentzVector momentum0 = momentum;
 				for(std::vector<Particle>::iterator j=pi0.begin(); j=pi0.end();++pi)
 				{
-					if (j==pi) continue;
+					if (*j==*pi) continue;
 					momentum0+=j->p();
 				}
 				
@@ -274,7 +274,7 @@ namespace Belle {
 				HepLorentzVector momentum0 = momentum;
 				for(std::vector<Particle>::iterator j=pi0.begin(); j=pi0.end();++pi)
 				{
-					if (j==pi) continue;
+					if (*j==*pi) continue;
 					momentum0+=j->p();
 				}
 				
@@ -290,8 +290,8 @@ namespace Belle {
 					t1->column("tag",tag);
 					t1->column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());// lambda mass                                                                                                                                    
 					
-					if (tag>10) t->column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass                                                                                                                                    
-					else t->column("ml1",0);
+					if (tag>10) t1->column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass                                                                                                                                    
+					else t1->column("ml1",0);
 					
 					int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel();
 					t1->column("lcch",lcch);
