@@ -10,7 +10,7 @@ namespace Belle {
 	{
 		
 		extern BelleTupleManager* BASF_Histogram;
-		t1 = BASF_Histogram->ntuple ("with pi0","lcch tag ml mlc mx mvis plc px pvis hl hlc phi q2 npi npi0 bestpi0" ); // ALL momenta in CMS! tag  ml lcch rm rmx npi mlc npi0 ml1  hlc hl p m ecms bestpi0
+		t1 = BASF_Histogram->ntuple ("with pi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis hl hlc phi q2" ); 
 		
 	};
 	//***********************************************************************
