@@ -10,8 +10,8 @@ namespace Belle {
 	{
 		
 		extern BelleTupleManager* BASF_Histogram;
-		t1 = BASF_Histogram->ntuple ("withoutpi0","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis hl hlc phi q" ); // ALL momenta in CMS! 		
-		t2 = BASF_Histogram->ntuple ("withpi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis hl hlc phi q" ); // ALL momenta in CMS! 
+		t1 = BASF_Histogram->ntuple ("withoutpi0","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 		
+		t2 = BASF_Histogram->ntuple ("withpi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 
 		
 	};
 	//***********************************************************************
@@ -249,6 +249,60 @@ namespace Belle {
 			if (charge!=0) continue;
 			
 			int n_pi0=pi0.size();
+
+			double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag();
+		    if (abs(rm)<1.5)
+		    {
+				int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
+	   			t1 -> column("tag",tag);
+	   			t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()) //lambda mass                                                                                     
+	   			if (tag>10)
+	     			t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass    
+				else
+	     			t1 -> column("ml1",0);
+				int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel();	   			
+				t1 -> column("lcch",lcch);
+	   			t1 -> column("rmvis",rm);
+	   			t1 -> column("rmx",rmx);
+	   			t1 -> column("npi",n_pi);
+				t1 -> column("npi0",n_pi0);
+	   			t1 -> column("mlc",LamC.mass());// lambdac mass                                                                                                                                           
+
+	   			t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
+				t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
+				
+				if ((lcch==1) || (lcch==2))
+					t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
+				else
+					t1 -> column("plc",-1);
+
+
+
+				t1 -> column("mvis",(momentum+LamC.p()).mag());
+				t1 -> column("mx",momentum.mag());
+				t1 -> column("ecms",pUPS.mag());
+	   			
+				// lamc heli
+		  	    t1 -> column("hlc",cos(heli(LamC.child(0).p(),momentum,pUPS-momentum)));
+		      	   
+	   			//lam heli
+	   			HepLorentzVector p_proton_from_lam; 
+	   			if (abs(LamC.child(0).child(0).lund())>1000)
+	     			p_proton_from_lam=LamC.child(0).child(0).p(); 
+				else
+		  	    	p_proton_from_lam=LamC.child(0).child(1).p(); 
+	   			t1->column("hl",cos(heli (p_proton_from_lam, HepLorentzVector(-LamC.child(0).p(), LamC.child(0).e()),  LamC.child(0).p())));
+	   			
+				//q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
+                if ((lcch==1) || (lcch==2))
+					t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
+				else
+				    t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 				
+								
+				t1->dumpData();
+	   		}
+			
+			
 			Particle *bestpi0; 
 			double best_rm=10000;
 			for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
