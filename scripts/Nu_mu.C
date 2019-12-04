@@ -18,8 +18,8 @@
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-	TCut Mwindow = Form("rm*fabs(rm) > %lf && rm*fabs(rm) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rm*fabs(rm)>>hdat","lcch==4 && ch==1 && rmx<2.3612 && rmx > 2.2276 && p>0.1 && mlc<2.2"+Mwindow,"goff");  
+	TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
+    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch==4 && tag==1 && rmx<2.3612 && rmx > 2.2276 && pvis>0.1 && mlc<2.2"+Mwindow,"goff");  
     //"lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2"
     
    

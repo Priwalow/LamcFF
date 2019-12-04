@@ -22,7 +22,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("mlc > %lf && mlc < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch == 1 && rmx<2.3612 && rmx > 2.2276 && ch==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch == 1 && rmx<2.3612 && rmx > 2.2276 && tag==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
     
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",binw),lend,rend);

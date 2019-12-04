@@ -14,7 +14,7 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=2.0, rend=2.6, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=12;
+    int Nbins=48;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
@@ -22,7 +22,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && ch==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && tag==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
     
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",binw),lend,rend);
