@@ -14,7 +14,7 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=2.21, rend=2.36, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=15;
+    int Nbins=50;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
@@ -22,7 +22,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("mlc > %lf && mlc < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch == 1 && rmx<2.3612 && rmx > 2.2276 && tag==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    Ntot = ch1dat -> Draw("mlc>>+hdat","lcch==1 && tag==1 && fabs(ml-1.11567)<0.00309 && fabs(rmx-2.288)<2*0.0562"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
     
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",binw),lend,rend);
@@ -35,7 +35,7 @@
     fdat -> SetParLimits(0,0,1e5);
 
     TFitResultPtr fitResult;
-    fitResult = hdat -> Fit("fdat","L S M N Q","goff"); //L S M N Q
+    fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
     TMatrixDSym covSignal, covBackground;
     covFit.GetSub(0,2,covSignal);
