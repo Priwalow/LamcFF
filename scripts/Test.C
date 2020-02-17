@@ -150,3 +150,35 @@ void LctoLpi()
     delete hdat;
 
 } 
+
+void SBpol2(double p3, double p4, double p5, double m, double s)
+{
+    double a, b, c, A, B, C, D, p, q, Q, alpha, beta;
+    
+    a = p5;
+    b = p3-2*p5*2.286;
+    c = p4-2.286*p3+2.286*2.286*p5;
+    
+    A = 2./3*a;
+    B = 6*a*s;
+    C = 2*a*m*m+18*a*s*s+2*b*m+2*c;
+    D = -a/3*(16*s*s*s+12*m*m*s)-4*b*m*s-4*s*c;
+    
+    p = (3*A*C-B*B)/(3*A*A);
+    q = (2*B*B*B-9*A*B*C+27*A*A*D)/(27*A*A*A);
+    
+    Q = p*p*p/27+q*q/4;
+    
+    cout << "Q = " << Q << endl;
+    
+    alpha = -q/2+sqrt(Q);
+    if (alpha < 0) alpha = -pow(-alpha,1./3);
+        else alpha = pow(alpha,1./3);
+    beta = -q/2-sqrt(Q);
+    if (beta < 0) beta = -pow(-beta,1./3);
+        else beta = pow(beta,1./3);
+    
+    cout << "d = " <<  alpha + beta << endl;
+}
+
+
