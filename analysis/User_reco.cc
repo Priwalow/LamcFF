@@ -83,7 +83,7 @@ namespace Belle {
 		
 		
 		std::vector<Particle>  e_p,e_m,mu_p,mu_m;
-		makeLepton(e_p,e_p,mu_p,mu_m);
+		makeLepton(e_p,e_m,mu_p,mu_m);
 		withMuId(mu_p);
 		withMuId(mu_m);
 		
