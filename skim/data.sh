@@ -52,8 +52,8 @@ path add_module main fix_mdst  User_reco user_index
 path add_condition main <:0:KILL
 
 initialize
-output open       ../index/${exp}.${run}.${run1}.index
-histogram define  ../hbk/${exp}.${run}.${run1}.hist
+output open       ./index/${exp}.${run}.${run1}.index
+histogram define  ./hbk/${exp}.${run}.${run1}.hist
 
 process_url "http://bweb3/mdst.php?bl=caseB&skm=HadronB&ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&dv=zfserv&dt=Any"
 
@@ -63,5 +63,5 @@ EOF
 
 echo terminate
 
-) |basf >  ../log/${exp}.${run}.${run1} 2>&1
+) |basf >  ./log/${exp}.${run}.${run1} 2>&1
 
