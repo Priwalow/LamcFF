@@ -47,8 +47,8 @@
     fsig -> SetParameters(par);
     fbkg -> SetParameters(par+3);
     
-    Nsig = fsig -> Integral(lend,rend)/binw; 
-    dNsig = fsig -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
+    Nsig = fdat -> GetParameter(0);//fsig -> Integral(lend,rend)/binw; 
+    dNsig = fdat -> GetParError(0);// -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
     Nbkg = fbkg -> Integral(lend,rend)/binw; 
     dNbkg = fbkg -> IntegralError(lend,rend,par+3,covBackground.GetMatrixArray())/binw;
     
@@ -66,7 +66,7 @@
     hdat -> GetXaxis()-> SetTitle("M(#Lambda#pi) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.2f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(1);
