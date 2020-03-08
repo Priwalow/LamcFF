@@ -149,8 +149,8 @@ namespace Belle {
 		combination (Lcb,ptype_Lamc, lamb, mu_m);
 		setUserInfo(Lc,4);
 		setUserInfo(Lcb,4);
-		combination (Lc,ptype_Lamc, lam, mu_p);     //fake
-		combination (Lcb,ptype_Lamc, lamb, mu_m);   //fake
+		combination (Lc,ptype_Lamc, lam, mu_m);     //fake
+		combination (Lcb,ptype_Lamc, lamb, mu_p);   //fake
 		setUserInfo(Lc,400);
 		setUserInfo(Lcb,400);
 		
@@ -214,7 +214,6 @@ namespace Belle {
 			L_.push_back(*i);
 		for (std::vector<Particle>::iterator i=lamb.begin(); i!=lamb.end();++i)
 			L_b.push_back(*i);
-		
 		setUserInfo(L_,3);
 		setUserInfo(L_b,3);
 		
@@ -427,7 +426,7 @@ namespace Belle {
 			// check mass and flight dist
 			HepPoint3D V(tmp.mdstVee2().vx(),tmp.mdstVee2().vy(),0);
 			Vector3 P(tmp.px(),tmp.py(),0);
-			V=V-IpProfile::position();;
+			V=V-IpProfile::position();
 			V.setZ(0.);
 			if (abs(tmp.mass()-1.115683)>0.015 || V.perp()<0.1 ||
 				V.angle(P)>0.01 || tmp.mdstVee2().z_dist()>10. ) 

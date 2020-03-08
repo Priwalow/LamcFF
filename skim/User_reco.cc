@@ -131,8 +131,8 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
    combination (Lc,ptype_Lamc, lam, mu_p);
    combination (Lcb,ptype_Lamc, lamb, mu_m);
-   combination (Lc,ptype_Lamc, lam, mu_p);     //fake
-   combination (Lcb,ptype_Lamc, lamb, mu_m);   //fake
+   combination (Lc,ptype_Lamc, lam, mu_m);     //fake
+   combination (Lcb,ptype_Lamc, lamb, mu_p);   //fake
    ///   setUserInfo(Lc,3);
    //   setUserInfo(Lcb,3);
 
@@ -186,19 +186,20 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    std::vector <Particle> L_, L_b;
    combination (L_,ptype_Lamc,  p_p, k_m);
    combination (L_b,ptype_Lamc, p_m, k_p);
-   setUserInfo(L_,1);
-   setUserInfo(L_b,1);
+   // setUserInfo(L_,1);
+   //setUserInfo(L_b,1);
 
    combination (L_,ptype_Lamc,  p_p, k_s);
    combination (L_b,ptype_Lamc, p_m, k_s);
-   setUserInfo(L_,2);
-   setUserInfo(L_b,2);
+   //setUserInfo(L_,2);
+   //setUserInfo(L_b,2);
 
    for (std::vector<Particle>::iterator i=lam.begin(); i!=lam.end();++i)
      L_.push_back(*i);
    for (std::vector<Particle>::iterator i=lamb.begin(); i!=lamb.end();++i)
      L_b.push_back(*i);
-       
+    //setUserInfo(L_,3);
+    //setUserInfo(L_b,3);
 
    std::vector<Particle> A; 
    combination(A,ptype_UPS4,Lc,L_b);
@@ -311,7 +312,7 @@ void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, doub
 	// check mass and flight dist
 	HepPoint3D V(tmp.mdstVee2().vx(),tmp.mdstVee2().vy(),0);
 	Vector3 P(tmp.px(),tmp.py(),0);
-	V=V-IpProfile::position();;
+	V=V-IpProfile::position();
 	V.setZ(0.);
 	if (abs(tmp.mass()-1.115683)>0.015 || V.perp()<0.1 ||
 	    V.angle(P)>0.01 || tmp.mdstVee2().z_dist()>10. ) 
