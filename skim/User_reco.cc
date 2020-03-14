@@ -69,28 +69,33 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
 
 
-   //----------------------------------------------------------
+   //------------------------MAKE PARTICLE LISTINGS----------------------------------
 
-   std::vector<Particle> lam, lamb; 
+   std::vector<Particle> p_p, p_m; 
+   makeProton(p_p,p_m);
+     
+   if (p_p.size()!=1) || (p_m.size()!=1)
+     return;
+   
+  
+   std::vector<Particle> lam, lamb;
    makeLam(lam,lamb);
-   setUserInfo(lam,  11 ); 
-   setUserInfo(lamb, 12 ); 
-   //   doMassVertexFit(lam);
-   //   doMassVertexFit(lamb);
    
    if (lam.size()+lamb.size()==0)
      return;
 
-
+   
    std::vector<Particle>  e_p,e_m,mu_p,mu_m;
    makeLepton(e_p,e_m,mu_p,mu_m);
+   
    withMuId(mu_p);
    withMuId(mu_m);
-
+   
    withEId(e_p);
    withEId(e_m);
-
-   std::vector<Particle>  k_p, k_m, pi_p, pi_m,pions;
+   
+   
+   std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
    makeKPi(k_p, k_m, pi_p, pi_m,1);
    for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
      pions.push_back(*l);
@@ -106,20 +111,10 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
    withKaonId(k_p,0.6,3,1,5);
    withKaonId(k_m,0.6,3,1,5);
-
-
-   std::vector<Particle>  pi0;
-   makePi0(pi0);
    
-   for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
-     if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
-	i->mdstPi0().gamma(1).ecl().energy()<0.05||
-  	abs(i->mdstPi0().mass()-.135)>0.015)
-       {pi0.erase(i); --i;}
    
-   //   setPi0Error(pi0);
-
    //#################################       SIGNAL SIDE  
+   
    std::vector <Particle> Lc, Lcb; 
 
    combination (Lc,ptype_Lamc, lam, e_p);
@@ -146,26 +141,13 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    for(std::vector<Particle>::iterator l = Lcb.begin(); l!=Lcb.end(); ++l)
      if (l->mass()>ptype_Lamc.mass()+0.1)
        {Lcb.erase(l); --l;}
-	 
-   combination (Lc,ptype_Lamc, lam, pi_p,0.1);
-   combination (Lcb,ptype_Lamc, lamb, pi_m,0.1);
-   //   setUserInfo(Lc,1);
-   //   setUserInfo(Lcb,1);
-
-   combination (Lc,ptype_Lamc, lam, pi_p,pi0,0.1);
-   combination (Lcb,ptype_Lamc, lamb, pi_m,pi0,0.1);
-   //   setUserInfo(Lc,1);
-   //   setUserInfo(Lcb,1);
-
-
+       
    if (Lc.size()+Lcb.size()==0)
      return;
+   
 
    //######################################    TAG SIDE
 
-
-   std::vector<Particle> p_p, p_m; 
-   makeProton(p_p,p_m);
   
    std::vector<Particle> k_s;
    makeKs(k_s);
@@ -214,7 +196,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        HepLorentzVector momentum=ALamC.p();
        int charge=ALamC.child(0).charge()+ALamC.child(1).charge()+LamC.child(0).charge()+LamC.child(1).charge();
        int n_pi=0;
-       int n_pi0=pi0.size();
+       
        for (std::vector<Particle>::iterator pi=pions.begin(); pi!=pions.end();++pi)
 	 {
 	   //pion cuts
@@ -227,56 +209,13 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        //       std::cout <<"a1\n";
        // final selection 
        if (charge!=0) continue;
-       if (abs((pUPS-(momentum+LamC.p())).mag()<1.5))
+       if ( abs((pUPS-momentum-LamC.p()).mag())<1.5)  && ( abs((pUPS-momentum).mag()-2.3)<1. )
 	 {*status=1; skimmed++; return;}
-       //       double rm =(pUPS-momentum).mag();
-       //       if ((pUPS-(momentum+LamC.p())).mag()<2 && (1<rm && rm <3))
-       //	 {
-	   /*
-	   int ch=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
-	   t1->column("ch",ch);
-	   t1->column("npi0",pi0.size());//without pi0
-	   t1->column("bestpi0",0);//without pi0                                                                                                                                                                                         
-	   t1->column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());// lambda mass                                                                                                                                    
-	   if (ch>10)
-	     t1->column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass                                                                                                                                    
-	   else
-	     t1->column("ml1",0);
-	   t1->column("lcch",dynamic_cast<UserInfo&>(LamC.userInfo()).channel());
-	   t1->column("rm",rm);
-	   t1->column("rm1",(pUPS-(momentum+LamC.p())).mag());
-	   t1->column("npi",n_pi);
-	   t1->column("mlc",LamC.mass());// lambdac mass                                                                                                                                                                               
-	   
-	   // lamc heli
-	   HepLorentzVector RestP=pStar(ALamC.p(),elec,posi);
-	   HepLorentzVector LamcP=HepLorentzVector(-RestP.vect(),RestP.e()); 
-	   t1->column("hlc",cos(heli(pStar(LamC.child(0).p(),elec,posi),RestP,LamcP)));
-		      	   
-	   //lam heli
-	   HepLorentzVector p_proton_from_lam; 
-	   if (abs(LamC.child(0).child(0).lund())>1000)
-	     p_proton_from_lam=LamC.child(0).child(0).p(); 
-	   else
-	     p_proton_from_lam=LamC.child(0).child(1).p(); 
-	   t1->column("hl",cos(heli (p_proton_from_lam, momentum,  LamC.child(0).p())));
-	   
-	   t1->dumpData();
-	   */
-       //	   *status=1; skimmed++; return; 
-       //	 }
+       
 
-       //       Particle *bestPi0;
-       //       double DeltaM=10000;
-
-       for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
-	 {
-	   if ( checkSame(*a,*pi) ) continue;
-	   if (abs((pUPS-(momentum+LamC.p()+pi->p())).mag()<1.5))
-	     {*status=1; skimmedPi0++; return;}
-	 }
      }
-   if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"    SkimmedPi0: "<<skimmedPi0<<'\n';
+   if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<'\n';
+  
 }
 
 

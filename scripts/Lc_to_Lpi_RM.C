@@ -13,8 +13,8 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=2.0, rend=2.6, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=48;
+    double lend=1.5, rend=3., MLambdac=2.28646; //lend=2., rend=2.6
+    int Nbins=50;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
@@ -22,24 +22,24 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && tag==1"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && tag==1 && abs(mlc-2.2871)<2*0.0053"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
     
     
-    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.3)",binw),lend,rend);
+    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
-    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.3)",lend,rend);    
+    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2",lend,rend);    
     
 
-    fdat -> SetParameters(1000,MLambdac,0.1,150,300);
+    fdat -> SetParameters(1000,MLambdac,0.1,150,300,20);
     fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
     TFitResultPtr fitResult;
-    fitResult = hdat -> Fit("fdat","L S M N Q","goff"); //L S M N Q
+    fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
     TMatrixDSym covSignal, covBackground;
     covFit.GetSub(0,2,covSignal);
-    covFit.GetSub(3,4,covBackground);
+    covFit.GetSub(3,5,covBackground);
     double * par;
     par = fdat -> GetParameters();
   
@@ -47,8 +47,8 @@
     fsig -> SetParameters(par);
     fbkg -> SetParameters(par+3);
     
-    Nsig = fsig -> Integral(lend,rend)/binw; 
-    dNsig = fsig -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
+    Nsig = fdat -> GetParameter(0);//fsig -> Integral(lend,rend)/binw; 
+    dNsig = fdat -> GetParError(0);// -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
     Nbkg = fbkg -> Integral(lend,rend)/binw; 
     dNbkg = fbkg -> IntegralError(lend,rend,par+3,covBackground.GetMatrixArray())/binw;
     
