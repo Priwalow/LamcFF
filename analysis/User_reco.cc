@@ -73,7 +73,7 @@ namespace Belle {
    std::vector<Particle> p_p, p_m; 
    makeProton(p_p,p_m);
      
-   if (p_p.size()!=1) || (p_m.size()!=1)
+   if ((p_p.size()!=1) || (p_m.size()!=1))
      return;
    
   
@@ -254,7 +254,7 @@ namespace Belle {
         int n_pi0=pi0.size();
         
         double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag();
-        if (abs(rm)<1.5)  && (abs(rmx-2.3)<1.)
+        if ((abs(rm)<1.5)  && (abs(rmx-2.3)<1.))
         {
             int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
             t1 -> column("tag",tag);
