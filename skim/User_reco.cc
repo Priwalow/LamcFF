@@ -74,7 +74,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    std::vector<Particle> p_p, p_m; 
    makeProton(p_p,p_m);
      
-   if (p_p.size()!=1) || (p_m.size()!=1)
+   if ((p_p.size()!=1) || (p_m.size()!=1))
      return;
    
   
