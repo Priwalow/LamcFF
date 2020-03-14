@@ -209,7 +209,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        //       std::cout <<"a1\n";
        // final selection 
        if (charge!=0) continue;
-       if ( abs((pUPS-momentum-LamC.p()).mag())<1.5)  && ( abs((pUPS-momentum).mag()-2.3)<1. )
+       if (( abs((pUPS-momentum-LamC.p()).mag())<1.5)  && ( abs((pUPS-momentum).mag()-2.3)<1. ))
 	 {*status=1; skimmed++; return;}
        
 
