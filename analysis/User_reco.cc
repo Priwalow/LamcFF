@@ -11,7 +11,7 @@ namespace Belle {
         
         extern BelleTupleManager* BASF_Histogram;
         t1 = BASF_Histogram->ntuple ("withoutpi0","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 		
-        //t2 = BASF_Histogram->ntuple ("withpi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 
+        t2 = BASF_Histogram->ntuple ("withpi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 
         
     };
     //***********************************************************************
@@ -68,6 +68,7 @@ namespace Belle {
         }
         
         
+        
         //------------------------MAKE PARTICLE LISTINGS----------------------------------
         
         std::vector<Particle> p_p, p_m; 
@@ -104,8 +105,8 @@ namespace Belle {
             bool is_kaon=false;
             for(std::vector<Particle>::iterator k = k_m.begin(); k!=k_m.end(); ++k)
                 if (l->mdstCharged()==k->mdstCharged())
-                {is_kaon=true; break;}
-                if(!is_kaon) pions.push_back(*l);
+                    {is_kaon=true; break;}
+            if(!is_kaon) pions.push_back(*l);
         }
         
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
@@ -113,8 +114,8 @@ namespace Belle {
             bool is_kaon=false;
             for(std::vector<Particle>::iterator k = k_p.begin(); k!=k_p.end(); ++k)
                 if (l->mdstCharged()==k->mdstCharged())
-                {is_kaon=true; break;}
-                if(!is_kaon) pions.push_back(*l);
+                    {is_kaon=true; break;}
+            if(!is_kaon) pions.push_back(*l);
         }
         
         ntrk=k_p.size()+k_m.size();
@@ -139,14 +140,12 @@ namespace Belle {
         
         
         //#################################       SIGNAL SIDE  
-        
         std::vector <Particle> Lc, Lcb; 
         
         combination (Lc,ptype_Lamc, lam, e_p);
         combination (Lcb,ptype_Lamc, lamb, e_m);
         setUserInfo(Lc,3);
         setUserInfo(Lcb,3);  
-        
         combination (Lc,ptype_Lamc, lam, e_m);     //fake
         combination (Lcb,ptype_Lamc, lamb, e_p);   //fake
         setUserInfo(Lc,300);
@@ -156,15 +155,11 @@ namespace Belle {
         combination (Lcb,ptype_Lamc, lamb, mu_m);
         setUserInfo(Lc,4);
         setUserInfo(Lcb,4);
-        
         combination (Lc,ptype_Lamc, lam, mu_m);     //fake
         combination (Lcb,ptype_Lamc, lamb, mu_p);   //fake
         setUserInfo(Lc,400);
         setUserInfo(Lcb,400);
         
-        
-        //   doVertexFit(Lc);
-        //   doVertexFit(Lcb);
         
         for(std::vector<Particle>::iterator l = Lc.begin(); l!=Lc.end(); ++l)
             if (l->mass()>ptype_Lamc.mass()+0.1)
@@ -254,12 +249,12 @@ namespace Belle {
             int n_pi0=pi0.size();
             
             double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag();
-            if ((abs(rm)<1.5)  && (abs(rmx-2.3)<1.))
+            if ((abs(rm)<1.5) && (abs(rmx-2.3)<1.))
             {
                 int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
                 t1 -> column("tag",tag);
                 t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
-                if (tag>10)
+                if (tag==3)
                     t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass    
                 else
                     t1 -> column("ml1",0);
