@@ -282,6 +282,7 @@ namespace Belle {
                 t1 -> column("mvis",(momentum+LamC.p()).mag());
                 t1 -> column("mx",momentum.mag());
                 t1 -> column("ecms",pUPS.mag());
+                t1 -> column("fox",fox);
                 
                 // lamc heli
                 t1 -> column("hlc",cos(heli(LamC.child(0).p(),momentum,pUPS-momentum)));
