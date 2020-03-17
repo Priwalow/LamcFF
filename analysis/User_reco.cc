@@ -66,7 +66,7 @@ namespace Belle {
             fox = (*iti).R2();
             //       ntrk = (*iti).Ntrk();
         }
-        
+        std::cout << "INITIALIZING!" << std::endl;
         
         
         //------------------------MAKE PARTICLE LISTINGS----------------------------------
