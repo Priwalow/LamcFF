@@ -76,7 +76,7 @@ namespace Belle {
         if ((p_p.size()!=1) || (p_m.size()!=1))
             return;
         
-        cout << "2 PROTONS ARE HERE!" << endl;
+        std::cout<<nevent << "2 PROTONS ARE HERE!" <<'\n'; 
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
