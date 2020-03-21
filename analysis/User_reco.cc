@@ -274,12 +274,14 @@ namespace Belle {
             
             std::cout<<nevent << " FINAL SELECTION!!! "<<'\n'; 
             if (charge!=0) continue;
-            
+             std::cout<<"CHARGE = 0!"<<'\n'; 
             int n_pi0=pi0.size();
             
             double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag();
+             std::cout<<"ALMOST PASSED!"<<'\n'; 
             if ((abs(rm)<1.5) && (abs(rmx-2.3)<1.))
             {
+                std::cout<<"PASSED!"<<'\n'; 
                 int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
                 t1 -> column("tag",tag);
                 t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
@@ -326,7 +328,7 @@ namespace Belle {
                     t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 				
                 
                 t1->dumpData();
-                std::cout<<"PASSED!"<<'\n'; 
+               
             }
             // if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"    SkimmedPi0: "<<skimmedPi0<<'\n';
         }
