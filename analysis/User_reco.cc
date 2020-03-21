@@ -101,9 +101,10 @@ namespace Belle {
         
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
+        std::cout<<nevent << " " << k_p.size()+k_m.size() << " possible charged kaons are here!"<<'\n'; 
         withKaonId(k_p,0.6,3,1,5);
         withKaonId(k_m,0.6,3,1,5);
-        
+
         
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
@@ -129,7 +130,7 @@ namespace Belle {
         
         std::cout<<nevent << " " << pions.size() << " charged pions are here!"<<'\n'; 
         std::cout<<nevent << " " << ntrk - pions.size() << " charged kaons are here!"<<'\n'; 
-        std::cout<<nevent << " " << k_p.size()+k_m.size() - pions.size() << " charged kaons are here!"<<'\n'; 
+       
         
         
         withdRdZcut(k_p,runIp.z());
