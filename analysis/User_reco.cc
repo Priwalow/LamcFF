@@ -102,8 +102,8 @@ namespace Belle {
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         std::cout<<nevent << " " << k_p.size()+k_m.size() << " possible charged kaons are here!"<<'\n'; 
-       // withKaonId(k_p,0.6,3,1,5);
-       // withKaonId(k_m,0.6,3,1,5);
+        withKaonId(k_p,0.6,3,1,5);
+        withKaonId(k_m,0.6,3,1,5);
 
         
         
