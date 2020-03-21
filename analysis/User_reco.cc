@@ -230,7 +230,7 @@ namespace Belle {
         setUserInfo(L_,2);
         setUserInfo(L_b,2);
         
-        std::cout<<nevent << " " << Lc.size()+Lcb.size() - tottagcomb << " total pKs tag combinations!"<<'\n'; 
+        std::cout<<nevent << " " << L_.size()+L_b.size() - tottagcomb << " total pKs tag combinations!"<<'\n'; 
         tottagcomb =  L_.size()+L_b.size();
         
         for (std::vector<Particle>::iterator i=lam.begin(); i!=lam.end();++i)
@@ -240,7 +240,7 @@ namespace Belle {
         setUserInfo(L_,3);
         setUserInfo(L_b,3);
         
-        std::cout<<nevent << " " << Lc.size()+Lcb.size() - tottagcomb << " total Lambda tag combinations!"<<'\n'; 
+        std::cout<<nevent << " " << L_.size()+L_b.size() - tottagcomb << " total Lambda tag combinations!"<<'\n'; 
         
         std::vector<Particle> A; 
         combination(A,ptype_UPS4,Lc,L_b);
