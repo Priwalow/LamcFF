@@ -286,8 +286,10 @@ namespace Belle {
                 
                  std::cout<<"TAG!"<<'\n'; 
                 t1 -> column("tag",tag);
+                std::cout<<"t1"<<'\n'; 
                 t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
                  std::cout<<"Mlambda"<<'\n'; 
+                
                 if (tag==3)
                     t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass    
                 else
