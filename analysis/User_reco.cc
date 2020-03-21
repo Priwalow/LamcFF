@@ -325,6 +325,7 @@ namespace Belle {
                     t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 				
                 
                 t1->dumpData();
+                std::cout<<"PASSED!"<<'\n'; 
             }
             // if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"    SkimmedPi0: "<<skimmedPi0<<'\n';
         }
