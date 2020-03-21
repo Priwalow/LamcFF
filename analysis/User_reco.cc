@@ -84,7 +84,7 @@ namespace Belle {
         if (lam.size()+lamb.size()==0)
             return;
        
-        std::cout<<nevent << " " << lam.size() << "lambda and" << lamb.size() << "antilabmda are here!" <<'\n'; 
+        std::cout<<nevent << " " << lam.size() << " lambda and" << lamb.size() << " antilabmda are here!" <<'\n'; 
         
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
@@ -92,12 +92,12 @@ namespace Belle {
         withMuId(mu_p);
         withMuId(mu_m);
         
-        std::cout<<nevent << " " << mu_p.size() << "mu+ and" << mu_m.size() << "mu- are here!" <<'\n'; 
+        std::cout<<nevent << " " << mu_p.size() << " mu+ and" << mu_m.size() << " mu- are here!" <<'\n'; 
         
         withEId(e_p);
         withEId(e_m);
         
-        std::cout<<nevent << " " << e_p.size() << "e+ and" << e_m.size() << "e- are here!" <<'\n'; 
+        std::cout<<nevent << " " << e_p.size() << " e+ and" << e_m.size() << " e- are here!" <<'\n'; 
         
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -146,6 +146,7 @@ namespace Belle {
             
             setPi0Error(pi0);
         
+        std::cout<<nevent << " " << pi0.size() << " pi0 are here!"<<'\n'; 
         
         
         //#################################       SIGNAL SIDE  
@@ -187,6 +188,7 @@ namespace Belle {
         if (Lc.size()+Lcb.size()==0)
             return;
         
+       
         
         //######################################    TAG SIDE
         
@@ -205,6 +207,8 @@ namespace Belle {
                 }
         }
         doMassVertexFit(k_s);   
+        
+        std::cout<<nevent << " " << k_s.size() << " Ks are here!"<<'\n'; 
         
         
         std::vector <Particle> L_, L_b;
