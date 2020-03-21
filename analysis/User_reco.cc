@@ -272,6 +272,7 @@ namespace Belle {
             //       std::cout <<"a1\n";
             // FINAL SELECTION
             
+            std::cout<<nevent << " FINAL SELECTION!!! "<<'\n'; 
             if (charge!=0) continue;
             
             int n_pi0=pi0.size();
