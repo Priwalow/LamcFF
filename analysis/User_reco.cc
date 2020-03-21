@@ -84,7 +84,7 @@ namespace Belle {
         if (lam.size()+lamb.size()==0)
             return;
        
-        std::cout<<nevent << " " << lam.size() << " lambda and" << lamb.size() << " antilabmda are here!" <<'\n'; 
+        std::cout<<nevent << " " << lam.size() << " lambda and " << lamb.size() << " antilabmda are here!" <<'\n'; 
         
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
@@ -92,12 +92,12 @@ namespace Belle {
         withMuId(mu_p);
         withMuId(mu_m);
         
-        std::cout<<nevent << " " << mu_p.size() << " mu+ and" << mu_m.size() << " mu- are here!" <<'\n'; 
+        std::cout<<nevent << " " << mu_p.size() << " mu+ and " << mu_m.size() << " mu- are here!" <<'\n'; 
         
         withEId(e_p);
         withEId(e_m);
         
-        std::cout<<nevent << " " << e_p.size() << " e+ and" << e_m.size() << " e- are here!" <<'\n'; 
+        std::cout<<nevent << " " << e_p.size() << " e+ and " << e_m.size() << " e- are here!" <<'\n'; 
         
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -128,6 +128,7 @@ namespace Belle {
         
         
         std::cout<<nevent << " " << pions.size() << " charged pions are here!"<<'\n'; 
+        std::cout<<nevent << " " << ntrk - pions.size() << " charged kaons are here!"<<'\n'; 
         
         withdRdZcut(k_p,runIp.z());
         withdRdZcut(pi_p,runIp.z());
@@ -188,7 +189,7 @@ namespace Belle {
         if (Lc.size()+Lcb.size()==0)
             return;
         
-       
+        std::cout<<nevent << " " << Lc.size()+Lcb.size() << " total Lc combinations!"<<'\n'; 
         
         //######################################    TAG SIDE
         
@@ -210,6 +211,7 @@ namespace Belle {
         
         std::cout<<nevent << " " << k_s.size() << " Ks are here!"<<'\n'; 
         
+        int tottagcomb;
         
         std::vector <Particle> L_, L_b;
         combination (L_,ptype_Lamc,  p_p, k_m);
@@ -217,10 +219,16 @@ namespace Belle {
         setUserInfo(L_,1);
         setUserInfo(L_b,1);
         
+        tottagcomb =  L_.size()+L_b.size()
+        std::cout<<nevent << " " << tottagcomb << " total pK tag combinations!"<<'\n'; 
+        
         combination (L_,ptype_Lamc,  p_p, k_s);
         combination (L_b,ptype_Lamc, p_m, k_s);
         setUserInfo(L_,2);
         setUserInfo(L_b,2);
+        
+        std::cout<<nevent << " " << Lc.size()+Lcb.size() - tottagcomb << " total pKs tag combinations!"<<'\n'; 
+        tottagcomb =  L_.size()+L_b.size()
         
         for (std::vector<Particle>::iterator i=lam.begin(); i!=lam.end();++i)
             L_.push_back(*i);
@@ -229,9 +237,13 @@ namespace Belle {
         setUserInfo(L_,3);
         setUserInfo(L_b,3);
         
+        std::cout<<nevent << " " << Lc.size()+Lcb.size() - tottagcomb << " total Lambda tag combinations!"<<'\n'; 
+        
         std::vector<Particle> A; 
         combination(A,ptype_UPS4,Lc,L_b);
         combination(A,ptype_UPS4,Lcb,L_);
+        
+         std::cout<<nevent << " " << A.size() << " full event combinations!"<<'\n'; 
         
         for (std::vector<Particle>::iterator a=A.begin(); a!=A.end();++a)
         {
