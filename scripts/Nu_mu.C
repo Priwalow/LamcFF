@@ -11,15 +11,15 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=-0.5, rend=0.5;
-    int Nbins=20;
+    double lend=-1., rend=1.;
+    int Nbins=40;
     TCanvas *c1 = new TCanvas("c1","Muon neutrino invariant mass",740,600);
     TH1D* hdat = new TH1D("hdat","Squared recoil mass of #nu_{#mu}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
 	TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch==4 && tag==1 && rmx<2.3612 && rmx > 2.2276 && pvis>0.1 && mlc<2.2"+Mwindow,"goff");  
+    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch==4 && tag==1 && abs(ml-1.1156)<0.002 && abs(rmx-2.2965)<2*0.0498"+Mwindow,"goff");  
     //"lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2"
     
    
@@ -65,7 +65,7 @@
 
 
     
-    hdat -> GetXaxis()->SetTitle("RM^{2}(X+#Lambda+#mu) [GeV^{2}]");
+    hdat -> GetXaxis()->SetTitle("RM^{2}(X#Lambda#mu) [GeV^{2}]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()->SetTitle(Form("Events / ( %.2f )",binw));
@@ -83,7 +83,7 @@
     hdat -> Draw("e p");
     
     
-    fbkg -> SetLineStyle(4);
+   /* fbkg -> SetLineStyle(4);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
     fbkg -> DrawCopy("same");	    
@@ -106,7 +106,7 @@
     leg -> SetTextSize(axisFontSize);
     leg->Draw("same"); 
     
-    TLatex *tstatfit = new TLatex();
+  TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
@@ -114,7 +114,7 @@
     tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
     tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
+    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2))); */
     
 }
  

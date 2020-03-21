@@ -13,7 +13,7 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=2.21, rend=2.36, MLambdac=2.28646; //lend=2.21, rend=2.36
+    double lend=2.2, rend=2.36, MLambdac=2.28646; //lend=2.21, rend=2.36
     int Nbins=30;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);

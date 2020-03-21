@@ -77,28 +77,34 @@ namespace Belle {
         if ((p_p.size()!=1) || (p_m.size()!=1))
             return;
         
-        std::cout<<nevent << "2 PROTONS ARE HERE!" <<'\n'; 
+        std::cout<<nevent << " 2 PROTONS ARE HERE!" <<'\n'; 
+        
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
-        
         if (lam.size()+lamb.size()==0)
             return;
-        
+       
+        std::cout<<nevent << " " << lam.size() << "lambda and" << lamb.size() << "antilabmda are here!" <<'\n'; 
         
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
         
         withMuId(mu_p);
         withMuId(mu_m);
+        '
+        std::cout<<nevent << " " << mu_p.size() << "mu+ and" << mu_m.size() << "mu- are here!" <<'\n'; 
         
         withEId(e_p);
         withEId(e_m);
         
+        std::cout<<nevent << " " << e_p.size() << "e+ and" << e_m.size() << "e- are here!" <<'\n'; 
         
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         withKaonId(k_p,0.6,3,1,5);
         withKaonId(k_m,0.6,3,1,5);
+        
+        
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
         {
@@ -119,6 +125,9 @@ namespace Belle {
         }
         
         ntrk=k_p.size()+k_m.size();
+        
+        
+        std::cout<<nevent << " " << pions.size() << " charged pions are here!"<<'\n'; 
         
         withdRdZcut(k_p,runIp.z());
         withdRdZcut(pi_p,runIp.z());
