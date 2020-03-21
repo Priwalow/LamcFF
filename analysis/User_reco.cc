@@ -296,6 +296,8 @@ namespace Belle {
                 t1 -> column("npi",n_pi);
                 t1 -> column("npi0",n_pi0);
                 t1 -> column("mlc",LamC.mass());// lambdac mass   
+               
+                std::cout<<"SAVING THINGS 1 !"<<'\n'; 
                 
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
@@ -309,6 +311,7 @@ namespace Belle {
                 t1 -> column("mx",momentum.mag());
                 t1 -> column("ecms",pUPS.mag());
                // t1 -> column("fox",fox);
+                 std::cout<<"SAVING THINGS 2 !"<<'\n'; 
                 
                 // lamc heli
                 t1 -> column("hlc",cos(heli(LamC.child(0).p(),momentum,pUPS-momentum)));
@@ -325,7 +328,8 @@ namespace Belle {
                 if ((lcch==1) || (lcch==2))
                     t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
                 else
-                    t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 				
+                    t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 	
+                 std::cout<<"SAVING THINGS 3 !"<<'\n'; 
                 
                 t1->dumpData();
                std::cout<<"EXIT!!!"<<'\n'; 
