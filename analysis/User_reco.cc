@@ -81,6 +81,12 @@ namespace Belle {
         
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
+        
+        setUserInfo(lam,  11 ); 
+		setUserInfo(lamb, 12 ); 
+		doMassVertexFit(lam);
+		doMassVertexFit(lamb);
+        
         if (lam.size()+lamb.size()==0)
             return;
        
@@ -287,7 +293,7 @@ namespace Belle {
                  std::cout<<"TAG!"<<'\n'; 
                 t1 -> column("tag",tag);
                 std::cout<<"t1"<<'\n'; 
-              //  t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
+                t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
                  std::cout<<"Mlambda"<<'\n'; 
                 
                 if (tag==3)
