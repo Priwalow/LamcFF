@@ -219,7 +219,7 @@ namespace Belle {
         setUserInfo(L_,1);
         setUserInfo(L_b,1);
         
-        tottagcomb =  L_.size()+L_b.size()
+        tottagcomb =  L_.size()+L_b.size();
         std::cout<<nevent << " " << tottagcomb << " total pK tag combinations!"<<'\n'; 
         
         combination (L_,ptype_Lamc,  p_p, k_s);
@@ -228,7 +228,7 @@ namespace Belle {
         setUserInfo(L_b,2);
         
         std::cout<<nevent << " " << Lc.size()+Lcb.size() - tottagcomb << " total pKs tag combinations!"<<'\n'; 
-        tottagcomb =  L_.size()+L_b.size()
+        tottagcomb =  L_.size()+L_b.size();
         
         for (std::vector<Particle>::iterator i=lam.begin(); i!=lam.end();++i)
             L_.push_back(*i);
@@ -243,7 +243,7 @@ namespace Belle {
         combination(A,ptype_UPS4,Lc,L_b);
         combination(A,ptype_UPS4,Lcb,L_);
         
-         std::cout<<nevent << " " << A.size() << " full event combinations!"<<'\n'; 
+        std::cout<<nevent << " " << A.size() << " full event combinations!"<<'\n'; 
         
         for (std::vector<Particle>::iterator a=A.begin(); a!=A.end();++a)
         {
