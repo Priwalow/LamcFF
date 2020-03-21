@@ -129,6 +129,8 @@ namespace Belle {
         
         std::cout<<nevent << " " << pions.size() << " charged pions are here!"<<'\n'; 
         std::cout<<nevent << " " << ntrk - pions.size() << " charged kaons are here!"<<'\n'; 
+        std::cout<<nevent << " " << k_p.size()+k_m.size() - pions.size() << " charged kaons are here!"<<'\n'; 
+        
         
         withdRdZcut(k_p,runIp.z());
         withdRdZcut(pi_p,runIp.z());
