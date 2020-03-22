@@ -90,7 +90,7 @@ namespace Belle {
         if (lam.size()+lamb.size()==0)
             return;
        
-        std::cout<<nevent << " " << lam.size() << " lambda and " << lamb.size() << " antilabmda are here!" <<'\n'; 
+        std::cout<<nevent << " " << lam.size() << " lambda and " << lamb.size() << " antilambda are here!" <<'\n'; 
         
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
@@ -297,7 +297,7 @@ namespace Belle {
                  std::cout<<"Mlambda"<<'\n'; 
                 
                 if (tag==3)
-                    t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda2 mass    
+                    t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda tag mass    
                 else
                     t1 -> column("ml1",0);
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel();	   			
@@ -372,9 +372,9 @@ namespace Belle {
             
             //  check proton id
             double prob_kpr=1; 
-            if(abs(tmp.child(0).lund()>1000)) 
+            if(abs(tmp.child(0).lund())>1000) 
                 prob_kpr=atc_pid(3, 1, 5, 3, 4).prob(tmp.child(0).mdstCharged()); 
-            if(abs(tmp.child(1).lund()>1000)) 
+            if(abs(tmp.child(1).lund())>1000) 
                 prob_kpr=atc_pid(3, 1, 5, 3, 4).prob(tmp.child(1).mdstCharged()); 
             if(prob_kpr > 0.9 ) continue;
             

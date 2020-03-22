@@ -26,7 +26,7 @@
     
     
     
-    fdat -> SetParameters(20000,MLambda,0.0001,10000,MLambda,0.001,5000,MLambda,0.01,2800);
+    fdat -> SetParameters(2000,MLambda,0.0001,1000,MLambda,0.001,500,MLambda,0.01,65);
    /* fdat -> SetParLimits(1,MLambda-0.1,MLambda+0.1);
     fdat -> SetParLimits(4,MLambda-0.1,MLambda+0.1);
     fdat -> SetParLimits(7,MLambda-0.1,MLambda+0.1);

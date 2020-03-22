@@ -242,9 +242,9 @@ void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, doub
 	
 	//  check proton id
 	double prob_kpr=1; 
-	if(abs(tmp.child(0).lund()>1000)) 
+	if(abs(tmp.child(0).lund())>1000) 
 	  prob_kpr=atc_pid(3, 1, 5, 3, 4).prob(tmp.child(0).mdstCharged()); 
-	if(abs(tmp.child(1).lund()>1000)) 
+	if(abs(tmp.child(1).lund())>1000) 
 	  prob_kpr=atc_pid(3, 1, 5, 3, 4).prob(tmp.child(1).mdstCharged()); 
 	if(prob_kpr > 0.9 ) continue;
 
