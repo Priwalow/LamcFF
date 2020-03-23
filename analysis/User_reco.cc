@@ -144,6 +144,9 @@ namespace Belle {
         withdRdZcut(k_m,runIp.z());
         withdRdZcut(pi_m,runIp.z());
         
+        std::cout<<nevent << " " << pions.size() << " central charged pions are here!"<<'\n'; 
+        std::cout<<nevent << " " << ntrk - pions.size() << " central charged kaons are here!"<<'\n'; 
+        
         
         std::vector<Particle>  pi0;
         makePi0(pi0);
@@ -296,10 +299,10 @@ namespace Belle {
                 t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
                  std::cout<<"Mlambda"<<'\n'; 
                 
-                if (tag==3)
+                if ((tag==11) || (tag==12))
                     t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda tag mass    
                 else
-                    t1 -> column("ml1",0);
+                    t1 -> column("ml1",-999);
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel();	   			
                 t1 -> column("lcch",lcch);
                 t1 -> column("rmvis",rm);
