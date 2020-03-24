@@ -10,8 +10,8 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("withoutpi0","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 		
-        t2 = BASF_Histogram->ntuple ("withpi0","lcch tag ml mlc mx mvis npi npi0 bestpi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q" ); // ALL momenta in CMS! 
+        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q fox" ); // ALL momenta in CMS! 		
+        t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox" ); // ALL momenta in CMS! 
         
     };
     //***********************************************************************
@@ -21,6 +21,8 @@ namespace Belle {
     void doVertexFit(class Particle &P);
     void setPi0Error(Particle &p);
     void setPi0Error(std::vector<Particle> &p_list);
+    void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex);
+    void setGammaError(std::vector<Particle> &p_list);
     double heli (  HepLorentzVector  * P4A, HepLorentzVector * P4B, HepLorentzVector* P4system);
     double heli (  HepLorentzVector   P4A, HepLorentzVector P4B, HepLorentzVector P4system);
     HepLorentzVector boostT( HepLorentzVector p, HepLorentzVector p_boost);
@@ -60,7 +62,8 @@ namespace Belle {
         const HepPoint3D&   runIp     = IpProfile::position();
         
         double fox=0;
-        int ntrk=0;
+        int ntrk = 0;
+        int ngamma = 0;
         if( iti !=  ehimgr.end() && *iti )
         {
             fox = (*iti).R2();
@@ -156,11 +159,28 @@ namespace Belle {
                 i->mdstPi0().gamma(1).ecl().energy()<0.05||
                 abs(i->mdstPi0().mass()-.135)>0.015)
             {pi0.erase(i); --i;}
-            
-            setPi0Error(pi0);
+        setPi0Error(pi0);
         
         std::cout<<nevent << " " << pi0.size() << " pi0 are here!"<<'\n'; 
         
+        
+        
+        std::vector<Particle> photons;
+        double egammatot = 0;
+        Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
+        for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
+        {
+            Particle prtcl(*it);
+            if  ( (prtcl.e()>0.05) && (!checkSame(*prtcl,*pi0)) 
+            {
+                ngamma++;
+                egammatot+=prtcl.e();
+                photons.push_back(prtcl);
+            }
+        }
+        setGammaError(photons);
+        
+        std::cout<<nevent << " " << ngamma << " over 50 MeV gammas are here!"<<'\n';
         
         //#################################       SIGNAL SIDE  
         std::vector <Particle> Lc, Lcb; 
@@ -277,27 +297,40 @@ namespace Belle {
                 momentum+=pi->p();
             }
             
+            HepLorentzVector momentum0 = momentum;
+            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+            {
+                //charge+=pi->charge();
+                momentum0+=pi->p();
+            }
+            
+            for (std::vector<Particle>::iterator gam=photons.begin(); gam!=photons.end();++gam)
+            {
+                //charge+=gam->charge();
+                momentum0+=gam->p();
+            }
+            
             
             //       std::cout <<"a1\n";
             // FINAL SELECTION
             
-            std::cout<<nevent << " FINAL SELECTION!!! "<<'\n'; 
             if (charge!=0) continue;
-             std::cout<<"CHARGE = 0!"<<'\n'; 
+ 
             int n_pi0=pi0.size();
             
-            double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag();
-             std::cout<<"ALMOST PASSED!"<<'\n'; 
-            if ((abs(rm)<1.5) && (abs(rmx-2.3)<1.))
+            double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag(),
+                   rm0 = (pUPS-(momentum0+LamC.p())).mag(), rmx0 = (pUPS-momentum0).mag();
+           
+            if ((abs(rm)<1.5) && (abs(rmx-2.3)<1.5))
             {
-                std::cout<<"PASSED!"<<'\n'; 
+               
                 int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
                 
-                 std::cout<<"TAG!"<<'\n'; 
+            
                 t1 -> column("tag",tag);
-                std::cout<<"t1"<<'\n'; 
+           
                 t1 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
-                 std::cout<<"Mlambda"<<'\n'; 
+            
                 
                 if ((tag==11) || (tag==12))
                     t1 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda tag mass    
@@ -311,7 +344,7 @@ namespace Belle {
                 t1 -> column("npi0",n_pi0);
                 t1 -> column("mlc",LamC.mass());// lambdac mass   
                
-                std::cout<<"SAVING THINGS 1 !"<<'\n'; 
+               
                 
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
@@ -324,8 +357,8 @@ namespace Belle {
                 t1 -> column("mvis",(momentum+LamC.p()).mag());
                 t1 -> column("mx",momentum.mag());
                 t1 -> column("ecms",pUPS.mag());
-               // t1 -> column("fox",fox);
-                 std::cout<<"SAVING THINGS 2 !"<<'\n'; 
+                t1 -> column("fox",fox);
+                 
                 
                 // lamc heli
                 t1 -> column("hlc",cos(heli(LamC.child(0).p(),momentum,pUPS-momentum)));
@@ -343,10 +376,73 @@ namespace Belle {
                     t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
                 else
                     t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 	
-                 std::cout<<"SAVING THINGS 3 !"<<'\n'; 
+                
                 
                 t1->dumpData();
-               std::cout<<"EXIT!!!"<<'\n'; 
+              
+            }
+            
+               if ((abs(rm0)<1.5) && (abs(rmx0-2.3)<1.5))
+            {
+               
+                int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
+                
+            
+                t2 -> column("tag",tag);
+           
+                t2 -> column("ml",dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass()); //lambda mass                                                                                     
+            
+                
+                if ((tag==11) || (tag==12))
+                    t2 -> column("ml1",dynamic_cast<UserInfo&>(ALamC.userInfo()).mass());// lambda tag mass    
+                else
+                    t2 -> column("ml1",-999);
+                int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel();	   			
+                t2 -> column("lcch",lcch);
+                t2 -> column("rmvis",rm0);
+                t2 -> column("rmx",rmx0);
+                t2 -> column("npi",n_pi);
+                t2 -> column("npi0",n_pi0);
+                t2 -> column("ngamma",ngamma);
+                t2 -> column("mlc",LamC.mass());// lambdac mass or lambda+lepton
+               
+               
+                
+                t2 -> column("pvis",pStar(momentum0+LamC.p(),elec,posi).vect().mag());// p
+                t2 -> column("px",pStar(momentum0,elec,posi).vect().mag());	   			
+                
+                if ((lcch==1) || (lcch==2))
+                    t2 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
+                else
+                    t2 -> column("plc",-1);
+                
+                t2-> column("mvis",(momentum0+LamC.p()).mag());
+                t2 -> column("mx",momentum0.mag());
+                t2 -> column("ecms",pUPS.mag());
+                t2 -> column("egammatot",egammatot);
+                t2 -> column("fox",fox);
+                 
+                
+                // lamc heli
+                t2 -> column("hlc",cos(heli(LamC.child(0).p(),momentum0,pUPS-momentum0)));
+                
+                //lam heli
+                HepLorentzVector p_proton_from_lam; 
+                if (abs(LamC.child(0).child(0).lund())>1000)
+                    p_proton_from_lam=LamC.child(0).child(0).p(); 
+                else
+                    p_proton_from_lam=LamC.child(0).child(1).p(); 
+                t2->column("hl",cos(heli (p_proton_from_lam, HepLorentzVector(-LamC.child(0).p(), LamC.child(0).e()),  LamC.child(0).p())));
+                
+                //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
+                if ((lcch==1) || (lcch==2))
+                    t2 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
+                else
+                    t2 -> column("q",(pUPS-LamC.child(0).p()-momentum0).mag()); 	
+                
+                
+                t2->dumpData();
+              
             }
             // if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"    SkimmedPi0: "<<skimmedPi0<<'\n';
         }
@@ -475,6 +571,28 @@ namespace Belle {
         doMassVertexFit(p);
     }
     
+    void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex)
+    {
+        if(!p.mdstGamma())return;
+                 
+        HepSymMatrix errG(3,0);
+        errG[0][0] = p.mdstGamma().ecl().error(0);
+        errG[1][0] = p.mdstGamma().ecl().error(1);
+        errG[1][1] = p.mdstGamma().ecl().error(2);
+        errG[2][0] = p.mdstGamma().ecl().error(3);
+        errG[2][1] = p.mdstGamma().ecl().error(4);
+        errG[2][2] = p.mdstGamma().ecl().error(5);
+        GammaParticle g(p.mdstGamma().ecl().energy(), p.mdstGamma().ecl().phi(),
+                        p.mdstGamma().ecl().theta(), p.mdstGamma().ecl().r(), errG);
+        g.vertex(gVertex, errGVertex);
+
+        HepSymMatrix errGnew(7,0);
+        errGnew.sub(1,g.errorMomentumEnergy());
+        errGnew.sub(5,errGVertex);
+        p.momentum().momentumPosition(g.momentumEnergy(),gVertex,errGnew);
+    }
+
+    
     void doMassVertexFit(class vector<Particle> &p_list, double mass)
     {
         for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end();++i)
@@ -490,6 +608,18 @@ namespace Belle {
     {
         for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
             setPi0Error(*i);
+    }
+    
+    void setPi0Error(vector<Particle> &p_list)
+    {
+        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
+            setPi0Error(*i);
+    }
+    
+    void setGammaError(vector<Particle> &p_list)
+    {
+        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
+            setGammaError(*i);
     }
     
     void doMassVertexFit(class Particle & P, double mass)
