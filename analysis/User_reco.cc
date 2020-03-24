@@ -172,7 +172,7 @@ namespace Belle {
             bool gam_from_pi0 = false;
             for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
             {
-                if (checkSame(*it,*pi)
+                if (checkSame(*it,*pi))
                 {
                     gam_from_pi0 = true;
                     break;
