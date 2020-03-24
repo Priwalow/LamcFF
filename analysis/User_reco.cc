@@ -21,8 +21,8 @@ namespace Belle {
     void doVertexFit(class Particle &P);
     void setPi0Error(Particle &p);
     void setPi0Error(std::vector<Particle> &p_list);
-    //void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex);
-    //void setGammaError(std::vector<Particle> &p_list);
+    void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex);
+    void setGammaError(std::vector<Particle> &p_list);
     double heli (  HepLorentzVector  * P4A, HepLorentzVector * P4B, HepLorentzVector* P4system);
     double heli (  HepLorentzVector   P4A, HepLorentzVector P4B, HepLorentzVector P4system);
     HepLorentzVector boostT( HepLorentzVector p, HepLorentzVector p_boost);
@@ -171,12 +171,12 @@ namespace Belle {
         for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
         {
             Particle prtcl(*it);
-            if  ( (prtcl.e()>0.05) && (!checkSame(&prtcl,&pi0)) )
+            if  ( (prtcl.e()>0.05) && (!checkSame(prtcl,pi0)) )
             {
                 photons.push_back(prtcl);
             }
         }
-       // setGammaError(photons);
+        setGammaError(photons);
         
         std::cout<<nevent << " " << photons.size() << " over 50 MeV photons are here!"<<'\n';
         
@@ -570,33 +570,50 @@ namespace Belle {
         doMassVertexFit(p);
     }
     
-    /*void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex)
+    void setGammaError(Particle &g)
     {
-        if(!p.mdstGamma())return;
-                 
-        HepSymMatrix errG(3,0);
-        errG[0][0] = p.mdstGamma().ecl().error(0);
-        errG[1][0] = p.mdstGamma().ecl().error(1);
-        errG[1][1] = p.mdstGamma().ecl().error(2);
-        errG[2][0] = p.mdstGamma().ecl().error(3);
-        errG[2][1] = p.mdstGamma().ecl().error(4);
-        errG[2][2] = p.mdstGamma().ecl().error(5);
-        GammaParticle g(p.mdstGamma().ecl().energy(), p.mdstGamma().ecl().phi(),
-                        p.mdstGamma().ecl().theta(), p.mdstGamma().ecl().r(), errG);
-        g.vertex(gVertex, errGVertex);
-
-        HepSymMatrix errGnew(7,0);
-        errGnew.sub(1,g.errorMomentumEnergy());
-        errGnew.sub(5,errGVertex);
-        p.momentum().momentumPosition(g.momentumEnergy(),gVertex,errGnew);
+        if( !g.mdstGamma() ) return;
+        double E     = g.mdstGamma().ecl().energy();
+        double phi   = g.mdstGamma().ecl().phi();
+        double theta = g.mdstGamma().ecl().theta();
+            
+        double E2  = E*E;
+        double E4  = E2*E2;
+        double ct2 = cos(theta)*cos(theta);
+        double st2 = sin(theta)*sin(theta);
+        double st4 = st2*st2;
+            
+        const HepPoint3D pivot(0.,0.,0.);
+        HepMatrix  tmp_a(5,1);
+        tmp_a[0][0] = 0.;
+        tmp_a[1][0] = phi-M_PI/2;
+        tmp_a[2][0] = 1/E/sin(theta);
+        tmp_a[3][0] = 0.;
+        tmp_a[4][0] = tan(M_PI/2-theta);
+        HepVector  a(tmp_a);
+            
+        double errE     = g.mdstGamma().ecl().error(0);
+        double errPHI   = g.mdstGamma().ecl().error(2);
+        double errTHETA = g.mdstGamma().ecl().error(5);
+            
+        HepSymMatrix Ea(5,0);
+        Ea[0][0] = 1.;
+        Ea[1][1] = errPHI;
+        Ea[2][2] = errE/E4/st2 + errTHETA*ct2/E2/st4;
+        Ea[3][3] = 1.;
+        Ea[4][2] = errTHETA*cos(theta)/E/st4;
+        Ea[4][4] = errTHETA/st4;
+            
+        Helix helix(pivot, a, Ea);
+            
+        HepLorentzVector momentum;
+        HepPoint3D position;
+        HepSymMatrix error(7,0);
+            
+        momentum = helix.momentum(0.,0.,position,error);
+        g.momentum().momentumPosition(momentum,position,error);
     }
     
-    void setGammaError(vector<Particle> &p_list)
-    {
-        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
-            setGammaError(*i);
-    }
-    */
     
     void doMassVertexFit(class vector<Particle> &p_list, double mass)
     {
@@ -615,6 +632,11 @@ namespace Belle {
             setPi0Error(*i);
     }
     
+    void setGammaError(vector<Particle> &p_list)
+    {
+        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
+            setGammaError(*i);
+    }
 
     
     void doMassVertexFit(class Particle & P, double mass)
