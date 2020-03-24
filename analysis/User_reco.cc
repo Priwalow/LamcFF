@@ -159,25 +159,35 @@ namespace Belle {
                 i->mdstPi0().gamma(1).ecl().energy()<0.05||
                 abs(i->mdstPi0().mass()-.135)>0.015)
             {pi0.erase(i); --i;}
-        setPi0Error(pi0);
-        
-        std::cout<<nevent << " " << pi0.size() << " pi0 are here!"<<'\n'; 
         
         
         
         std::vector<Particle> photons;
         double egammatot = 0;
+        
         Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
         for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
         {
             Particle prtcl(*it);
-            if  ( (prtcl.e()>0.05) && (!checkSame(it,pi0)) )
+            bool gam_from_pi0 = false;
+            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+            {
+                if (checkSame(*it,*pi)
+                {
+                    gam_from_pi0 = true;
+                    break;
+                }
+            }
+            if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
             {
                 photons.push_back(prtcl);
             }
         }
+        
+        setPi0Error(pi0);
         setGammaError(photons);
         
+        std::cout<<nevent << " " << pi0.size() << " pi0 are here!"<<'\n'; 
         std::cout<<nevent << " " << photons.size() << " over 50 MeV photons are here!"<<'\n';
         
         //#################################       SIGNAL SIDE  
