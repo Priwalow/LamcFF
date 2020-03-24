@@ -173,14 +173,12 @@ namespace Belle {
             Particle prtcl(*it);
             if  ( (prtcl.e()>0.05) && (!checkSame(*prtcl,*pi0)) 
             {
-                ngamma++;
-                egammatot+=prtcl.e();
                 photons.push_back(prtcl);
             }
         }
         setGammaError(photons);
         
-        std::cout<<nevent << " " << ngamma << " over 50 MeV gammas are here!"<<'\n';
+        std::cout<<nevent << " " << photons.size() << " over 50 MeV photons are here!"<<'\n';
         
         //#################################       SIGNAL SIDE  
         std::vector <Particle> Lc, Lcb; 
@@ -308,6 +306,7 @@ namespace Belle {
             {
                 //charge+=gam->charge();
                 momentum0+=gam->p();
+                egammatot+=(gam->p()).e();
             }
             
             
@@ -317,7 +316,7 @@ namespace Belle {
             if (charge!=0) continue;
  
             int n_pi0=pi0.size();
-            
+            ngamma = photons.size();
             double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag(),
                    rm0 = (pUPS-(momentum0+LamC.p())).mag(), rmx0 = (pUPS-momentum0).mag();
            
