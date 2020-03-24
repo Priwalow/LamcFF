@@ -21,8 +21,8 @@ namespace Belle {
     void doVertexFit(class Particle &P);
     void setPi0Error(Particle &p);
     void setPi0Error(std::vector<Particle> &p_list);
-    void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex);
-    void setGammaError(std::vector<Particle> &p_list);
+    //void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex);
+    //void setGammaError(std::vector<Particle> &p_list);
     double heli (  HepLorentzVector  * P4A, HepLorentzVector * P4B, HepLorentzVector* P4system);
     double heli (  HepLorentzVector   P4A, HepLorentzVector P4B, HepLorentzVector P4system);
     HepLorentzVector boostT( HepLorentzVector p, HepLorentzVector p_boost);
@@ -171,12 +171,12 @@ namespace Belle {
         for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
         {
             Particle prtcl(*it);
-            if  ( (prtcl.e()>0.05) && (!checkSame(*prtcl,*pi0)) 
+            if  ( (prtcl.e()>0.05) && (!checkSame(prtcl,pi0)) )
             {
                 photons.push_back(prtcl);
             }
         }
-        setGammaError(photons);
+       // setGammaError(photons);
         
         std::cout<<nevent << " " << photons.size() << " over 50 MeV photons are here!"<<'\n';
         
@@ -570,7 +570,7 @@ namespace Belle {
         doMassVertexFit(p);
     }
     
-    void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex)
+    /*void setGammaError(Particle &p, const HepPoint3D &gVertex, const HepSymMatrix &errGVertex)
     {
         if(!p.mdstGamma())return;
                  
@@ -590,7 +590,13 @@ namespace Belle {
         errGnew.sub(5,errGVertex);
         p.momentum().momentumPosition(g.momentumEnergy(),gVertex,errGnew);
     }
-
+    
+    void setGammaError(vector<Particle> &p_list)
+    {
+        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
+            setGammaError(*i);
+    }
+    */
     
     void doMassVertexFit(class vector<Particle> &p_list, double mass)
     {
@@ -609,17 +615,7 @@ namespace Belle {
             setPi0Error(*i);
     }
     
-    void setPi0Error(vector<Particle> &p_list)
-    {
-        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
-            setPi0Error(*i);
-    }
-    
-    void setGammaError(vector<Particle> &p_list)
-    {
-        for(vector<Particle>::iterator i=p_list.begin(); i!=p_list.end(); ++i)
-            setGammaError(*i);
-    }
+
     
     void doMassVertexFit(class Particle & P, double mass)
     {
