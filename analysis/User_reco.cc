@@ -171,7 +171,7 @@ namespace Belle {
         for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
         {
             Particle prtcl(*it);
-            if  ( (prtcl.e()>0.05) && (!checkSame(prtcl,pi0)) )
+            if  ( (prtcl.e()>0.05) && (!checkSame(*it,pi0)) )
             {
                 photons.push_back(prtcl);
             }
