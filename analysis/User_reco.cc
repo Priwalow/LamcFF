@@ -69,19 +69,10 @@ namespace Belle {
             fox = (*iti).R2();
             //       ntrk = (*iti).Ntrk();
         }
-        std::cout << "INITIALIZING!" << std::endl;
+       std::cout << "INITIALIZING!" << std::endl;
         
         
         //------------------------MAKE PARTICLE LISTINGS----------------------------------
-        
-        std::vector<Particle> p_p, p_m; 
-        makeProton(p_p,p_m);
-        
-        if ((p_p.size()!=1) || (p_m.size()!=1))
-            return;
-        
-        std::cout<<nevent << " 2 PROTONS ARE HERE!" <<'\n'; 
-        
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
@@ -93,7 +84,7 @@ namespace Belle {
         if (lam.size()+lamb.size()==0)
             return;
        
-        std::cout<<nevent << " " << lam.size() << " lambda and " << lamb.size() << " antilambda are here!" <<'\n'; 
+        std::cout<<nevent << " " << lam.size() << " lambda and " << lamb.size() << " antilambda" <<'\n'; 
         
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
@@ -101,12 +92,12 @@ namespace Belle {
         withMuId(mu_p);
         withMuId(mu_m);
         
-        std::cout<<nevent << " " << mu_p.size() << " mu+ and " << mu_m.size() << " mu- are here!" <<'\n'; 
+        std::cout<<nevent << " " << mu_p.size() << " mu+ and " << mu_m.size() << " mu- " <<'\n'; 
         
         withEId(e_p);
         withEId(e_m);
         
-        std::cout<<nevent << " " << e_p.size() << " e+ and " << e_m.size() << " e- are here!" <<'\n'; 
+        std::cout<<nevent << " " << e_p.size() << " e+ and " << e_m.size() << " e- " <<'\n'; 
         
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -233,6 +224,10 @@ namespace Belle {
         
         //######################################    TAG SIDE
         
+        std::vector<Particle> p_p, p_m; 
+        makeProton(p_p,p_m);
+        
+        std::cout<<nevent << " " << p_p.size() << " p+ and " << p_m.size() << " p- are here!" <<'\n'; 
         
         std::vector<Particle> k_s;
         makeKs(k_s);
