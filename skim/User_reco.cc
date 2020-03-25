@@ -71,12 +71,6 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
    //------------------------MAKE PARTICLE LISTINGS----------------------------------
 
-   std::vector<Particle> p_p, p_m; 
-   makeProton(p_p,p_m);
-     
-   if (p_p.size()+p_m.size()==0)
-     return;
-   
   
    std::vector<Particle> lam, lamb;
    makeLam(lam,lamb);
@@ -148,6 +142,8 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
    //######################################    TAG SIDE
 
+   std::vector<Particle> p_p, p_m; 
+   makeProton(p_p,p_m);
   
    std::vector<Particle> k_s;
    makeKs(k_s);
