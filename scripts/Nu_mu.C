@@ -19,7 +19,7 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
 	TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch==4 && tag==1 && abs(ml-1.1156)<0.002 && abs(rmx-2.2965)<2*0.0498"+Mwindow,"goff");  
+    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch == 4 && abs(ml-1.11568)<0.003 && abs(rmx-2.301)<0.0982 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)"+Mwindow,"goff");  
     //"lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2"
     
    

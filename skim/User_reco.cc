@@ -61,12 +61,12 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    
    double fox=0;
    int ntrk=0;
-   if( iti !=  ehimgr.end() && *iti )
+   /*if( iti !=  ehimgr.end() && *iti )
      {
        fox = (*iti).R2();
        //       ntrk = (*iti).Ntrk();
      }
-
+    */
 
 
    //------------------------MAKE PARTICLE LISTINGS----------------------------------
@@ -74,7 +74,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    std::vector<Particle> p_p, p_m; 
    makeProton(p_p,p_m);
      
-   if ((p_p.size()!=1) || (p_m.size()!=1))
+   if (p_p.size()+p_m.size()==0)
      return;
    
   
@@ -261,7 +261,7 @@ void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, doub
 	if(i->kind() == 2)
 	  lam.push_back(tmp);
 	if(i->kind() == 3)
-	    lamb.push_back(tmp);
+      lamb.push_back(tmp);
       }
   }
   
