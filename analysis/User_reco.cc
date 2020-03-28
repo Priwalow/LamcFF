@@ -405,9 +405,9 @@ namespace Belle {
                 
                 Hep3Vector norm_lambda, norm_W;
                 norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                norm_lambda = norm_lambda/norm_lambda.norm();
+                norm_lambda = norm_lambda/(norm_lambda.mag());
                 norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                norm_W = norm_W/norm_W.norm();
+                norm_W = norm_W/(norm_W.mag());
                 
                 if ((lcch==3) || (lcch==4))
                 {
