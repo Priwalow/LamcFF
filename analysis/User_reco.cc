@@ -366,11 +366,15 @@ namespace Belle {
                 //lam heli
                 HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                 if (abs(LamC.child(0).child(0).lund())>1000)
+                {
                     p_proton_from_lam=LamC.child(0).child(0).p(); 
                     p_pi_from_lam=LamC.child(0).child(1).p();
+                }
                 else
+                {
                     p_proton_from_lam=LamC.child(0).child(1).p();
                     p_pi_from_lam=LamC.child(0).child(0).p();
+                }
                 t1->column("hl",-cos(heli (p_proton_from_lam, HepLorentzVector(-LamC.child(0).p3(), LamC.child(0).e()),  LamC.child(0).p())));
                 
                 
