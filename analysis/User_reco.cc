@@ -407,7 +407,7 @@ namespace Belle {
                 norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
                 norm_lambda = norm_lambda*(1./norm_lambda.mag());
                 norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                norm_W = norm_W/(1./norm_W.mag());
+                norm_W = norm_W*(1./norm_W.mag());
                 
                 if ((lcch==3) || (lcch==4))
                 {
