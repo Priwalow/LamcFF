@@ -390,7 +390,7 @@ namespace Belle {
                 
                 //W heli and angle chi
                 HepLorentzVector p_l, p_nu;
-                p_l = Lamc.child(1).p();
+                p_l = LamC.child(1).p();
                 
                 if ((lcch==3) || (lcch==4))
                 {
@@ -405,9 +405,9 @@ namespace Belle {
                 
                 Hep3Vector norm_lambda, norm_W;
                 norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                norm_lambda = norm_lambda/norm_lambda.mag();
+                norm_lambda = norm_lambda/norm_lambda.norm();
                 norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                norm_W = norm_W/norm_W.mag();
+                norm_W = norm_W/norm_W.norm();
                 
                 if ((lcch==3) || (lcch==4))
                 {
