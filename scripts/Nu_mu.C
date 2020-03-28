@@ -11,18 +11,23 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=-1., rend=1.;
-    int Nbins=40;
+    double lend=-0.2025, rend=0.2025;
+    int Nbins=50;
     TCanvas *c1 = new TCanvas("c1","Muon neutrino invariant mass",740,600);
     TH1D* hdat = new TH1D("hdat","Squared recoil mass of #nu_{#mu}",Nbins,lend,rend);
+    TH1D* hws = new TH1D("hws","Squared recoil mass of #nu_{#mu} WS",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","Squared recoil mass of #nu_{#mu} sideband",Nbins,lend,rend);
+    TH1D* hlsb = new TH1D("hlsb","Squared recoil mass of #nu_{#mu} left sideband",Nbins,lend,rend);
+    TH1D* hrsb = new TH1D("hrsb","Squared recoil mass of #nu_{#mu} right sideband",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-	TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch == 4 && abs(ml-1.11568)<0.003 && abs(rmx-2.301)<0.0982 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)"+Mwindow,"goff");  
-    //"lcch == 4 && m*m-10.58*10.58+2*10.58*p-rm*rm > -2 && m*m-10.58*10.58+2*10.58*p-rm*rm < 2"
-    
-   
+	TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.12 && rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
+    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch == 4  &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff");   
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>hws","lcch == 400  &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff"); 
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>hsb","lcch == 4 &&  abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5"+Mwindow,"goff"); 
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>hlsb","lcch == 4 &&  rmx-2.2969<-0.0468*3 && rmx-2.2969>-0.0468*5"+Mwindow,"goff");
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>hrsb","lcch == 4 &&  rmx-2.2969>0.0468*3 && rmx-2.2969<0.0468*5"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*x+[5]*x*x",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
@@ -71,7 +76,7 @@
     hdat -> GetYaxis()->SetTitle(Form("Events / ( %.2f )",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(1);
+    hdat -> GetYaxis()-> SetTitleOffset(0.6);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
@@ -82,6 +87,22 @@
     hdat -> SetMinimum(0);
     hdat -> Draw("e p");
     
+   /* hws -> SetLineColor(4);
+    hws -> SetLineWidth(4);
+    hws -> Draw("same");
+    */
+   
+   hsb -> SetLineColor(8);
+   hsb -> SetLineWidth(4);
+   hsb -> Draw("same");
+   
+   hlsb -> SetLineColor(3);
+   hlsb -> SetLineWidth(4);
+   hlsb -> Draw("same");
+   
+   hrsb -> SetLineColor(6);
+   hrsb -> SetLineWidth(4);
+   hrsb -> Draw("same");
     
    /* fbkg -> SetLineStyle(4);
     fbkg -> SetLineColor(12);
@@ -96,17 +117,19 @@
     fsig -> SetLineColor(4);
     fsig -> SetLineWidth(4);
    // fsig -> Draw("same");
-    
+    */
     TLegend* leg = new TLegend(0.7,0.7,0.9,0.9);
-    leg->AddEntry("hdat","Data","lep");
-	//leg->AddEntry("fsig","Signal","l");    
-	leg->AddEntry("fdat","Fit","l");
-    leg->AddEntry("fbkg","Background","l");	
+    leg->AddEntry("hdat","data","ep");
+	leg->AddEntry("hsb","RM(X) sideband","l");
+    //leg->AddEntry("hws","wrong sign","l");
+    //leg->AddEntry("fsig","Signal","l");    
+	//leg->AddEntry("fdat","Fit","l");
+    //leg->AddEntry("fbkg","Background","l");	
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
     leg->Draw("same"); 
     
-  TLatex *tstatfit = new TLatex();
+  /*TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);

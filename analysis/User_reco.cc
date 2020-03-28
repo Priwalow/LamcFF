@@ -10,8 +10,8 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q fox" ); // ALL momenta in CMS! 		
-        t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox" ); // ALL momenta in CMS! 
+        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 		
+        t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 
         
     };
     //***********************************************************************
@@ -125,11 +125,9 @@ namespace Belle {
             if(!is_kaon) pions.push_back(*l);
         }
         
-        ntrk=k_p.size()+k_m.size();
-        
         
         std::cout<<nevent << " " << pions.size() << " charged pions are here!"<<'\n'; 
-        std::cout<<nevent << " " << ntrk - pions.size() << " charged kaons are here!"<<'\n'; 
+        std::cout<<nevent << " " << k_m.size()+k_p.size() << " charged kaons are here!"<<'\n'; 
        
         
         
@@ -139,7 +137,7 @@ namespace Belle {
         withdRdZcut(pi_m,runIp.z());
         
         std::cout<<nevent << " " << pions.size() << " central charged pions are here!"<<'\n'; 
-        std::cout<<nevent << " " << ntrk - pions.size() << " central charged kaons are here!"<<'\n'; 
+        std::cout<<nevent << " " <<  k_m.size()+k_p.size() << " central charged kaons are here!"<<'\n'; 
         
         
         std::vector<Particle>  pi0;
@@ -352,11 +350,8 @@ namespace Belle {
                 
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
-                
-                if ((lcch==1) || (lcch==2))
-                    t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
-                else
-                    t1 -> column("plc",-1);
+                t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
+
                 
                 t1 -> column("mvis",(momentum+LamC.p()).mag());
                 t1 -> column("mx",momentum.mag());
@@ -365,21 +360,60 @@ namespace Belle {
                  
                 
                 // lamc heli
-                t1 -> column("hlc",cos(heli(LamC.child(0).p(),momentum,pUPS-momentum)));
+                HepLorentzVector p_lamc = pUPS-momentum;
+                t1 -> column("hlc",cos(heli(LamC.child(0).p(),momentum,p_lamc)));
                 
                 //lam heli
-                HepLorentzVector p_proton_from_lam; 
+                HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                 if (abs(LamC.child(0).child(0).lund())>1000)
                     p_proton_from_lam=LamC.child(0).child(0).p(); 
+                    p_pi_from_lam=LamC.child(0).child(1).p();
                 else
-                    p_proton_from_lam=LamC.child(0).child(1).p(); 
-                t1->column("hl",cos(heli (p_proton_from_lam, HepLorentzVector(-LamC.child(0).p(), LamC.child(0).e()),  LamC.child(0).p())));
+                    p_proton_from_lam=LamC.child(0).child(1).p();
+                    p_pi_from_lam=LamC.child(0).child(0).p();
+                t1->column("hl",-cos(heli (p_proton_from_lam, HepLorentzVector(-LamC.child(0).p3(), LamC.child(0).e()),  LamC.child(0).p())));
+                
                 
                 //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
+                HepLorentzVector p_W_from_lamc;
+                p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
+                
                 if ((lcch==1) || (lcch==2))
                     t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
                 else
-                    t1 -> column("q",(pUPS-LamC.child(0).p()-momentum).mag()); 	
+                    t1 -> column("q",(p_W_from_lamc).mag()); 	
+                
+                
+                //W heli and angle chi
+                HepLorentzVector p_l, p_nu;
+                p_l = Lamc.child(1).p();
+                
+                if ((lcch==3) || (lcch==4))
+                {
+                    t1->column("hw",-cos( heli(p_l,HepLorentzVector(-p_W_from_lamc.vect(), p_W_from_lamc.e()),p_W_from_lamc)));
+                }
+                else 
+                {
+                    t1->column("hw",-999);
+                }
+                
+                p_nu = p_W_from_lamc-p_l;
+                
+                Hep3Vector norm_lambda, norm_W;
+                norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                norm_lambda = norm_lambda/norm_lambda.mag();
+                norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
+                norm_W = norm_W/norm_W.mag();
+                
+                if ((lcch==3) || (lcch==4))
+                {
+                    t1->column("cchi",norm_lambda.dot(norm_W));
+                }
+                else 
+                {
+                    t1->column("cchi",-999);
+                }
+                
                 
                 
                 t1->dumpData();
@@ -414,11 +448,8 @@ namespace Belle {
                 
                 t2 -> column("pvis",pStar(momentum0+LamC.p(),elec,posi).vect().mag());// p
                 t2 -> column("px",pStar(momentum0,elec,posi).vect().mag());	   			
-                
-                if ((lcch==1) || (lcch==2))
-                    t2 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
-                else
-                    t2 -> column("plc",-1);
+                t2 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
+
                 
                 t2-> column("mvis",(momentum0+LamC.p()).mag());
                 t2 -> column("mx",momentum0.mag());

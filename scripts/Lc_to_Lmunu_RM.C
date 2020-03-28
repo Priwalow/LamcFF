@@ -16,14 +16,15 @@
     double lend=1.5, rend=3., MLambdac=2.28646; //lend=2., rend=2.6
     int Nbins=60;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#mu#nu",Nbins,lend,rend);
+    TH1D* hws = new TH1D("hws","#Lambda_{c} #rightarrow #Lambda#mu#nu WS",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 4 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 4 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    ch1dat -> Draw("rmx>>+hws","lcch == 400 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
@@ -81,6 +82,10 @@
     hdat -> SetMinimum(0);
     hdat -> Draw("e p");
     
+    hws -> SetLineColor(4);
+    hws -> SetLineWidth(4);
+    hws -> Draw("same");
+    
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
@@ -97,11 +102,12 @@
     fdat-> DrawCopy("same");
     
     
-    TLegend* leg = new TLegend(0.17,0.70,0.29,0.89);
-    leg -> AddEntry("hdat","Data","E P");
+    TLegend* leg = new TLegend(0.17,0.65,0.29,0.89);
+    leg -> AddEntry("hdat","data","E P");
     //leg->AddEntry("fsig","Signal","l");
-    leg -> AddEntry("fdat","Fit","l");
-    leg -> AddEntry("fbkg","Background","l");
+    leg -> AddEntry("fdat","fit","l");
+    leg -> AddEntry("fbkg","background","l");
+    leg -> AddEntry("hws","wrong sign","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
     leg -> Draw("same");
