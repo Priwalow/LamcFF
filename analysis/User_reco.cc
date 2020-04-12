@@ -352,9 +352,14 @@ namespace Belle {
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
                 t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
                 t1 -> column("plam",pStar(LamC.child(0).p(),elec,posi).vect().mag());
-                t1 -> column("rholam",LamC.child(0).decayVertex().perp());
                 t1 -> column("plept",pStar(LamC.child(1).p(),elec,posi).vect().mag());   
                 t1 -> column("lepcost",pStar(LamC.child(1).p(),elec,posi).cosTheta());
+                
+                HepPoint3D Vlamdec(LamC.child(0).mdstVee2().vx(),LamC.child(0).mdstVee2().vy(),0);
+                Vlamdec=Vlamdec-IpProfile::position();
+                Vlamdec.setZ(0.);
+                
+                t1 -> column("rholam",Vlamdec.perp());
                 
                 
                 t1 -> column("mvis",(momentum+LamC.p()).mag());
