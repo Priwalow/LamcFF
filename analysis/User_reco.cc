@@ -353,7 +353,7 @@ namespace Belle {
                 t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
                 t1 -> column("plam",pStar(LamC.child(0).p(),elec,posi).vect().mag());
                 t1 -> column("rholam",LamC.child(0).p().decayVertex().perp());
-                t1 -> column("rholamcms",pStar(LamC.child(0).p(),elec,posi).p().decayVertex().perp());
+                t1 -> column("rholamcms",pStar(LamC.child(0).p(),elec,posi).decayVertex().perp());
                 t1 -> column("plept",pStar(LamC.child(1).p(),elec,posi).vect().mag());   
                 t1 -> column("lepcost",pStar(LamC.child(1).p(),elec,posi).cosTheta());
                 
