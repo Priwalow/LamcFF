@@ -351,11 +351,11 @@ namespace Belle {
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
                 t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
-                t1 -> column("plam",pStar(Lamc.child(0).p(),elec,posi).vect().mag());
-                t1 -> column("rholam",Lamc.child(0).p().decayVertex().perp());
-                t1 -> column("rholamcms",pStar(Lamc.child(0).p(),elec,posi).p().decayVertex().perp());
-                t1 -> column("plept",pStar(Lamc.child(1).p(),elec,posi).vect().mag());   
-                t1 -> column("lepcost",pStar(Lamc.child(1).p(),elec,posi).cosTheta());
+                t1 -> column("plam",pStar(LamC.child(0).p(),elec,posi).vect().mag());
+                t1 -> column("rholam",LamC.child(0).p().decayVertex().perp());
+                t1 -> column("rholamcms",pStar(LamC.child(0).p(),elec,posi).p().decayVertex().perp());
+                t1 -> column("plept",pStar(LamC.child(1).p(),elec,posi).vect().mag());   
+                t1 -> column("lepcost",pStar(LamC.child(1).p(),elec,posi).cosTheta());
                 
                 
                 t1 -> column("mvis",(momentum+LamC.p()).mag());
