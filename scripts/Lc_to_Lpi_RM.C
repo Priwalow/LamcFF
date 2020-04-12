@@ -22,9 +22,9 @@
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("npi0==0 && rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && tag!=2 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && abs(mlc-2.2879)<0.0153"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    ch1dat -> Draw("rmx>>+hsb","lcch == 1 && tag!=2 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && abs(mlc-2.2879)>0.0255 && abs(mlc-2.2879)< 0.0408"+Mwindow,"goff");
+    TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && rmx > %lf && rmx < %lf",lend,rend);
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && abs(mlc-2.2878)<0.015"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    ch1dat -> Draw("rmx>>+hsb","lcch == 1 && abs(mlc-2.2878)>0.02 && abs(mlc-2.2878)< 0.03"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);

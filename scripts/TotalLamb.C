@@ -16,7 +16,7 @@
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    ch2dat -> Draw("ml>>+hdat","","goff"); //rm*rm<0.25
+    ch2dat -> Draw("ml>>+hdat","lcch==4","goff"); //rm*rm<0.25
     Ntot = hdat -> GetEntries();
     
     
@@ -26,7 +26,7 @@
     
     
     
-    fdat -> SetParameters(2000,MLambda,0.0001,1000,MLambda,0.001,500,MLambda,0.01,65);
+    fdat -> SetParameters(100000,MLambda,0.0005,150000,MLambda,0.001,50000,MLambda,0.0025,700);
    /* fdat -> SetParLimits(1,MLambda-0.1,MLambda+0.1);
     fdat -> SetParLimits(4,MLambda-0.1,MLambda+0.1);
     fdat -> SetParLimits(7,MLambda-0.1,MLambda+0.1);
@@ -106,10 +106,10 @@
     
     
     TLegend* leg = new TLegend(0.7,0.8,0.9,0.9);
-    leg->AddEntry("hdat","Data","lep");
+    leg->AddEntry("hdat","data","lep");
     //leg->AddEntry("fsig","Signal","l");
-    leg->AddEntry("fbkg","Background","l");
-    leg->AddEntry("fdat","Signal + background","l");
+    leg->AddEntry("fbkg","background","l");
+    leg->AddEntry("fdat","fit","l");
     leg->Draw("same");
 
     

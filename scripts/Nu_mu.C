@@ -22,7 +22,7 @@
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-	TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.12 && rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
+	TCut Mwindow = Form("npi0==1 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
     Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch == 4  &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff");   
     ch1dat -> Draw("rmvis*fabs(rmvis)>>hws","lcch == 400  &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff"); 
     ch1dat -> Draw("rmvis*fabs(rmvis)>>hsb","lcch == 4 &&  abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5"+Mwindow,"goff"); 

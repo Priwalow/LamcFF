@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 		
+        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis plam rholam rholamcms plept lepcost ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 
         
     };
@@ -351,7 +351,12 @@ namespace Belle {
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());// p
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());	   			
                 t1 -> column("plc",pStar(LamC.p(),elec,posi).vect().mag());
-
+                t1 -> column("plam",pStar(Lamc.child(0).p(),elec,posi).vect().mag());
+                t1 -> column("rholam",Lamc.child(0).p().decayVertex().perp());
+                t1 -> column("rholamcms",pStar(Lamc.child(0).p(),elec,posi).p().decayVertex().perp());
+                t1 -> column("plept",pStar(Lamc.child(1).p(),elec,posi).vect().mag());   
+                t1 -> column("lepcost",pStar(Lamc.child(1).p(),elec,posi).cosTheta());
+                
                 
                 t1 -> column("mvis",(momentum+LamC.p()).mag());
                 t1 -> column("mx",momentum.mag());

@@ -14,7 +14,7 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=2.20, rend=2.35, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=30;
+    int Nbins=60;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     TH1D* hsb = new TH1D("hsb","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
@@ -23,15 +23,15 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc > %lf && mlc < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("mlc>>hdat","lcch == 1 &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    ch1dat -> Draw("mlc>>hsb","lcch == 1 && abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5"+Mwindow,"goff");
+    Ntot = ch1dat -> Draw("mlc>>hdat","lcch == 1"+Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.2969)<0.0468*3
+    ch1dat -> Draw("mlc>>hsb","lcch == 1"+Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
     TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)",lend,rend);    
     
 
-    fdat -> SetParameters(100,MLambdac,0.01,30,-300);
+    fdat -> SetParameters(1000,MLambdac,0.005,400,-300); //100,MLambdac,0.01,40,-300
     fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
@@ -67,10 +67,10 @@
     hdat -> GetXaxis()-> SetTitle("M(#Lambda#pi) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.4f )",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.6);
+    hdat -> GetYaxis()-> SetTitleOffset(0.8);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);

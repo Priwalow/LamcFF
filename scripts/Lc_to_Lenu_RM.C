@@ -16,15 +16,15 @@
     double lend=1.5, rend=3, MLambdac=2.28646; //lend=2., rend=2.6
     int Nbins=60;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambdae#nu",Nbins,lend,rend);
     TH1D* hws = new TH1D("hws","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("npi0 ==0  && rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 3 && tag!=2 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc<2.12"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    ch1dat -> Draw("rmx>>+hws","lcch == 300 && tag!=2 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc<2.12"+Mwindow,"goff");
+    TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 3 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    ch1dat -> Draw("rmx>>+hws","lcch == 300 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
@@ -68,10 +68,10 @@
     hdat -> GetXaxis()-> SetTitle("RM(X) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.2f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.6);
+    hdat -> GetYaxis()-> SetTitleOffset(0.9);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
@@ -90,23 +90,23 @@
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
-    fbkg -> DrawCopy("same");
-    
-    
-    //fsig -> SetLineColor(4);
-    //fsig -> SetLineWidth(4);
-   // fsig -> Draw("same");
-    
+    fbkg -> DrawCopy("same");    
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(4);
-    fdat-> DrawCopy("same");    
+    fdat-> DrawCopy("same");   
+    
+    /*
+    fsig -> SetLineColor(4);
+    fsig -> SetLineWidth(4);
+    fsig -> Draw("same");
+    */
     
     TLegend* leg = new TLegend(0.7,0.7,0.9,0.9);
     leg->AddEntry("hdat","data","ep");
 	//leg->AddEntry("fsig","Signal","l");    
-	leg->AddEntry("fdat","fit","l");
-    leg->AddEntry("fbkg","background","l");
+	//leg->AddEntry("fdat","fit","l");
+    //leg->AddEntry("fbkg","background","l");
     leg->AddEntry("hws","wrong sign","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
