@@ -129,16 +129,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    combination (Lcb,ptype_Lamc, lamb, pi_m,0.1);
    //   setUserInfo(Lc,1);
    //   setUserInfo(Lcb,1);
-   
-   combination (Lc,ptype_Lamc, lam, pi_p,0.1);
-   combination (Lcb,ptype_Lamc, lamb, pi_m,0.1);
-   //   setUserInfo(Lc,1);
-   //   setUserInfo(Lcb,1);
-   combination (Lc,ptype_Lamc, lam, pi_p,0.1);
-   combination (Lcb,ptype_Lamc, lamb, pi_m,0.1);
-   //   setUserInfo(Lc,1);
-   //   setUserInfo(Lcb,1);
-   
+
    //   doVertexFit(Lc);
    //   doVertexFit(Lcb);
   
