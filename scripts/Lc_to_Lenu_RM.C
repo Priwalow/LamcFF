@@ -23,8 +23,8 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 3 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    ch1dat -> Draw("rmx>>+hws","lcch == 300 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13"+Mwindow,"goff");
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 3 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && plept>0.7 && abs(lepcost)<0.7 && fox>0.2 && plc>1.4"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
+    ch1dat -> Draw("rmx>>+hws","lcch == 300 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && plept>0.7 && abs(lepcost)<0.7 && fox>0.2 && plc>1.4"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
@@ -105,14 +105,14 @@
     TLegend* leg = new TLegend(0.7,0.7,0.9,0.9);
     leg->AddEntry("hdat","data","ep");
 	//leg->AddEntry("fsig","Signal","l");    
-	//leg->AddEntry("fdat","fit","l");
-    //leg->AddEntry("fbkg","background","l");
+	leg->AddEntry("fdat","fit","l");
+    leg->AddEntry("fbkg","background","l");
     leg->AddEntry("hws","wrong sign","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
     leg->Draw("same"); 
     
-   /* TLatex *tstatfit = new TLatex();
+    TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
@@ -120,7 +120,7 @@
     tstatfit -> DrawLatex(0.67, 0.45, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
     tstatfit -> DrawLatex(0.67, 0.39, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.33, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));*/
+    tstatfit -> DrawLatex(0.67, 0.33, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
    
     

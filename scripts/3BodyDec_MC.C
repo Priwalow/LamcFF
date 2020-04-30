@@ -24,7 +24,7 @@
  void PhaseSpace() {
  
     double pnu, pvis, mlmu, qsq, mx, px, ldec, rhodec, 
-           rmx, rmvis, plc, mvis, ptmu, ptl; 
+           rmx, rmvis, plc, mvis, ptmu, ptl, plam, pmu, lepcost, plmu; 
     int npi, npi0;
     TFile *f = new TFile("ToyLc3bDecay.root", "recreate");
     TTree *tree = new TTree("h1", "Toy MC ROOT tree");
@@ -38,11 +38,15 @@
     tree->Branch("npi0", &npi0, "npi0/I");
     tree->Branch("mx", &mx, "mx/D");
     tree->Branch("px", &px, "px/D");
+    tree->Branch("plmu", &plmu, "plmu/D");
     tree->Branch("pvis", &pvis, "pvis/D");
     tree->Branch("rmx", &rmx, "rmx/D");
     tree->Branch("rmvis", &rmvis, "rmvis/D");
     tree->Branch("ldec",&ldec,"ldec/D");
     tree->Branch("rhodec",&rhodec,"rhodec/D");
+    tree->Branch("plam", &plam, "plam/D");
+    tree->Branch("pmu", &pmu, "pmu/D");
+    tree->Branch("lepcost", &lepcost, "lepcost/D");
     
     TRandom r; 
     r.SetSeed(0);
@@ -103,13 +107,19 @@
        px = pX.P();
        rmx = (pUPS-pX).M();
        rmvis = (pUPS-pX-pL-pMu).M();
-       plc = (pL+pMu).P();
+       plc = pLc.P();
+       plmu = (pL+pMu).P();
+       plam = pL.P();
+       pmu = pMu.P();
        ptmu = pMu.P()*sin(pMu.Theta());
        ptl = pL.P()*sin(pL.Theta());
        
        pL.Boost(CMsystBoost);
        ldec = r.Exp(ctau_L*pL.Gamma()*pL.Beta());
        rhodec = sin(pL.Theta())*ldec;
+       
+       
+       lepcost = pMu.CosTheta();
        tree -> Fill();
        
        delete [] masses;

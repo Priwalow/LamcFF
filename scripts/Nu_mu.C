@@ -11,7 +11,7 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=-0.2025, rend=0.2025;
+    double lend=-0.25, rend=0.25;
     int Nbins=50;
     TCanvas *c1 = new TCanvas("c1","Muon neutrino invariant mass",740,600);
     TH1D* hdat = new TH1D("hdat","Squared recoil mass of #nu_{#mu}",Nbins,lend,rend);
@@ -22,10 +22,10 @@
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-	TCut Mwindow = Form("npi0==1 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch == 4  &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff");   
-    ch1dat -> Draw("rmvis*fabs(rmvis)>>hws","lcch == 400  &&  abs(rmx-2.2969)<0.0468*2"+Mwindow,"goff"); 
-    ch1dat -> Draw("rmvis*fabs(rmvis)>>hsb","lcch == 4 &&  abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5"+Mwindow,"goff"); 
+	TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && plept>0.7 && abs(lepcost)<0.7 && fox>0.2 && plc>1.4",lend,rend);
+    Ntot = ch1dat -> Draw("rmvis*fabs(rmvis)>>hdat","lcch == 4  &&  abs(rmx-2.2965)<0.0466*2"+Mwindow,"goff");   
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>hws","lcch == 400  &&  abs(rmx-2.2965)<0.0466*2"+Mwindow,"goff"); 
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>hsb","lcch == 4 &&  abs(rmx-2.2965)>0.0466*3 && abs(rmx-2.2965)<0.0466*5"+Mwindow,"goff"); 
     ch1dat -> Draw("rmvis*fabs(rmvis)>>hlsb","lcch == 4 &&  rmx-2.2969<-0.0468*3 && rmx-2.2969>-0.0468*5"+Mwindow,"goff");
     ch1dat -> Draw("rmvis*fabs(rmvis)>>hrsb","lcch == 4 &&  rmx-2.2969>0.0468*3 && rmx-2.2969<0.0468*5"+Mwindow,"goff");
     
@@ -98,11 +98,11 @@
    
    hlsb -> SetLineColor(3);
    hlsb -> SetLineWidth(4);
-   hlsb -> Draw("same");
+  // hlsb -> Draw("same");
    
    hrsb -> SetLineColor(6);
    hrsb -> SetLineWidth(4);
-   hrsb -> Draw("same");
+  // hrsb -> Draw("same");
     
    /* fbkg -> SetLineStyle(4);
     fbkg -> SetLineColor(12);
