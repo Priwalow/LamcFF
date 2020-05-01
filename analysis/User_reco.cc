@@ -11,7 +11,7 @@ namespace Belle {
         
         extern BelleTupleManager* BASF_Histogram;
         t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis plam rholam plept lepcost ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 
+        //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw cchi" ); // ALL momenta in CMS! 
         
     };
     //***********************************************************************
@@ -323,7 +323,7 @@ namespace Belle {
             double rm =(pUPS-(momentum+LamC.p())).mag(), rmx = (pUPS-momentum).mag(),
                    rm0 = (pUPS-(momentum0+LamC.p())).mag(), rmx0 = (pUPS-momentum0).mag();
            
-            if ((abs(rm)<1.5) && (abs(rmx-2.3)<1.5))
+            if (abs(rm)<1.5)//&& (abs(rmx-2.3)<1.5)
             {
                
                 int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
@@ -433,7 +433,7 @@ namespace Belle {
               
             }
             
-               if ((abs(rm0)<1.5) && (abs(rmx0-2.3)<1.5))
+            /*   if (abs(rm0)<1.5) //&& (abs(rmx0-2.3)<1.5) 
             {
                
                 int tag=dynamic_cast<UserInfo&>(ALamC.userInfo()).channel();
@@ -491,7 +491,7 @@ namespace Belle {
                 
                 t2->dumpData();
               
-            }
+            }*/
             // if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"    SkimmedPi0: "<<skimmedPi0<<'\n';
         }
     }
