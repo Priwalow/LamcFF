@@ -14,7 +14,7 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=1.5, rend=3., MLambdac=2.28646; //lend=2., rend=2.6
-    int Nbins=30;
+    int Nbins=60;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
     TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
     TH1D* hsb = new TH1D("hsb","#Lambda_{c} #rightarrow #Lambda#pi sb",Nbins,lend,rend);
