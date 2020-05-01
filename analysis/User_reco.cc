@@ -375,7 +375,7 @@ namespace Belle {
                 else 
                     p_lamc = pUPS-momentum;
                 
-                t1 -> column("hlc",-cos(heli(LamC.child(0).p(),HepLorentzVector(-p_lamc.p3(), p_lamc.e()),p_lamc)));
+                t1 -> column("hlc",-cos(heli(LamC.child(0).p(),HepLorentzVector(-p_lamc.vect(), p_lamc.e()),p_lamc)));
                 
                 //lam heli
                 HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
