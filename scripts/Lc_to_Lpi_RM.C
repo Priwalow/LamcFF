@@ -23,15 +23,15 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && abs(mlc-2.2879)<0.015"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    ch1dat -> Draw("rmx>>+hsb","lcch == 1 && abs(mlc-2.2879)>0.02 && abs(mlc-2.2879)< 0.035"+Mwindow,"goff");
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && abs(mlc-2.28)<0.015 && plc>1.4 && abs(lepcost)<0.7 && plept>0.7 && fox>0.2"+Mwindow,"goff"); //"&& plc>1.4 && abs(lepcost)<0.7 && plept>0.7 && abs(mlc-2.2867)<0.01566 && fox>0.2
+    ch1dat -> Draw("rmx>>+hsb","lcch == 1 && abs(mlc-2.2879)>0.02 && abs(mlc-2.2879)< 0.035 && plc>1.4 && abs(lepcost)<0.7 && plept>0.7  && fox>0.2"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
     TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2",lend,rend);    
     
 
-    fdat -> SetParameters(50,MLambdac,0.1,30,300,20);
+    fdat -> SetParameters(300,MLambdac,0.1,30,300,20);
     fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
@@ -67,7 +67,7 @@
     hdat -> GetXaxis()-> SetTitle("RM(X) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.2f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(0.8);

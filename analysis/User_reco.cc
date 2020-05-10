@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis plam rholam plept lepcost ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("charged_tracks","lcch tag ml mlc mx mvis npi npi0 ecms rmx rmvis plc px pvis plam rholam plept lepcost ml1 hl hlc phi q fox hw chi plam_lamc" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         
     };
@@ -375,7 +375,7 @@ namespace Belle {
                 else 
                     p_lamc = pUPS-momentum;
                 
-                t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS - p_lamc,p_lamc)));
+                t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
                 
                 //lam heli
                 HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
@@ -389,7 +389,7 @@ namespace Belle {
                     p_proton_from_lam=LamC.child(0).child(1).p();
                     p_pi_from_lam=LamC.child(0).child(0).p();
                 }
-                t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc - LamC.child(0).p(),  LamC.child(0).p())));
+                t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
                 
                 
                 //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -408,7 +408,7 @@ namespace Belle {
                 
                 if ((lcch==3) || (lcch==4))
                 {
-                    t1->column("hw",-cos( heli(p_l,p_lamc - p_W_from_lamc,p_W_from_lamc)));
+                    t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
                 }
                 else 
                 {
@@ -432,6 +432,7 @@ namespace Belle {
                     t1->column("chi",-999);
                 }
                 
+                t1 -> column("plam_lamc",boostT(LamC.child(0).p(), p_lamc).vect().mag()); 	
                 
                 
                 t1->dumpData();
