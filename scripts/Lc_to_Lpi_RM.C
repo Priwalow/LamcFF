@@ -23,18 +23,22 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && abs(mlc-2.28)<0.015 && plc>1.4 && abs(lepcost)<0.7 && plept>0.7 && fox>0.2"+Mwindow,"goff"); //"&& plc>1.4 && abs(lepcost)<0.7 && plept>0.7 && abs(mlc-2.2867)<0.01566 && fox>0.2
-    ch1dat -> Draw("rmx>>+hsb","lcch == 1 && abs(mlc-2.2879)>0.02 && abs(mlc-2.2879)< 0.035 && plc>1.4 && abs(lepcost)<0.7 && plept>0.7  && fox>0.2"+Mwindow,"goff");
+    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 1 && abs(mlc-2.2868)<0.0054*3"+Mwindow,"goff"); //"&& plc>1.4 && abs(lepcost)<0.7 && plept>0.7 && abs(mlc-2.2867)<0.01566 && fox>0.2 abs(mlc-2.2868)<0.015
+    ch1dat -> Draw("rmx>>+hsb","lcch == 1 && abs(mlc-2.2868)>0.0054*4 && abs(mlc-2.2868)<0.0054*7"+Mwindow,"goff");
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
-    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2",lend,rend);    
+    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2+[3]*(x-2.287)^3",lend,rend);    
     
 
-    fdat -> SetParameters(300,MLambdac,0.1,30,300,20);
+    fdat -> SetParameters(1000,MLambdac,0.1,30,300,20);
     fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
+    //hdat -> Sumw2();
+    //hsb  -> Sumw2();
+    //hdat -> Add(hsb,-1);
+    
     TFitResultPtr fitResult;
     fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
@@ -61,13 +65,13 @@
     int ndf = Nbins - fdat ->GetNumberFreeParameters(); // nbins - npar
     cout << "ChiSquare / ndf: " << chisq << " / " << ndf << " = " << chisq/ndf << endl;
     
-  
+   
     
   
     hdat -> GetXaxis()-> SetTitle("RM(X) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / %.0f MeV",binw*1000));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(0.8);
@@ -91,14 +95,14 @@
     fbkg -> DrawCopy("same");
     
     
-    fsig -> SetLineColor(4);
-    fsig -> SetLineWidth(4);
+   // fsig -> SetLineColor(4);
+   // fsig -> SetLineWidth(4);
    // fsig -> Draw("same");
     
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(4);
-    fdat-> DrawCopy("same");
+   // fdat-> DrawCopy("same");
     
     
     TLegend* leg = new TLegend(0.17,0.70,0.29,0.89);

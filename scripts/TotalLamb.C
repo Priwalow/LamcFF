@@ -16,7 +16,7 @@
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    ch2dat -> Draw("ml>>+hdat","lcch==4","goff"); //rm*rm<0.25
+    ch2dat -> Draw("ml>>+hdat","","goff"); //rm*rm<0.25
     Ntot = hdat -> GetEntries();
     
     
