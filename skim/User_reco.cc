@@ -84,17 +84,12 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    
    withMuId(mu_p);
    withMuId(mu_m);
-   
    withEId(e_p);
    withEId(e_m);
    
    
    std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
    makeKPi(k_p, k_m, pi_p, pi_m,1);
-   for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
-     pions.push_back(*l);
-   for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
-     pions.push_back(*l);
 
    ntrk=k_p.size()+k_m.size();
    
@@ -105,47 +100,23 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
    withKaonId(k_p,0.6,3,1,5);
    withKaonId(k_m,0.6,3,1,5);
+   withPionId(pi_p,0.9,3,1,5,3,2);
+   withPionId(pi_m,0.9,3,1,5,3,2);
    
+   for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
+     pions.push_back(*l);
+   for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
+     pions.push_back(*l);
    
-   //#################################       SIGNAL SIDE  
+   std::vector<Particle>  pi0;
+   makePi0(pi0);
+        
+    for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
+        if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
+            i->mdstPi0().gamma(1).ecl().energy()<0.05||
+            abs(i->mdstPi0().mass()-.135)>0.015)
+                {pi0.erase(i); --i;}
    
-   std::vector <Particle> Lc, Lcb; 
-
-   combination (Lc,ptype_Lamc, lam, e_p);
-   combination (Lcb,ptype_Lamc, lamb, e_m);
-   combination (Lc,ptype_Lamc, lam, e_m);     //fake
-   combination (Lcb,ptype_Lamc, lamb, e_p);   //fake
-   //   setUserInfo(Lc,2);
-   //   setUserInfo(Lcb,2);
-
-   combination (Lc,ptype_Lamc, lam, mu_p);
-   combination (Lcb,ptype_Lamc, lamb, mu_m);
-   combination (Lc,ptype_Lamc, lam, mu_m);     //fake
-   combination (Lcb,ptype_Lamc, lamb, mu_p);   //fake
-   ///   setUserInfo(Lc,3);
-   //   setUserInfo(Lcb,3);
-
-   combination (Lc,ptype_Lamc, lam, pi_p,0.1);
-   combination (Lcb,ptype_Lamc, lamb, pi_m,0.1);
-   //   setUserInfo(Lc,1);
-   //   setUserInfo(Lcb,1);
-
-   //   doVertexFit(Lc);
-   //   doVertexFit(Lcb);
-  
-   for(std::vector<Particle>::iterator l = Lc.begin(); l!=Lc.end(); ++l)
-     if (l->mass()>ptype_Lamc.mass()+0.1)
-       {Lc.erase(l); --l;}
-   for(std::vector<Particle>::iterator l = Lcb.begin(); l!=Lcb.end(); ++l)
-     if (l->mass()>ptype_Lamc.mass()+0.1)
-       {Lcb.erase(l); --l;}
-       
-   if (Lc.size()+Lcb.size()==0)
-     return;
-   
-
-   //######################################    TAG SIDE
-
    std::vector<Particle> p_p, p_m; 
    makeProton(p_p,p_m);
   
@@ -163,53 +134,67 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        }
      }
    //   doMassVertexFit(k_s);   
-     
+   
+   std::vector<Particle> photons;
+   Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
+    for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
+        {
+            Particle prtcl(*it);
+            bool gam_from_pi0 = false;
+            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+            {
+                if (checkSame(*it,*pi))
+                {
+                    gam_from_pi0 = true;
+                    break;
+                }
+            }
+            if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
+            {
+                photons.push_back(prtcl);
+            }
+        }
+   
+   std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b;
+   
 
+   //######################################    TAG SIDE
+   combination (D0_b,ptype_D0B, k_p, pi_m, 0.1);
+   combination (D0_b,ptype_D0B, k_p, pi_m, pi_p, pi_m, 0.1);
+   combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, 0.1);
+   combination (D0_b,ptype_D0B, k_p, pi_m, pi0, 0.1);
+   combination (D0_b,ptype_D0B, k_p, pi_m, pi_p, pi_m, pi0, 0.1);
+   combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, pi0, 0.1);
+    
+   combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.1);
+   combination (D_m,ptype_Dm, k_s, pi_m, 0.1);
+   combination (D_m,ptype_Dm, k_s, pi_m, pi_p, pi_m, 0.1);
+   combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.1);
+   
+   combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.1);
+   combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.1);
+   
+   combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.1);
+   combination (Dst_m,ptype_Dstm, D_m, pi0, 0.1);
+   
    std::vector <Particle> L_, L_b;
-   combination (L_,ptype_Lamc,  p_p, k_m);
-   combination (L_b,ptype_Lamc, p_m, k_p);
-   // setUserInfo(L_,1);
-   //setUserInfo(L_b,1);
+   combination (L_b,ptype_Lamc, p_m, D0_b);
+   combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
+   combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
+   combination (L_b,ptype_Lamc, p_m, Dst0_b);
 
-   combination (L_,ptype_Lamc,  p_p, k_s);
-   combination (L_b,ptype_Lamc, p_m, k_s);
-   //setUserInfo(L_,2);
-   //setUserInfo(L_b,2);
 
-   for (std::vector<Particle>::iterator i=lam.begin(); i!=lam.end();++i)
-     L_.push_back(*i);
-   for (std::vector<Particle>::iterator i=lamb.begin(); i!=lamb.end();++i)
-     L_b.push_back(*i);
-    //setUserInfo(L_,3);
-    //setUserInfo(L_b,3);
-
-   std::vector<Particle> A; 
-   combination(A,ptype_UPS4,Lc,L_b);
-   combination(A,ptype_UPS4,Lcb,L_);
-
-   for (std::vector<Particle>::iterator a=A.begin(); a!=A.end();++a)
+   for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
      {
-       Particle &All=*a;
-       Particle &LamC=All.child(0);
-       Particle &ALamC=All.child(1);
+       Particle &ALamC=*a;
        
        HepLorentzVector momentum=ALamC.p();
-       int charge=ALamC.child(0).charge()+ALamC.child(1).charge()+LamC.child(0).charge()+LamC.child(1).charge();
-       int n_pi=0;
+       int charge=ALamC.charge();
        
-       for (std::vector<Particle>::iterator pi=pions.begin(); pi!=pions.end();++pi)
-	 {
-	   //pion cuts
-	   if ( checkSame(*a,*pi) ) continue;
-	   //
-	   n_pi++;
-	   charge+=pi->charge();
-	   momentum+=pi->p();
-	 }
        //       std::cout <<"a1\n";
        // final selection 
-       if (charge!=0) continue;
-       if ( abs((pUPS-momentum-LamC.p()).mag())<1.5) 
+       if (charge!=-1) continue;
+       if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
 	 {*status=1; skimmed++; return;}
        
 
