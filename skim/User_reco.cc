@@ -195,7 +195,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        
        HepLorentzVector momentum=ALamC.p();
        int charge=ALamC.charge();
-       
+       cout << charge << endl; 
        //       std::cout <<"a1\n";
        // final selection 
        if (charge!=-1) continue;
