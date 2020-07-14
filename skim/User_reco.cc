@@ -204,7 +204,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        
 
      }
-   if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<'\n';
+   if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"   rmx =" << (pUPS-momentum).mag() << '\n';
   
 }
 
