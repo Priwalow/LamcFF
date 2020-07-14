@@ -155,20 +155,25 @@ void User_reco::event ( BelleEvent* evptr, int* status )
             }
         }
    
-   std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b;
+   std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
    
 
    //######################################    TAG SIDE
+   combination (pi_pm, ptype_D0B, pi_p, pi_m);
+   
+   
    combination (D0_b,ptype_D0B, k_p, pi_m, 0.1);
-   combination (D0_b,ptype_D0B, k_p, pi_m, pi_p, pi_m, 0.1);
-   combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, 0.1);
+   combination (D0_b,ptype_D0B, k_p, pi_m, pi_pm, 0.1);
+   combination (D0_b,ptype_D0B, k_s, pi_pm, 0.1);
    combination (D0_b,ptype_D0B, k_p, pi_m, pi0, 0.1);
-   combination (D0_b,ptype_D0B, k_p, pi_m, pi_p, pi_m, pi0, 0.1);
-   combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, pi0, 0.1);
+   
+   
+   combination (D0_b,ptype_D0B, k_p, pi_m, pi0, pi_pm, 0.1);
+   combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.1);
     
    combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.1);
    combination (D_m,ptype_Dm, k_s, pi_m, 0.1);
-   combination (D_m,ptype_Dm, k_s, pi_m, pi_p, pi_m, 0.1);
+   combination (D_m,ptype_Dm, k_s, pi_m, pi_pm, 0.1);
    combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.1);
    
    combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.1);
