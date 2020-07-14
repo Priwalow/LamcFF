@@ -194,7 +194,7 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        Particle &ALamC=*a;
        
        HepLorentzVector momentum=ALamC.p();
-       int charge=ALamC.charge();
+       int charge=ALamC.child(0).charge();
        cout << charge << endl; 
        //       std::cout <<"a1\n";
        // final selection 
