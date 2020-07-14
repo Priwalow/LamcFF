@@ -199,12 +199,13 @@ void User_reco::event ( BelleEvent* evptr, int* status )
        //       std::cout <<"a1\n";
        // final selection 
        if (charge!=-1) continue;
+       if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"   rmx =" << (pUPS-momentum).mag() << '\n';
        if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
 	 {*status=1; skimmed++; return;}
        
 
      }
-   if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed<<"   rmx =" << (pUPS-momentum).mag() << '\n';
+  
   
 }
 
