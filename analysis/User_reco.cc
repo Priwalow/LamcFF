@@ -344,7 +344,7 @@ namespace Belle {
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
                 t1 -> column("ecms",pUPS.mag());
                 
-                
+                 cout << "ONE " << endl; 
                 // lamc heli
                 HepLorentzVector p_lamc;
                 if (lcch==1) 
@@ -368,7 +368,7 @@ namespace Belle {
                 }
                 t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
                 
-                
+                cout << "TWO " << endl; 
                 //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
                 HepLorentzVector p_W_from_lamc;
                 p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
@@ -378,7 +378,7 @@ namespace Belle {
                 else
                     t1 -> column("q",(p_W_from_lamc).mag()); 	
                 
-                
+                 cout << "THREE " << endl; 
                 //W heli and angle chi
                 HepLorentzVector p_l, p_nu;
                 p_l = LamC.child(1).p();
@@ -392,6 +392,7 @@ namespace Belle {
                     t1->column("hw",-999);
                 }
                 
+                cout << "FOUR" << endl; 
                 p_nu = p_W_from_lamc-p_l;
                 
                 Hep3Vector norm_lambda, norm_W;
@@ -408,7 +409,7 @@ namespace Belle {
                 {
                     t1->column("chi",-999);
                 }
-                
+                cout << "SAVE!" << endl; 
                 t1->dumpData();
             }
        
