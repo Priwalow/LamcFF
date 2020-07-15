@@ -322,13 +322,9 @@ namespace Belle {
             
             double rmx = (pUPS-momentum).mag(), rm =(pUPS-(momentum+LamC.p())).mag();
             
-            cout << "final selection!" << endl; 
             if ( (abs(rmx-2.286)<1.3) &&  (abs(rm)<1.5) ) 
             {
-                
-                cout << "selected!" << endl; 
-                
-                
+
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel(),
@@ -348,75 +344,74 @@ namespace Belle {
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
                 t1 -> column("ecms",pUPS.mag());
                
-                cout << "saving!" << endl; 
-               /*
-                // lamc heli
-                HepLorentzVector p_lamc;
-                if (lcch==1) 
-                    p_lamc=LamC.p();
-                else 
-                    p_lamc = pUPS-momentum;
-                
-                t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
-                
-                //lam heli
-                HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
-                if (abs(LamC.child(0).child(0).lund())>1000)
+              
+                if (lcch!=0)
                 {
-                    p_proton_from_lam=LamC.child(0).child(0).p(); 
-                    p_pi_from_lam=LamC.child(0).child(1).p();
+                    // lamc heli
+                    HepLorentzVector p_lamc;
+                    if (lcch==1) 
+                        p_lamc=LamC.p();
+                    else 
+                        p_lamc = pUPS-momentum;
+                
+                    t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
+                
+                    //lam heli
+                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
+                    if (abs(LamC.child(0).child(0).lund())>1000)
+                    {
+                        p_proton_from_lam=LamC.child(0).child(0).p(); 
+                        p_pi_from_lam=LamC.child(0).child(1).p();
+                    }
+                    else
+                    {
+                        p_proton_from_lam=LamC.child(0).child(1).p();
+                        p_pi_from_lam=LamC.child(0).child(0).p();
+                    }
+                    t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
+                
+               
+                    //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
+                    HepLorentzVector p_W_from_lamc;
+                    p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
+                
+                    if ((lcch==1) || (lcch==2))
+                        t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
+                    else
+                        t1 -> column("q",(p_W_from_lamc).mag()); 	
+                
+  
+                    //W heli and angle chi
+                    HepLorentzVector p_l, p_nu;
+                    p_l = LamC.child(1).p();
+                
+                    if ((lcch==3) || (lcch==4))
+                    {
+                        t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
+                    }
+                    else 
+                    {
+                        t1->column("hw",-999);
+                    }
+              
+                    p_nu = p_W_from_lamc-p_l;
+                
+                    Hep3Vector norm_lambda, norm_W;
+                    norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                    norm_lambda = norm_lambda*(1./norm_lambda.mag());
+                    norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
+                    norm_W = norm_W*(1./norm_W.mag());
+                    
+                    if ((lcch==3) || (lcch==4))
+                    {
+                        t1->column("chi",norm_lambda.angle(norm_W));
+                    }
+                    else 
+                    {
+                        t1->column("chi",-999);
+                    }
                 }
-                else
-                {
-                    p_proton_from_lam=LamC.child(0).child(1).p();
-                    p_pi_from_lam=LamC.child(0).child(0).p();
-                }
-                t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
-                
-                cout << "TWO " << endl; 
-                //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
-                HepLorentzVector p_W_from_lamc;
-                p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
-                
-                if ((lcch==1) || (lcch==2))
-                    t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
-                else
-                    t1 -> column("q",(p_W_from_lamc).mag()); 	
-                
-                 cout << "THREE " << endl; 
-                //W heli and angle chi
-                HepLorentzVector p_l, p_nu;
-                p_l = LamC.child(1).p();
-                
-                if ((lcch==3) || (lcch==4))
-                {
-                    t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
-                }
-                else 
-                {
-                    t1->column("hw",-999);
-                }
-                
-                cout << "FOUR" << endl; 
-                p_nu = p_W_from_lamc-p_l;
-                
-                Hep3Vector norm_lambda, norm_W;
-                norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                norm_lambda = norm_lambda*(1./norm_lambda.mag());
-                norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                norm_W = norm_W*(1./norm_W.mag());
-                
-                if ((lcch==3) || (lcch==4))
-                {
-                    t1->column("chi",norm_lambda.angle(norm_W));
-                }
-                else 
-                {
-                    t1->column("chi",-999);
-                }
-                cout << "SAVE!" << endl; 
-                
-            */
+            
                 t1->dumpData();
             }
        
