@@ -325,6 +325,10 @@ namespace Belle {
             cout << "final selection!" << endl; 
             if ( (abs(rmx-2.286)<1.3) &&  (abs(rm)<1.5) ) 
             {
+                
+                cout << "selected!" << endl; 
+                
+                
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel(),
@@ -343,7 +347,8 @@ namespace Belle {
                 t1 -> column("fox", fox);  
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
                 t1 -> column("ecms",pUPS.mag());
-                
+               
+                cout << "saving!" << endl; 
                /*
                 // lamc heli
                 HepLorentzVector p_lamc;
