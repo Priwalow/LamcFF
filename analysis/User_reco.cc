@@ -322,6 +322,7 @@ namespace Belle {
             
             double rmx = (pUPS-momentum).mag(), rm =(pUPS-(momentum+LamC.p())).mag();
             
+            cout << "final selection!" << endl; 
             if ( (abs(rmx-2.286)<1.3) &&  (abs(rm)<1.5) ) 
             {
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
