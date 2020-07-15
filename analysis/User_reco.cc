@@ -322,7 +322,7 @@ namespace Belle {
             
             double rmx = (pUPS-momentum).mag(), rm =(pUPS-(momentum+LamC.p())).mag();
             
-            if ( (abs(rmx-2.286)<1.3) &&  (abs(rm)<1.5) ) 
+            if ( (abs(rmx-2.286)<1.29) &&  (abs(rm)<1.1) ) 
             {
 
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
@@ -330,23 +330,25 @@ namespace Belle {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel(),
                     ngamma = photons.size();
                
-                t1 -> column("lcch", tag);
+                t1 -> column("lcch", lcch);
                 t1 -> column("tag", tag);
                 t1 -> column("rmx", rmx);
                 t1 -> column("rmvis", rm);
                 t1 -> column("dch", dch);
                 t1 -> column("md", ALamC.child(1).mass());
                 t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("ml", LamC.child(0).mass());
                 t1 -> column("npi", n_pi);
                 t1 -> column("ngamma", ngamma);  
                 t1 -> column("fox", fox);  
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
                 t1 -> column("ecms",pUPS.mag());
-               
+                if (lcch==0) t1 -> column("ml", LamC.mass());
+                
               
                 if (lcch!=0)
                 {
+                    t1 -> column("ml", LamC.child(0).mass());
+                    
                     // lamc heli
                     HepLorentzVector p_lamc;
                     if (lcch==1) 
