@@ -77,8 +77,6 @@ namespace Belle {
 		
 		std::vector<Particle> lam, lamb;
 		makeLam(lam,lamb);
-		setUserInfo(lam,  1); 
-		setUserInfo(lamb, -1); 
 		doMassVertexFit(lam);
 		doMassVertexFit(lamb);
 		
@@ -96,7 +94,7 @@ namespace Belle {
 		withEId(e_m);
 		
 		
-		std::vector<Particle>  k_p, k_m, pi_p, pi_m;
+		std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
 		makeKPi(k_p, k_m, pi_p, pi_m,1);
 		
 		ntrk=k_p.size()+k_m.size();
@@ -111,7 +109,28 @@ namespace Belle {
 		withPionId(pi_p,0.9,3,1,5,3,2);
 		withPionId(pi_m,0.9,3,1,5,3,2);
 		
-		std::vector<Particle> k_s;
+		
+        for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
+        {
+            bool is_kaon=false;
+            for(std::vector<Particle>::iterator k = k_m.begin(); k!=k_m.end(); ++k)
+                if (l->mdstCharged()==k->mdstCharged())
+                    {is_kaon=true; break;}
+            if(!is_kaon) pions.push_back(*l);
+        }
+        
+        for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
+        {
+            bool is_kaon=false;
+            for(std::vector<Particle>::iterator k = k_p.begin(); k!=k_p.end(); ++k)
+                if (l->mdstCharged()==k->mdstCharged())
+                    {is_kaon=true; break;}
+            if(!is_kaon) pions.push_back(*l);
+        }
+        
+        
+        
+        std::vector<Particle> k_s;
 		makeKs(k_s);
 		for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
 		{
@@ -227,8 +246,8 @@ namespace Belle {
         
         std::vector <Particle> Lc, Lcb; 
         
-        combination (Lc,ptype_Lamc, lam);
-        combination (Lcb,ptype_Lamc, lamb);
+        for(std::vector<Particle>::iterator l = lam.begin(); l!=lam.end(); ++l) Lc.push_back(*l);
+        for(std::vector<Particle>::iterator l = lamb.begin(); l!=lamb.end(); ++l) Lcb.push_back(*l);
         setUserInfo(Lc,0);
         setUserInfo(Lcb,0);
         
