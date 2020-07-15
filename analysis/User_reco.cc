@@ -285,9 +285,9 @@ namespace Belle {
                 t1 -> column("tag",dynamic_cast<UserInfo&>(ALamC.userInfo()).channel());
                 t1 -> column("rmx",rmx);
                 t1 -> column("dch",dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel());
-                t1 -> column("md",AlamC.child(1).mass());
+                t1 -> column("md",ALamC.child(1).mass());
                 t1 -> column("px",pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("mp",AlamC.child(0).mass());
+                t1 -> column("mp",ALamC.child(0).mass());
      
                 t1->dumpData();
             }
