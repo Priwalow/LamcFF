@@ -344,7 +344,7 @@ namespace Belle {
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
                 t1 -> column("ecms",pUPS.mag());
                 
-                 cout << "ONE " << endl; 
+               /*
                 // lamc heli
                 HepLorentzVector p_lamc;
                 if (lcch==1) 
@@ -410,6 +410,8 @@ namespace Belle {
                     t1->column("chi",-999);
                 }
                 cout << "SAVE!" << endl; 
+                
+            */
                 t1->dumpData();
             }
        
