@@ -278,7 +278,7 @@ namespace Belle {
  
             HepLorentzVector momentum=ALamC.p();
             
-            double rmx = (pUPS-momentum).mag()
+            double rmx = (pUPS-momentum).mag();
             
             if ( abs(rmx-2.286)<1.3) 
             {
