@@ -10,7 +10,7 @@ namespace Belle {
 	{
 		
 		extern BelleTupleManager* BASF_Histogram;
-		t1 = BASF_Histogram->ntuple ("data","tag dch dstch mlc ml md rmx rmvis px npi ngamma fox pvis ecms hlc hl hw chi q lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+		t1 = BASF_Histogram->ntuple ("data","tag dch dstch mlc ml md rmx rmvis rmx0 rmvis0 px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
 		//t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
 		
 	};
@@ -74,7 +74,7 @@ namespace Belle {
 		//------------------------MAKE PARTICLE LISTINGS----------------------------------
         std::vector<Particle> p_p, p_m; 
 		makeProton(p_p,p_m);
-		
+        
 		std::vector<Particle> lam, lamb;
 		makeLam(lam,lamb);
 		doMassVertexFit(lam);
@@ -94,7 +94,7 @@ namespace Belle {
 		withEId(e_m);
 		
 		
-		std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
+		std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions, kaons;
 		makeKPi(k_p, k_m, pi_p, pi_m,1);
 		
 		ntrk=k_p.size()+k_m.size();
@@ -128,7 +128,8 @@ namespace Belle {
             if(!is_kaon) pions.push_back(*l);
         }
         
-        
+        for(std::vector<Particle>::iterator l = k_m.begin(); l!=k_m.end(); ++l) kaons.push_back(*l);
+        for(std::vector<Particle>::iterator l = k_p.begin(); l!=k_p.end(); ++l) kaons.push_back(*l);
         
         std::vector<Particle> k_s;
 		makeKs(k_s);
@@ -306,7 +307,7 @@ namespace Belle {
             HepLorentzVector momentum=ALamC.p();
             int charge= calcuCharge (&All);
             
-            int n_pi=0;
+            int n_pi = 0, n_pi0 = 0, n_k = 0, n_e = 0, n_mu = 0, n_p = 0, n_gam = 0 ;
             for (std::vector<Particle>::iterator pi=pions.begin(); pi!=pions.end();++pi)
             {
                 //pion cuts
@@ -316,11 +317,42 @@ namespace Belle {
                 charge+=pi->charge();
                 momentum+=pi->p();
             }
- 
+            
+            for (std::vector<Particle>::iterator k=kaons.begin(); k!=kaons.end();++k)
+            {
+                //pion cuts
+                if ( checkSame(*a,*k) ) continue;
+                //
+                n_k++;
+                charge+=k->charge();
+                momentum+=k->p();
+            }
+
+            HepLorentzVector momentum0 = momentum;
+            
+            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+            {
+                //pion cuts
+                if ( checkSame(*a,*pi) ) continue;
+                //
+                n_pi0++;
+                momentum0+=pi->p();
+            }
+            
+            for (std::vector<Particle>::iterator g=photons.begin(); g!=photons.end();++g)
+            {
+                //pion cuts
+                if ( checkSame(*a,*g) ) continue;
+                //
+                n_gam++;
+                momentum0+=g->p();
+            }
+            
             // FINAL SELECTION
             if (charge!=0) continue;
             
-            double rmx = (pUPS-momentum).mag(), rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag(), rmx0 = (pUPS-momentum0).mag(),
+                    rm =(pUPS-(momentum+LamC.p())).mag(), rm0 =(pUPS-(momentum0+LamC.p())).mag();
             
             if ( (abs(rmx-2.286)<1.29) &&  (abs(rm)<1.1) ) 
             {
@@ -328,17 +360,21 @@ namespace Belle {
                 int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel(),
-                    ngamma = photons.size();
+                    
                
                 t1 -> column("lcch", lcch);
                 t1 -> column("tag", tag);
                 t1 -> column("rmx", rmx);
                 t1 -> column("rmvis", rm);
+                t1 -> column("rmx0", rmx0);
+                t1 -> column("rmvis0", rm0);
                 t1 -> column("dch", dch);
                 t1 -> column("md", ALamC.child(1).mass());
                 t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
                 t1 -> column("npi", n_pi);
-                t1 -> column("ngamma", ngamma);  
+                t1 -> column("nk", n_k);
+                t1 -> column("npi0", n_pi0);  
+                t1 -> column("ngam", n_gam);  
                 t1 -> column("fox", fox);  
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
                 t1 -> column("ecms",pUPS.mag());
@@ -347,7 +383,7 @@ namespace Belle {
               
                 if (lcch!=0)
                 {
-                    t1 -> column("ml", LamC.child(0).mass());
+                    t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
                     t1 -> column("mlc", LamC.mass());
                     
                     // lamc heli
