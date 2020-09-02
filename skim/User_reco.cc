@@ -71,14 +71,37 @@ void User_reco::event ( BelleEvent* evptr, int* status )
 
    //------------------------MAKE PARTICLE LISTINGS----------------------------------
 
-  
-   std::vector<Particle> lam, lamb;
-   makeLam(lam,lamb);
-   
-   if (lam.size()+lamb.size()==0)
-     return;
+	
+   std::vector<Particle> p_p, p_m; 
+   makeProton(p_p,p_m);
 
+   std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
+   makeKPi(k_p, k_m, pi_p, pi_m,1);
+
+   ntrk=k_p.size()+k_m.size();
    
+   /*
+   withdRdZcut(k_p,runIp.z());
+   withdRdZcut(pi_p,runIp.z());
+   withdRdZcut(k_m,runIp.z());
+   withdRdZcut(pi_m,runIp.z());
+   */
+
+   withKaonId(k_p,0.6,3,1,5,3,4);
+   withKaonId(k_p,0.6,3,1,5,3,2);
+   withKaonId(k_m,0.6,3,1,5,3,4);
+   withKaonId(k_m,0.6,3,1,5,3,2);
+   
+   withPionId(pi_p,0.6,3,1,5,2,3);
+   withPionId(pi_p,0.6,3,1,5,2,4);
+   withPionId(pi_m,0.6,3,1,5,2,3);
+   withPionId(pi_p,0.6,3,1,5,2,4);
+
+   eraseLeptons(k_p,0.8)
+   eraseLeptons(k_m,0.8)
+   eraseLeptons(pi_p,0.8)
+   eraseLeptons(pi_m,0.8)
+
    std::vector<Particle>  e_p,e_m,mu_p,mu_m;
    makeLepton(e_p,e_m,mu_p,mu_m);
    
@@ -86,40 +109,13 @@ void User_reco::event ( BelleEvent* evptr, int* status )
    withMuId(mu_m);
    withEId(e_p);
    withEId(e_m);
-   
-   
-   std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
-   makeKPi(k_p, k_m, pi_p, pi_m,1);
 
-   ntrk=k_p.size()+k_m.size();
-   
-   withdRdZcut(k_p,runIp.z());
-   withdRdZcut(pi_p,runIp.z());
-   withdRdZcut(k_m,runIp.z());
-   withdRdZcut(pi_m,runIp.z());
-
-   withKaonId(k_p,0.6,3,1,5);
-   withKaonId(k_m,0.6,3,1,5);
-   withPionId(pi_p,0.9,3,1,5,3,2);
-   withPionId(pi_m,0.9,3,1,5,3,2);
-   
    for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
      pions.push_back(*l);
    for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
      pions.push_back(*l);
    
-   std::vector<Particle>  pi0;
-   makePi0(pi0);
-        
-    for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
-        if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
-            i->mdstPi0().gamma(1).ecl().energy()<0.05||
-            abs(i->mdstPi0().mass()-.135)>0.015)
-                {pi0.erase(i); --i;}
-   
-   std::vector<Particle> p_p, p_m; 
-   makeProton(p_p,p_m);
-  
+
    std::vector<Particle> k_s;
    makeKs(k_s);
    for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
@@ -133,7 +129,20 @@ void User_reco::event ( BelleEvent* evptr, int* status )
   	 k_s.erase(l); --l;
        }
      }
-   //   doMassVertexFit(k_s);   
+   //   doMassVertexFit(k_s);
+
+   std::vector<Particle>  pi0;
+   makePi0(pi0);
+        
+    for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
+        if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
+            i->mdstPi0().gamma(1).ecl().energy()<0.05||
+            abs(i->mdstPi0().mass()-.135)>0.015)
+                {pi0.erase(i); --i;}
+   
+   
+  
+      
    
    std::vector<Particle> photons;
    Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
@@ -263,7 +272,8 @@ void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, doub
       {
 	if(good_charged(*it) == 0) continue;
 	double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
-	if(prob_kpr > 0.9 ) continue;
+	double prob_pipr = atc_pid(3, 1, 5, 2, 4).prob(*it);	
+	if( (prob_kpr > 0.4) || (prob_pipr > 0.4)) continue;
 	Ptype ptype_PP("P+");
 	Ptype ptype_AP("AP+");
 
@@ -413,5 +423,28 @@ void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, doub
     tmp.boost(-p_boost->boostVector());
     return tmp;
   }
+
+  eraseLeptons(std::vector<Particle> &list, double th)
+  {
+  	for(int i=0;i<(int)list.size();++i)
+	{
+  	  if(list[i].mdstCharged())
+	  {
+ 	     eid post_elid(list[i].mdstCharged());
+		 Muid_mdst muid(list[i].mdstCharged());    	 
+		 if((post_elid.prob() > th)  || (muid.Muon_likelihood() > th)) 
+		 {
+    	   list.erase(list.begin()+i);
+   	       --i;
+   	   	 }
+   	  }
+	  else
+	  {
+   	     list.erase(list.begin()+i);
+   	     --i;
+  	  }
+  	}
+  }
+
 
 }
