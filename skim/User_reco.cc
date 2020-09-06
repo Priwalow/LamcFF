@@ -317,6 +317,23 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         
+        VertexFit(L_b);
+        double recoil_chisq, bufchisq=1000000;
+        while(L_b.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
+            {
+                recoil_chisq = dynamic_cast<UserInfo&>(l->userInfo()).chisq();
+                if(recoil_chisq > bufchisq)
+                {
+                    recoil_chisq = bufchisq;
+                    L_b.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = recoil_chisq;
+            }
+        }
         
         for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
         {
@@ -329,9 +346,8 @@ namespace Belle {
             
             if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
             {*status=1; skimmed++; return;}
-            
-            
         }
+        
         if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
         
     }
