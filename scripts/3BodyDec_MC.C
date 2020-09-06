@@ -25,7 +25,8 @@
  void PhaseSpace() {
  
     double pnu, pvis, mlmu, qsq, mx, px, ldec, rhodec, 
-           rmx, rmvis, plc, mvis, ptmu, ptl, plam, pmu, lepcost, plmu; 
+           rmx, rmvis, plc, mvis, ptmu, ptl, plam, pmu, lepcost, plmu,
+           e1 = -1, e2 = -1; 
     int npi, npi0;
     TFile *f = new TFile("ToyLc3bDecay.root", "recreate");
     TTree *tree = new TTree("h1", "Toy MC ROOT tree");
@@ -48,6 +49,8 @@
     tree->Branch("plam", &plam, "plam/D");
     tree->Branch("pmu", &pmu, "pmu/D");
     tree->Branch("lepcost", &lepcost, "lepcost/D");
+    tree->Branch("e1", &e1, "e1/D");
+    tree->Branch("e2", &e2, "e2/D");
     
     TRandom r; 
     r.SetSeed(0);
@@ -90,6 +93,7 @@
  
        TLorentzVector pLc = *XLcEvent.GetDecay(0);
        TLorentzVector pX(0,0,0,0);
+       
        for(int i = 1; i<npi+3; i++)
            pX+=*XLcEvent.GetDecay(i);
        
@@ -115,12 +119,33 @@
        ptmu = pMu.P()*sin(pMu.Theta());
        ptl = pL.P()*sin(pL.Theta());
        
+       
+       
+       
        pL.Boost(CMsystBoost);
        ldec = r.Exp(ctau_L*pL.Gamma()*pL.Beta());
        rhodec = sin(pL.Theta())*ldec;
        
        
        lepcost = pMu.CosTheta();
+       
+       
+       if (npi0>0)
+       {
+            TLorentzVector pPi0(0,0,0,0), pg1, pg2; 
+            pPi0 = *XLcEvent.GetDecay(npi+3);
+            
+            double pi0_dec_prod_masses[2] = {0,0};    
+            TGenPhaseSpace pi0dec_event;
+            pi0dec_event.SetDecay(pPi0,2,pi0_dec_prod_masses);
+            pi0dec_event.Generate();
+              
+            pg1 = *pi0dec_event.GetDecay(0); pg1.Boost(CMsystBoost);
+            pg2 = *pi0dec_event.GetDecay(1); pg2.Boost(CMsystBoost);
+            e1 = pg1.E(); 
+            e2 = pg2.E(); 
+       }
+       
        tree -> Fill();
        
        delete [] masses;

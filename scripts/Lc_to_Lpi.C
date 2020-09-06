@@ -22,7 +22,7 @@
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc > %lf && mlc < %lf",lend,rend);
+    TCut Mwindow = Form("abs(ml-1.11568)<0.003 && tag==2 && dch==1 && abs(md-1.869)<3*0.005287 && mlc > %lf && mlc < %lf",lend,rend);
     Ntot = ch1dat -> Draw("mlc>>hdat","lcch == 1"+Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
     ch1dat -> Draw("mlc>>hsb","lcch == 1"+Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
@@ -31,7 +31,7 @@
     TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)",lend,rend);    
     
 
-    fdat -> SetParameters(1000,MLambdac,0.007,800,-300); //100,MLambdac,0.01,40,-300
+    fdat -> SetParameters(1000,MLambdac,0.007,10,-300); //100,MLambdac,0.01,40,-300
     fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
