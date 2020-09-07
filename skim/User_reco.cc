@@ -72,9 +72,6 @@ namespace Belle {
         //------------------------MAKE PARTICLE LISTINGS----------------------------------
         
         //protons
-        
-
-        
         std::vector<Particle> p_p, p_m; 
         makeProton(p_p,p_m);
         
@@ -255,7 +252,6 @@ namespace Belle {
         combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.06);
         setUserInfo(D0_b, 6);
         
-
         combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
         setUserInfo(D_m, 1);
         combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
@@ -265,9 +261,6 @@ namespace Belle {
         combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
         setUserInfo(D_m, 4);
         
-        if(D0_b.size()+D_m.size()==0) return;
-        
-
         doMassVertexFit(D0_b);
         double d0_chisq;
         bufchisq=1000000;
@@ -287,8 +280,7 @@ namespace Belle {
             }
         
         }
-        if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
-        
+
         doMassVertexFit(D_m);
         double d_m_chisq;
         bufchisq=1000000;
@@ -306,6 +298,10 @@ namespace Belle {
                 bufchisq = d_m_chisq;
             }
         }
+        
+        if(D0_b.size()+D_m.size()==0) return;
+        
+        if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
         if (!(nevent%1000))std::cout<<nevent<<" d_m: " << D_m.size() << "; chisq/ndf = " << d_m_chisq << '\n';
         
         
@@ -388,6 +384,8 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
+        
+        if (L_b.size()+L_.size()==0) return; 
         
         doVertexFit(L_b);
         double recoil_chisq;

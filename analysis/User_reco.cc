@@ -10,9 +10,9 @@ namespace Belle {
 	{
 		
 		extern BelleTupleManager* BASF_Histogram;
-		t1 = BASF_Histogram->ntuple ("data","tag dch dstch mlc ml md rmx rmvis rmx0 rmvis0 px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+		t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx px fox ecms" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
 		//t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
-		
+		//"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
 	};
 	//***********************************************************************
 	void doMassVertexFit(class vector<Particle> &p_list, double mass=-1);
@@ -27,7 +27,7 @@ namespace Belle {
 	double heli (  HepLorentzVector   P4A, HepLorentzVector P4B, HepLorentzVector P4system);
 	HepLorentzVector boostT( HepLorentzVector p, HepLorentzVector p_boost);
 	HepLorentzVector boostT( HepLorentzVector *p, HepLorentzVector *p_boost);
-	
+    void eraseLeptons(std::vector<Particle> &list);
 	
 	void withdRdZcut(class std::vector<Particle> &p_list,double ip_position=0., double drcut = 2., double dzcut = 4.);
 	void makeLam(std::vector<Particle> &lam0, std::vector<Particle> &lam0b);
@@ -72,113 +72,164 @@ namespace Belle {
 		
 		
 		//------------------------MAKE PARTICLE LISTINGS----------------------------------
+        //protons
         std::vector<Particle> p_p, p_m; 
-		makeProton(p_p,p_m);
+        makeProton(p_p,p_m);
         
-		std::vector<Particle> lam, lamb;
-		makeLam(lam,lamb);
-		doMassVertexFit(lam);
-		doMassVertexFit(lamb);
-		
-		
-		if (lam.size()+lamb.size()==0)
-			return;
-		
-		
-		std::vector<Particle>  e_p,e_m,mu_p,mu_m;
-		makeLepton(e_p,e_m,mu_p,mu_m);
-		
-		withMuId(mu_p);
-		withMuId(mu_m);
-		withEId(e_p);
-		withEId(e_m);
-		
-		
-		std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions, kaons;
-		makeKPi(k_p, k_m, pi_p, pi_m,1);
-		
-		ntrk=k_p.size()+k_m.size();
-		
-		withdRdZcut(k_p,runIp.z());
-		withdRdZcut(pi_p,runIp.z());
-		withdRdZcut(k_m,runIp.z());
-		withdRdZcut(pi_m,runIp.z());
-		
-		withKaonId(k_p,0.6,3,1,5);
-		withKaonId(k_m,0.6,3,1,5);
-		withPionId(pi_p,0.9,3,1,5,3,2);
-		withPionId(pi_m,0.9,3,1,5,3,2);
-		
-		
+        if(p_p.size()+p_m.size()==0) return; 
+        
+        if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
+        
+
+        //kaons and pions
+        std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
+        makeKPi(k_p, k_m, pi_p, pi_m,1);
+        
+        ntrk=k_p.size()+k_m.size();
+        
+        /*
+         *   withdRdZcut(k_p,runIp.z());
+         *   withdRdZcut(pi_p,runIp.z());
+         *   withdRdZcut(k_m,runIp.z());
+         *   withdRdZcut(pi_m,runIp.z());
+         */
+        
+        withKaonId(k_p,0.6,3,1,5,3,4);
+        withKaonId(k_p,0.6,3,1,5,3,2);
+        withKaonId(k_m,0.6,3,1,5,3,4);
+        withKaonId(k_m,0.6,3,1,5,3,2);
+        
+        withPionId(pi_p,0.6,3,1,5,2,3);
+        withPionId(pi_p,0.6,3,1,5,2,4);
+        withPionId(pi_m,0.6,3,1,5,2,3);
+        withPionId(pi_p,0.6,3,1,5,2,4);
+        
+        eraseLeptons(k_p);
+        eraseLeptons(k_m);
+        eraseLeptons(pi_p);
+        eraseLeptons(pi_m);
+        
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
-        {
-            bool is_kaon=false;
-            for(std::vector<Particle>::iterator k = k_m.begin(); k!=k_m.end(); ++k)
-                if (l->mdstCharged()==k->mdstCharged())
-                    {is_kaon=true; break;}
-            if(!is_kaon) pions.push_back(*l);
-        }
-        
+            pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
-        {
-            bool is_kaon=false;
-            for(std::vector<Particle>::iterator k = k_p.begin(); k!=k_p.end(); ++k)
-                if (l->mdstCharged()==k->mdstCharged())
-                    {is_kaon=true; break;}
-            if(!is_kaon) pions.push_back(*l);
-        }
+            pions.push_back(*l);
         
-        for(std::vector<Particle>::iterator l = k_m.begin(); l!=k_m.end(); ++l) kaons.push_back(*l);
-        for(std::vector<Particle>::iterator l = k_p.begin(); l!=k_p.end(); ++l) kaons.push_back(*l);
+        if (!(nevent%1000))std::cout<<nevent<<" pi_p: "<< pi_p.size() << "  pi_m: " << pi_m.size() << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<" k_p: "<< k_p.size() << "  k_m: " << k_m.size() << '\n';
         
+        
+
+
+        //Ks mesons
         std::vector<Particle> k_s;
-		makeKs(k_s);
-		for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
-		{
-			HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
-			Vector3 P(l->px(),l->py(),0);
-			V=V-runIp;
-			V.setZ(0.);
-			if (abs(l->mass()-0.4977)>0.015 || V.perp()<0.1 ||
-				V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
-				k_s.erase(l); --l;
-				}
-		}
-		doMassVertexFit(k_s);   
-		
-		std::vector<Particle>  pi0;
-		makePi0(pi0);
-		
+        makeKs(k_s);
+        for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
+        {
+            if (abs(l->mass()-0.4976)>0.0075)
+            {   
+                k_s.erase(l); 
+                --l;
+                continue;
+            }
+            
+            HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
+            Vector3 Pt(l->px(),l->py(),0);
+            double Ptot = pStar(l->p(),elec,posi).vect().mag();
+            V=V-runIp;
+            V.setZ(0.);
+            
+            if (Ptot<0.5)
+            {
+                if(V.angle(Pt)>0.3 || l->mdstVee2().z_dist()>0.8)
+                {
+                    k_s.erase(l); 
+                    --l;
+                    continue;
+                }
+            }
+                else if (Ptot<1.5)
+                {
+                    if(V.perp()<0.08 || V.angle(Pt)>0.1 || l->mdstVee2().z_dist()>1.8)
+                    {
+                        k_s.erase(l); 
+                        --l;
+                        continue;
+                    }
+                }
+                    else 
+                    {
+                        if(V.perp()<0.22 || V.angle(Pt)>0.03 || l->mdstVee2().z_dist()>2.4)
+                        {
+                            k_s.erase(l); 
+                            --l;
+                            continue;
+                        }
+                    }
+                
+        }
+        doMassVertexFit(k_s);
+        double k_s_chisq, bufchisq=1000000;
+        while(k_s.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
+            {
+                k_s_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                if((k_s_chisq<0) || (k_s_chisq > bufchisq))
+                {
+                    k_s.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = k_s_chisq;
+            }
+        }
+
+        if (!(nevent%1000))std::cout<<nevent<<" k_s: " << k_s.size() << "; chisq/ndf = " << k_s_chisq << '\n';
+
+        //Pi0 mesons
+        std::vector<Particle>  pi0;
+        makePi0(pi0);
+        
         for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
-			if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
-				i->mdstPi0().gamma(1).ecl().energy()<0.05||
-				abs(i->mdstPi0().mass()-.135)>0.015)
-			{pi0.erase(i); --i;}
-			
-		
-		std::vector<Particle> photons;
-		
+        if(abs(i->mdstPi0().mass()-.135)>0.015)
+        {pi0.erase(i); --i;}
+            
+        //leptons    
+       /* std::vector<Particle>  e_p,e_m,mu_p,mu_m;
+        makeLepton(e_p,e_m,mu_p,mu_m);
+        
+        withMuId(mu_p);
+        withMuId(mu_m);
+        withEId(e_p);
+        withEId(e_m);
+        */
+        if (!(nevent%1000))std::cout<<nevent<<" npi0: " << pi0.size() << '\n';
+        
+
+
+        //photons
+        std::vector<Particle> photons;
         Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
-		for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
-		{
-			Particle prtcl(*it);
-			bool gam_from_pi0 = false;
-			for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
-			{
-				if (checkSame(*it,*pi))
-				{
-					gam_from_pi0 = true;
-					break;
-				}
-			}
-			if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
-			{
-				photons.push_back(prtcl);
-			}
-		}
-		
-		setPi0Error(pi0);
-        setGammaError(photons);
+        for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
+        {
+            Particle prtcl(*it);
+            bool gam_from_pi0 = false;
+            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+            {
+                if (checkSame(*it,*pi))
+                {
+                    gam_from_pi0 = true;
+                    break;
+                }
+            }
+            if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
+            {
+                photons.push_back(prtcl);
+            }
+        }
+   
+        
+        if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
         
 		std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
 		
@@ -192,58 +243,183 @@ namespace Belle {
         setUserInfo(Dst0_b, 0); 
 		
 		//######################################    TAG SIDE
-		combination (pi_pm, ptype_D0B, pi_p, pi_m);
-		
-		
-		combination (D0_b,ptype_D0B, k_p, pi_m, 0.1);
+        combination (pi_pm, ptype_D0B, pi_p, pi_m);
+        
+        combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
         setUserInfo(D0_b, 1); 
-		combination (D0_b,ptype_D0B, k_p, pi_m, pi_pm, 0.1);
-		setUserInfo(D0_b, 2); 
-        combination (D0_b,ptype_D0B, k_s, pi_pm, 0.1);
-        setUserInfo(D0_b, 3); 
-		combination (D0_b,ptype_D0B, k_p, pi_m, pi0, 0.1);
+        combination (D0_b,ptype_D0B, k_p, pi_m, pi_pm, 0.05);
+        setUserInfo(D0_b, 2); 
+        combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
+        setUserInfo(D0_b, 3);
+        combination (D0_b,ptype_D0B, k_p, pi_m, pi0, 0.06);
         setUserInfo(D0_b, 4);
         
-		
-		combination (D0_b,ptype_D0B, k_p, pi_m, pi0, pi_pm, 0.1);
+        
+        combination (D0_b,ptype_D0B, k_p, pi_m, pi0, pi_pm, 0.06);
         setUserInfo(D0_b, 5);
-		combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.1);
+        combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.06);
         setUserInfo(D0_b, 6);
-		
-		combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.1);
-		setUserInfo(D_m, 1);
-        combination (D_m,ptype_Dm, k_s, pi_m, 0.1);
-		setUserInfo(D_m, 2);
-        combination (D_m,ptype_Dm, k_s, pi_m, pi_pm, 0.1);
+        
+        combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
+        setUserInfo(D_m, 1);
+        combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
+        setUserInfo(D_m, 2);
+        combination (D_m,ptype_Dm, k_s, pi_m, pi_pm, 0.05);
         setUserInfo(D_m, 3);
-		combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.1);
+        combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
         setUserInfo(D_m, 4);
-		
-		combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.1);
+        
+        doMassVertexFit(D0_b);
+        double d0_chisq;
+        bufchisq=1000000;
+        while(D0_b.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = D0_b.begin(); l!=D0_b.end(); ++l)
+            {
+                d0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+               
+                if((d0_chisq<0) || (d0_chisq > bufchisq))
+                {
+                    D0_b.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = d0_chisq;
+            }
+        
+        }
+
+        doMassVertexFit(D_m);
+        double d_m_chisq;
+        bufchisq=1000000;
+        while(D_m.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
+            {
+                d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
+                {
+                    D_m.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = d_m_chisq;
+            }
+        }
+        
+        if(D0_b.size()+D_m.size()==0) return;
+        
+        if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<" d_m: " << D_m.size() << "; chisq/ndf = " << d_m_chisq << '\n';
+        
+        
+                
+
+        combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
         setUserInfo(Dst0_b, 1);
-		combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.1);
-		setUserInfo(Dst0_b, 2);
+        combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.2);
+        setUserInfo(Dst0_b, 2);
         
-		combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.1);
+
+        combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
         setUserInfo(Dst_m, 1);
-		combination (Dst_m,ptype_Dstm, D_m, pi0, 0.1);
+        combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
         setUserInfo(Dst_m, 2);
-		
-		std::vector <Particle> L_, L_b;
-		setUserInfo(L_, 0); 
-        setUserInfo(L_b, 0); 
         
+
+        for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+        {
+            Particle dst0b(*i);
+            if(abs(dst0b.mass()-dst0b.child(0).mass())>0.025)
+            {
+                Dst0_b.erase(i); 
+                --i;
+            }
+        }
+        
+        doMassVertexFit(Dst0_b);
+        double dst0_chisq;
+        bufchisq=1000000;
+        while(Dst0_b.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = Dst0_b.begin(); l!=Dst0_b.end(); ++l)
+            {
+                dst0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                if((dst0_chisq < 0) || (dst0_chisq > bufchisq))
+                {
+                    Dst0_b.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = dst0_chisq;
+            }
+        }
+        if (!(nevent%1000))std::cout<<nevent<<" dst0_b: " << Dst0_b.size() << "; chisq/ndf = " << dst0_chisq << '\n';
+        
+        
+
+        for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+        {
+            Particle dstm(*i);
+            if(abs(dstm.mass()-dstm.child(0).mass())>0.025)
+            {
+                Dst_m.erase(i); 
+                --i;
+            }
+        }
+        
+        doMassVertexFit(Dst_m);
+        double dstm_chisq;
+        bufchisq=1000000;
+        while(Dst_m.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
+            {
+                dstm_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                if((dstm_chisq < 0) || (dstm_chisq > bufchisq))
+                {
+                    Dst_m.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = dstm_chisq;
+            }
+        }
+        if (!(nevent%1000))std::cout<<nevent<<" dst_m: " << Dst_m.size() << "; chisq/ndf = " << dstm_chisq << '\n';
+        
+        std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
         setUserInfo(L_b, 1);
-		combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
+        combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
         setUserInfo(L_b, 2);
-		combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
+        combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         setUserInfo(L_b, 3);
-		combination (L_b,ptype_Lamc, p_m, Dst0_b);
+        combination (L_b,ptype_Lamc, p_m, Dst0_b);
         setUserInfo(L_b, 4);
         
+        doVertexFit(L_b);
+        double recoil_chisq;
+        bufchisq=1000000;
+        while(L_b.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
+            {
+                recoil_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                if((recoil_chisq < 0) || (recoil_chisq > bufchisq))
+                {
+                    L_b.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = recoil_chisq;
+            }
+        }
         
-        //######################################   SIGNAL SIDE
+        if (L_b.size()+L_.size()==0) return; 
+        if (!(nevent%1000))std::cout<<nevent<<"Best recoil candidate's chisq/ndf = " << recoil_chisq << '\n';
+        
+        
+     /*   //######################################   SIGNAL SIDE
         
         std::vector <Particle> Lc, Lcb; 
         
@@ -296,16 +472,14 @@ namespace Belle {
         std::vector<Particle> A; 
         combination(A,ptype_UPS4,Lc,L_b);
         combination(A,ptype_UPS4,Lcb,L_);
+        */
         
-        
-        for (std::vector<Particle>::iterator a=A.begin(); a!=A.end();++a)
+        for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
         {
-            Particle &All=*a;
-            Particle &LamC=All.child(0);
-            Particle &ALamC=All.child(1);
+            Particle &ALamC=*a;
             
             HepLorentzVector momentum=ALamC.p();
-            int charge= calcuCharge (&All);
+         /*   int charge= calcuCharge (&All);
             
             int n_pi = 0, n_pi0 = 0, n_k = 0, n_e = 0, n_mu = 0, n_p = 0, n_gam = 0 ;
             for (std::vector<Particle>::iterator pi=pions.begin(); pi!=pions.end();++pi)
@@ -350,37 +524,55 @@ namespace Belle {
             
             // FINAL SELECTION
             if (charge!=0) continue;
+        */
+            double rmx = (pUPS-momentum).mag(), rm =(pUPS-(momentum+LamC.p())).mag();
             
-            double rmx = (pUPS-momentum).mag(), rmx0 = (pUPS-momentum0).mag(),
-                    rm =(pUPS-(momentum+LamC.p())).mag(), rm0 =(pUPS-(momentum0+LamC.p())).mag();
-            
-            if ( (abs(rmx-2.286)<1.29) &&  (abs(rm)<1.1) ) 
+            if (abs(rmx-2.286)<1.29) 
             {
 
-                int lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
+                int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel(),
+                    dstch, dch;
+                double mD, mDst;
+                    
+                if (tag<3)
+                {
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    dstch = -1;
+                    mDst = -1;
+                }
+                else
+                {
+                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                }
                     
                
-                t1 -> column("lcch", lcch);
+                //
                 t1 -> column("tag", tag);
                 t1 -> column("rmx", rmx);
-                t1 -> column("rmvis", rm);
-                t1 -> column("rmx0", rmx0);
-                t1 -> column("rmvis0", rm0);
+                t1 -> column("dstch", dstch);
+                t1 -> column("mdst", mDst);
                 t1 -> column("dch", dch);
-                t1 -> column("md", ALamC.child(1).mass());
+                t1 -> column("md", mD);
                 t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                t1 -> column("fox", fox);  
+                t1 -> column("ecms",pUPS.mag());
+                
+                
+                /*
+                t1 -> column("lcch", lcch);
+                t1 -> column("rmvis", rm);
                 t1 -> column("npi", n_pi);
                 t1 -> column("nk", n_k);
                 t1 -> column("npi0", n_pi0);  
                 t1 -> column("ngam", n_gam);  
-                t1 -> column("fox", fox);  
                 t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
-                t1 -> column("ecms",pUPS.mag());
                 if (lcch==0) t1 -> column("ml", LamC.mass());
                 
-              
                 if (lcch!=0)
                 {
                     t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
@@ -450,7 +642,7 @@ namespace Belle {
                         t1->column("chi",-999);
                     }
                 }
-            
+            */
                 t1->dumpData();
             }
        
@@ -727,5 +919,26 @@ namespace Belle {
 		return ch;
 	}
 	
+    void eraseLeptons(std::vector<Particle> &list)
+    {
+        for(int i=0;i<(int)list.size();++i)
+        {
+            if(list[i].mdstCharged())
+            {
+                eid post_elid(list[i].mdstCharged());
+                Muid_mdst muid(list[i].mdstCharged());    	 
+                if((post_elid.prob() > 0.9)  || (muid.Muon_likelihood() > 0.95)) 
+                {
+                    list.erase(list.begin()+i);
+                    --i;
+                }
+            }
+            else
+            {
+                list.erase(list.begin()+i);
+                --i;
+            }
+        }
+    }
 	
 }
