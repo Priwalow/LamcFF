@@ -525,7 +525,7 @@ namespace Belle {
             // FINAL SELECTION
             if (charge!=0) continue;
         */
-            double rmx = (pUPS-momentum).mag(), rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag();//, rm =(pUPS-(momentum+LamC.p())).mag();
             
             if (abs(rmx-2.286)<1.29) 
             {
