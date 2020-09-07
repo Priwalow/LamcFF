@@ -277,6 +277,7 @@ namespace Belle {
             for(std::vector<Particle>::iterator l = D0_b.begin(); l!=D0_b.end(); ++l)
             {
                 d0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                cout << d0_chisq << endl; 
                 if(d0_chisq > bufchisq)
                 {
                     d0_chisq = bufchisq;
