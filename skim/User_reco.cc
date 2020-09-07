@@ -296,7 +296,7 @@ namespace Belle {
         
         doMassVertexFit(Dst_m);
         double dstm_chisq;
-        bufchisq=1000000
+        bufchisq=1000000;
         while(Dst_m.size()>1)
         {
             for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
