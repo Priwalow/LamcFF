@@ -77,8 +77,6 @@ namespace Belle {
         
         if(p_p.size()+p_m.size()==0) return; 
         
-        if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
-        
 
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
@@ -112,10 +110,6 @@ namespace Belle {
             pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
             pions.push_back(*l);
-        
-        if (!(nevent%1000))std::cout<<nevent<<" pi_p: "<< pi_p.size() << "  pi_m: " << pi_m.size() << '\n';
-        if (!(nevent%1000))std::cout<<nevent<<" k_p: "<< k_p.size() << "  k_m: " << k_m.size() << '\n';
-        
         
 
 
@@ -183,7 +177,7 @@ namespace Belle {
             }
         }
 
-        if (!(nevent%1000))std::cout<<nevent<<" k_s: " << k_s.size() << "; chisq/ndf = " << k_s_chisq << '\n';
+
 
         //Pi0 mesons
         std::vector<Particle>  pi0;
@@ -202,7 +196,7 @@ namespace Belle {
         withEId(e_p);
         withEId(e_m);
         */
-        if (!(nevent%1000))std::cout<<nevent<<" npi0: " << pi0.size() << '\n';
+
         
 
 
@@ -226,9 +220,6 @@ namespace Belle {
                 photons.push_back(prtcl);
             }
         }
-   
-        
-        if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
         
         
         std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
@@ -300,12 +291,7 @@ namespace Belle {
         }
         
         if(D0_b.size()+D_m.size()==0) return;
-        
-        if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
-        if (!(nevent%1000))std::cout<<nevent<<" d_m: " << D_m.size() << "; chisq/ndf = " << d_m_chisq << '\n';
-        
-        
-                
+    
 
         combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
         setUserInfo(Dst0_b, 1);
@@ -346,10 +332,7 @@ namespace Belle {
                 bufchisq = dst0_chisq;
             }
         }
-        if (!(nevent%1000))std::cout<<nevent<<" dst0_b: " << Dst0_b.size() << "; chisq/ndf = " << dst0_chisq << '\n';
         
-        
-
         for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
         {
             Particle dstm(*i);
@@ -377,7 +360,7 @@ namespace Belle {
                 bufchisq = dstm_chisq;
             }
         }
-        if (!(nevent%1000))std::cout<<nevent<<" dst_m: " << Dst_m.size() << "; chisq/ndf = " << dstm_chisq << '\n';
+
         
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
@@ -405,7 +388,6 @@ namespace Belle {
             }
         }
         
-        if (!(nevent%1000))std::cout<<nevent<<" recoil candidates: " << L_b.size() << "; chisq/ndf = " << recoil_chisq << '\n';
 
         for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
         {
