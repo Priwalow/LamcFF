@@ -78,10 +78,13 @@ namespace Belle {
         std::vector<Particle> p_p, p_m; 
         makeProton(p_p,p_m);
         
-        cout << "protons ready!" << endl;
+        cout << "protons are ready!" << endl;
         
         if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
         
+        
+        
+        cout << "Making kaons and pions!" << endl;
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -117,6 +120,9 @@ namespace Belle {
         
         if (!(nevent%1000))std::cout<<nevent<<" pi_p: "<< pi_p.size() << "  pi_m: " << pi_m.size() << '\n';
         if (!(nevent%1000))std::cout<<nevent<<" k_p: "<< k_p.size() << "  k_m: " << k_m.size() << '\n';
+        
+        
+         cout << "kaons and pions are ready!" << endl;
         
         //Ks mesons
         std::vector<Particle> k_s;
@@ -628,6 +634,7 @@ namespace Belle {
     
     void eraseLeptons(std::vector<Particle> &list)
     {
+        cout << "Erasing leptons" << endl;
         for(int i=0;i<(int)list.size();++i)
         {
             if(list[i].mdstCharged())
