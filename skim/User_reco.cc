@@ -265,7 +265,8 @@ namespace Belle {
         }
         
         doMassVertexFit(Dst0_b);
-        double dst0_chisq, bufchisq=1000000;
+        double dst0_chisq;
+        bufchisq=1000000;
         while(Dst0_b.size()>1)
         {
             for(std::vector<Particle>::iterator l = Dst0_b.begin(); l!=Dst0_b.end(); ++l)
@@ -294,7 +295,8 @@ namespace Belle {
         }
         
         doMassVertexFit(Dst_m);
-        double dstm_chisq, bufchisq=1000000;
+        double dstm_chisq;
+        bufchisq=1000000
         while(Dst_m.size()>1)
         {
             for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
@@ -317,7 +319,7 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         
-        VertexFit(L_b);
+        doVertexFit(L_b);
         double recoil_chisq, bufchisq=1000000;
         while(L_b.size()>1)
         {
