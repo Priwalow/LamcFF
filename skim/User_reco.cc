@@ -73,18 +73,18 @@ namespace Belle {
         
         //protons
         
-        cout << "Making protons!" << endl;
+
         
         std::vector<Particle> p_p, p_m; 
         makeProton(p_p,p_m);
         
-        cout << "protons are ready!" << endl;
+
         
         if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
         
         
         
-        cout << "Making kaons and pions!" << endl;
+
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -122,8 +122,8 @@ namespace Belle {
         if (!(nevent%1000))std::cout<<nevent<<" k_p: "<< k_p.size() << "  k_m: " << k_m.size() << '\n';
         
         
-         cout << "kaons and pions are ready!" << endl;
-        
+
+        cout << "Making K_S meson" << endl;
         //Ks mesons
         std::vector<Particle> k_s;
         makeKs(k_s);
@@ -188,10 +188,13 @@ namespace Belle {
                 bufchisq = k_s_chisq;
             }
         }
-        
+        cout << "K_S meson is ready" << endl;
         if (!(nevent%1000))std::cout<<nevent<<" k_s: " << k_s.size() << "; chisq/ndf = " << k_s_chisq << '\n';
 
         //Pi0 mesons
+        
+        cout << "Making pi0 mesons" << endl;
+        
         std::vector<Particle>  pi0;
         makePi0(pi0);
         
@@ -210,6 +213,9 @@ namespace Belle {
         */
         if (!(nevent%1000))std::cout<<nevent<<" npi0: " << pi0.size() << '\n';
         
+        cout << "pi0 mesons are ready" << endl;
+        cout << "making photons" << endl;
+        //photons
         std::vector<Particle> photons;
         Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
         for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
@@ -229,6 +235,7 @@ namespace Belle {
                 photons.push_back(prtcl);
             }
         }
+         cout << "photons are ready" << endl;
         
         if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
         
@@ -634,7 +641,6 @@ namespace Belle {
     
     void eraseLeptons(std::vector<Particle> &list)
     {
-        cout << "Erasing leptons" << endl;
         for(int i=0;i<(int)list.size();++i)
         {
             if(list[i].mdstCharged())
