@@ -234,6 +234,11 @@ namespace Belle {
         
         if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
         
+        
+        
+        cout << "Number of candodates: "<< p_p << " p; " << p_m.size() << " pbar; " << pi_p.size() << " pi+; " << pi_m.size() << " pi-; " << k_p.size() << " K+; " << k_m.size() << " K-; " << k_s.size() << " K_S; " << pi0.size() << " pi0; " << photons.size() << " photons; " << endl;
+        
+        
         std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
         
         
@@ -298,6 +303,7 @@ namespace Belle {
             for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
             {
                 d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                cout << d_m_chisq << endl;
                 if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
                 {
                     d_m_chisq = bufchisq;
@@ -306,6 +312,7 @@ namespace Belle {
                     continue;
                 }
                 bufchisq = d_m_chisq;
+                cout << D_m.size() << endl; 
             }
         }
         if (!(nevent%1000))std::cout<<nevent<<" d_m: " << D_m.size() << "; chisq/ndf = " << d_m_chisq << '\n';
