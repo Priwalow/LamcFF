@@ -78,7 +78,7 @@ namespace Belle {
         std::vector<Particle> p_p, p_m; 
         makeProton(p_p,p_m);
         
-        if(p_p.size()+p_m.size()=0) return; 
+        if(p_p.size()+p_m.size()==0) return; 
         
         if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
         
