@@ -133,7 +133,7 @@ namespace Belle {
             
             HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
             Vector3 Pt(l->px(),l->py(),0);
-            double Ptot = pStar(l->p(),elec,posi).vect().mag();
+            double Ptot = (l->p()).vect().mag();
             V=V-runIp;
             V.setZ(0.);
             

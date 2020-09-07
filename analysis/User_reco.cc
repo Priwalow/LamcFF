@@ -10,7 +10,7 @@ namespace Belle {
 	{
 		
 		extern BelleTupleManager* BASF_Histogram;
-		t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx px fox ecms" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+		t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx px fox ecms mk mpi_d mpi_dst" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
 		//t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
 		//"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
 	};
@@ -134,7 +134,7 @@ namespace Belle {
             
             HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
             Vector3 Pt(l->px(),l->py(),0);
-            double Ptot = pStar(l->p(),elec,posi).vect().mag();
+            double Ptot = (l->p()).vect().mag();
             V=V-runIp;
             V.setZ(0.);
             
@@ -184,7 +184,7 @@ namespace Belle {
             }
         }
 
-        if (!(nevent%1000))std::cout<<nevent<<" k_s: " << k_s.size() << "; chisq/ndf = " << k_s_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<"Best k_s candidate's chisq/ndf = " << k_s_chisq << '\n';
 
         //Pi0 mesons
         std::vector<Particle>  pi0;
@@ -251,13 +251,13 @@ namespace Belle {
         setUserInfo(D0_b, 2); 
         combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
         setUserInfo(D0_b, 3);
-        combination (D0_b,ptype_D0B, k_p, pi_m, pi0, 0.06);
+        combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.06);
         setUserInfo(D0_b, 4);
         
         
         combination (D0_b,ptype_D0B, k_p, pi_m, pi0, pi_pm, 0.06);
         setUserInfo(D0_b, 5);
-        combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.06);
+        combination (D0_b,ptype_D0B, k_s, pi0, pi_pm, 0.06);
         setUserInfo(D0_b, 6);
         
         combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
@@ -266,7 +266,7 @@ namespace Belle {
         setUserInfo(D_m, 2);
         combination (D_m,ptype_Dm, k_s, pi_m, pi_pm, 0.05);
         setUserInfo(D_m, 3);
-        combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
+        combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
         setUserInfo(D_m, 4);
         
         doMassVertexFit(D0_b);
@@ -309,8 +309,8 @@ namespace Belle {
         
         if(D0_b.size()+D_m.size()==0) return;
         
-        if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
-        if (!(nevent%1000))std::cout<<nevent<<" d_m: " << D_m.size() << "; chisq/ndf = " << d_m_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<"Best D0_b candidate's chisq/ndf = " << d0_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<"Best D_m candidate's chisq/ndf = " << d_m_chisq << '\n';
         
         
                 
@@ -354,7 +354,7 @@ namespace Belle {
                 bufchisq = dst0_chisq;
             }
         }
-        if (!(nevent%1000))std::cout<<nevent<<" dst0_b: " << Dst0_b.size() << "; chisq/ndf = " << dst0_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<"Best Dst0_b candidate's chisq/ndf = " << dst0_chisq << '\n';
         
         
 
@@ -385,7 +385,7 @@ namespace Belle {
                 bufchisq = dstm_chisq;
             }
         }
-        if (!(nevent%1000))std::cout<<nevent<<" dst_m: " << Dst_m.size() << "; chisq/ndf = " << dstm_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<"Best Dst_m candidate's chisq/ndf = " << dstm_chisq << '\n';
         
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
@@ -533,7 +533,7 @@ namespace Belle {
                 int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                     dstch, dch;
-                double mD, mDst;
+                double mD, mDst, mPi_D, mPi_Dst, mK;
                     
                 if (tag<3)
                 {
@@ -541,6 +541,9 @@ namespace Belle {
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     dstch = -1;
                     mDst = -1;
+                    mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    mPi_D = ALamC.child(1).child(1).mass();
+                    mPi_Dst = -1; 
                 }
                 else
                 {
@@ -548,6 +551,11 @@ namespace Belle {
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    
+                    mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                    mPi_D = ALamC.child(1).child(0).child(1).mass();
+                    mPi_Dst = ALamC.child(1).child(1).mass();
+                    
                 }
                     
                
@@ -561,7 +569,9 @@ namespace Belle {
                 t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
                 t1 -> column("fox", fox);  
                 t1 -> column("ecms",pUPS.mag());
-                
+                t1 -> column("mk",mK);
+                t1 -> column("mpi_d",mPi_D);
+                t1 -> column("mpi_dst",mPi_Dst);
                 
                 /*
                 t1 -> column("lcch", lcch);
