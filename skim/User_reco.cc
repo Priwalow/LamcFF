@@ -78,11 +78,9 @@ namespace Belle {
         std::vector<Particle> p_p, p_m; 
         makeProton(p_p,p_m);
         
-
+        if(p_p.size()+p_m.size()=0) return; 
         
         if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
-        
-        
         
 
         //kaons and pions
@@ -278,7 +276,7 @@ namespace Belle {
             {
                 d0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
                 cout << d0_chisq << endl; 
-                if(d0_chisq > bufchisq)
+                if((d0_chisq<0) || (d0_chisq > bufchisq))
                 {
                     d0_chisq = bufchisq;
                     D0_b.erase(l); 
