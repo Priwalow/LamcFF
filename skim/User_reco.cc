@@ -320,7 +320,8 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         
         doVertexFit(L_b);
-        double recoil_chisq, bufchisq=1000000;
+        double recoil_chisq;
+        bufchisq=1000000;
         while(L_b.size()>1)
         {
             for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
