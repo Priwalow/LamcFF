@@ -236,7 +236,7 @@ namespace Belle {
         
         
         
-        cout << "Number of candodates: "<< p_p << " p; " << p_m.size() << " pbar; " << pi_p.size() << " pi+; " << pi_m.size() << " pi-; " << k_p.size() << " K+; " << k_m.size() << " K-; " << k_s.size() << " K_S; " << pi0.size() << " pi0; " << photons.size() << " photons; " << endl;
+        cout << "Number of candodates: "<< p_p.size() << " p; " << p_m.size() << " pbar; " << pi_p.size() << " pi+; " << pi_m.size() << " pi-; " << k_p.size() << " K+; " << k_m.size() << " K-; " << k_s.size() << " K_S; " << pi0.size() << " pi0; " << photons.size() << " photons; " << endl;
         
         
         std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
