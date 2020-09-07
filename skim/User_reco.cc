@@ -72,8 +72,13 @@ namespace Belle {
         //------------------------MAKE PARTICLE LISTINGS----------------------------------
         
         //protons
+        
+        cout << "Making protons!" << endl;
+        
         std::vector<Particle> p_p, p_m; 
         makeProton(p_p,p_m);
+        
+        cout << "protons ready!" << endl;
         
         if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
         
