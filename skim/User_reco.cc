@@ -98,10 +98,10 @@ namespace Belle {
         withPionId(pi_m,0.6,3,1,5,2,3);
         withPionId(pi_p,0.6,3,1,5,2,4);
         
-        eraseLeptons(k_p)
-        eraseLeptons(k_m)
-        eraseLeptons(pi_p)
-        eraseLeptons(pi_m)
+        eraseLeptons(k_p);
+        eraseLeptons(k_m);
+        eraseLeptons(pi_p);
+        eraseLeptons(pi_m);
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
@@ -559,7 +559,7 @@ namespace Belle {
         return tmp;
     }
     
-    eraseLeptons(std::vector<Particle> &list)
+    void eraseLeptons(std::vector<Particle> &list)
     {
         for(int i=0;i<(int)list.size();++i)
         {
