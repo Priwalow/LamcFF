@@ -268,7 +268,7 @@ namespace Belle {
         combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
         setUserInfo(D_m, 4);
         
-        cout << "Selecting D0_b" << endl;
+        cout << "Selecting D0_b among "<< D0_b.size() << " candidates" << endl;
         doMassVertexFit(D0_b);
         double d0_chisq;
         bufchisq=1000000;
@@ -289,7 +289,7 @@ namespace Belle {
         }
         if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
         
-        cout << "Selecting D_m" << endl;
+        cout << "Selecting D_m among "<< D_m.size() << " candidates" << endl;
         doMassVertexFit(D_m);
         double d_m_chisq;
         bufchisq=1000000;
@@ -324,7 +324,7 @@ namespace Belle {
         combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
         setUserInfo(Dst_m, 2);
         
-        cout << "Selecting Dst0_b" << endl;
+        cout << "Selecting Dst0_b among "<< Dst0_b.size() << " candidates" << endl;
         for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
         {
             Particle dst0b(*i);
@@ -356,7 +356,7 @@ namespace Belle {
         if (!(nevent%1000))std::cout<<nevent<<" dst0_b: " << Dst0_b.size() << "; chisq/ndf = " << dst0_chisq << '\n';
         
         
-        cout << "Selecting Dst_m" << endl;
+        cout << "Selecting Dst_m among "<< Dst_m.size() << " candidates" << endl;
         for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
         {
             Particle dstm(*i);
