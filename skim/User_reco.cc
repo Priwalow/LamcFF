@@ -123,7 +123,7 @@ namespace Belle {
             
             HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
             Vector3 Pt(l->px(),l->py(),0);
-            double Ptot = pStar(l->p(),elec,posi).vect().mag());
+            double Ptot = pStar(l->p(),elec,posi).vect().mag();
             V=V-runIp;
             V.setZ(0.);
             
@@ -162,7 +162,7 @@ namespace Belle {
         {
             for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
             {
-                k_s_chisq = dynamic_cast<UserInfo&>(l->userInfo()).chisq();
+                k_s_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
                 if(k_s_chisq > bufchisq)
                 {
                     k_s_chisq = bufchisq;
@@ -270,7 +270,7 @@ namespace Belle {
         {
             for(std::vector<Particle>::iterator l = Dst0_b.begin(); l!=Dst0_b.end(); ++l)
             {
-                dst0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).chisq();
+                dst0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
                 if(dst0_chisq > bufchisq)
                 {
                     dst0_chisq = bufchisq;
@@ -299,7 +299,7 @@ namespace Belle {
         {
             for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
             {
-                dstm_chisq = dynamic_cast<UserInfo&>(l->userInfo()).chisq();
+                dstm_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
                 if(dstm_chisq > bufchisq)
                 {
                     dstm_chisq = bufchisq;
@@ -323,7 +323,7 @@ namespace Belle {
         {
             for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
             {
-                recoil_chisq = dynamic_cast<UserInfo&>(l->userInfo()).chisq();
+                recoil_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
                 if(recoil_chisq > bufchisq)
                 {
                     recoil_chisq = bufchisq;
