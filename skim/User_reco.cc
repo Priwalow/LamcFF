@@ -286,6 +286,7 @@ namespace Belle {
                 }
                 bufchisq = d0_chisq;
             }
+            cout << D0_b.size() << endl; 
         }
         if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
         
