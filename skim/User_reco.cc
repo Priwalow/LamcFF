@@ -298,7 +298,7 @@ namespace Belle {
             for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
             {
                 d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if(d_m_chisq > bufchisq)
+                if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
                 {
                     d_m_chisq = bufchisq;
                     D_m.erase(l); 
@@ -343,7 +343,7 @@ namespace Belle {
             for(std::vector<Particle>::iterator l = Dst0_b.begin(); l!=Dst0_b.end(); ++l)
             {
                 dst0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if(dst0_chisq > bufchisq)
+                if((dst0_chisq < 0) || (dst0_chisq > bufchisq))
                 {
                     dst0_chisq = bufchisq;
                     Dst0_b.erase(l); 
@@ -375,7 +375,7 @@ namespace Belle {
             for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
             {
                 dstm_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if(dstm_chisq > bufchisq)
+                if((dstm_chisq < 0) || (dstm_chisq > bufchisq))
                 {
                     dstm_chisq = bufchisq;
                     Dst_m.erase(l); 
@@ -402,7 +402,7 @@ namespace Belle {
             for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
             {
                 recoil_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if(recoil_chisq > bufchisq)
+                if((recoil_chisq<0) || (recoil_chisq > bufchisq))
                 {
                     recoil_chisq = bufchisq;
                     L_b.erase(l); 
