@@ -123,7 +123,7 @@ namespace Belle {
         
         
 
-        cout << "Making K_S meson" << endl;
+
         //Ks mesons
         std::vector<Particle> k_s;
         makeKs(k_s);
@@ -188,13 +188,10 @@ namespace Belle {
                 bufchisq = k_s_chisq;
             }
         }
-        cout << "K_S meson is ready" << endl;
+
         if (!(nevent%1000))std::cout<<nevent<<" k_s: " << k_s.size() << "; chisq/ndf = " << k_s_chisq << '\n';
 
         //Pi0 mesons
-        
-        cout << "Making pi0 mesons" << endl;
-        
         std::vector<Particle>  pi0;
         makePi0(pi0);
         
@@ -213,8 +210,8 @@ namespace Belle {
         */
         if (!(nevent%1000))std::cout<<nevent<<" npi0: " << pi0.size() << '\n';
         
-        cout << "pi0 mesons are ready" << endl;
-        cout << "making photons" << endl;
+
+
         //photons
         std::vector<Particle> photons;
         Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
@@ -235,7 +232,7 @@ namespace Belle {
                 photons.push_back(prtcl);
             }
         }
-         cout << "photons are ready" << endl;
+   
         
         if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
         
@@ -245,7 +242,7 @@ namespace Belle {
         //######################################    TAG SIDE
         combination (pi_pm, ptype_D0B, pi_p, pi_m);
         
-        
+        cout << "Making D0_b" << endl;
         combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
         setUserInfo(D0_b, 1); 
         combination (D0_b,ptype_D0B, k_p, pi_m, pi_pm, 0.05);
@@ -261,6 +258,7 @@ namespace Belle {
         combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.06);
         setUserInfo(D0_b, 6);
         
+        cout << "Making D_m" << endl;
         combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
         setUserInfo(D_m, 1);
         combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
@@ -270,6 +268,7 @@ namespace Belle {
         combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
         setUserInfo(D_m, 4);
         
+        cout << "Selecting D0_b" << endl;
         doMassVertexFit(D0_b);
         double d0_chisq;
         bufchisq=1000000;
@@ -290,7 +289,7 @@ namespace Belle {
         }
         if (!(nevent%1000))std::cout<<nevent<<" d0_b: " << D0_b.size() << "; chisq/ndf = " << d0_chisq << '\n';
         
-        
+        cout << "Selecting D_m" << endl;
         doMassVertexFit(D_m);
         double d_m_chisq;
         bufchisq=1000000;
@@ -313,18 +312,19 @@ namespace Belle {
         
         
                 
-        
+        cout << "Making Dst0_b" << endl;
         combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
         setUserInfo(Dst0_b, 1);
         combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.2);
         setUserInfo(Dst0_b, 2);
         
+        cout << "Making Dst_m" << endl;
         combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
         setUserInfo(Dst_m, 1);
         combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
         setUserInfo(Dst_m, 2);
         
-        
+        cout << "Selecting Dst0_b" << endl;
         for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
         {
             Particle dst0b(*i);
@@ -356,7 +356,7 @@ namespace Belle {
         if (!(nevent%1000))std::cout<<nevent<<" dst0_b: " << Dst0_b.size() << "; chisq/ndf = " << dst0_chisq << '\n';
         
         
-        
+        cout << "Selecting Dst_m" << endl;
         for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
         {
             Particle dstm(*i);
@@ -387,7 +387,7 @@ namespace Belle {
         }
         if (!(nevent%1000))std::cout<<nevent<<" dst_m: " << Dst_m.size() << "; chisq/ndf = " << dstm_chisq << '\n';
         
-        
+        cout << "Making recoil" << endl;
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
         combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
@@ -414,7 +414,7 @@ namespace Belle {
         }
         
         if (!(nevent%1000))std::cout<<nevent<<" recoil candidates: " << L_b.size() << "; chisq/ndf = " << recoil_chisq << '\n';
-        
+        cout << "Selecting events" << endl;
         for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
         {
             Particle &ALamC=*a;
