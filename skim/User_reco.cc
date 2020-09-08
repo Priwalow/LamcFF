@@ -118,65 +118,15 @@ namespace Belle {
         makeKs(k_s);
         for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
         {
-            if (abs(l->mass()-0.4976)>0.0075)
-            {   
-                k_s.erase(l); 
-                --l;
-                continue;
-            }
-            
             HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
-            Vector3 Pt(l->px(),l->py(),0);
-            double Ptot = (l->p()).vect().mag();
+            Vector3 P(l->px(),l->py(),0);
             V=V-runIp;
             V.setZ(0.);
-            
-            if (Ptot<0.5)
-            {
-                if(V.angle(Pt)>0.3 || l->mdstVee2().z_dist()>0.8)
-                {
-                    k_s.erase(l); 
-                    --l;
-                    continue;
-                }
-            }
-                else if (Ptot<1.5)
-                {
-                    if(V.perp()<0.08 || V.angle(Pt)>0.1 || l->mdstVee2().z_dist()>1.8)
-                    {
-                        k_s.erase(l); 
-                        --l;
-                        continue;
-                    }
-                }
-                    else 
-                    {
-                        if(V.perp()<0.22 || V.angle(Pt)>0.03 || l->mdstVee2().z_dist()>2.4)
-                        {
-                            k_s.erase(l); 
-                            --l;
-                            continue;
-                        }
-                    }
-                
+            if (abs(l->mass()-0.4976)>0.015 || V.perp()<0.1 ||
+            V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
+            k_s.erase(l); --l;
         }
-        doMassVertexFit(k_s);
-        double k_s_chisq, bufchisq=1000000;
-        while(k_s.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
-            {
-                k_s_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if((k_s_chisq<0) || (k_s_chisq > bufchisq))
-                {
-                    k_s.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = k_s_chisq;
-            }
-        }
-
+        //doMassVertexFit(k_s);
 
 
         //Pi0 mesons
@@ -252,44 +202,9 @@ namespace Belle {
         combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
         setUserInfo(D_m, 4);
         
-        doMassVertexFit(D0_b);
-        double d0_chisq;
-        bufchisq=1000000;
-        while(D0_b.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = D0_b.begin(); l!=D0_b.end(); ++l)
-            {
-                d0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-               
-                if((d0_chisq<0) || (d0_chisq > bufchisq))
-                {
-                    D0_b.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = d0_chisq;
-            }
-        
-        }
+        //doMassVertexFit(D0_b);
+        //doMassVertexFit(D_m);
 
-        doMassVertexFit(D_m);
-        double d_m_chisq;
-        bufchisq=1000000;
-        while(D_m.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
-            {
-                d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
-                {
-                    D_m.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = d_m_chisq;
-            }
-        }
-        
         if(D0_b.size()+D_m.size()==0) return;
     
 
@@ -303,64 +218,30 @@ namespace Belle {
         setUserInfo(Dst_m, 1);
         combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
         setUserInfo(Dst_m, 2);
-        
 
         for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
         {
             Particle dst0b(*i);
-            if(abs(dst0b.mass()-dst0b.child(0).mass())>0.025)
+            if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
             {
                 Dst0_b.erase(i); 
                 --i;
             }
         }
         
-        doMassVertexFit(Dst0_b);
-        double dst0_chisq;
-        bufchisq=1000000;
-        while(Dst0_b.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = Dst0_b.begin(); l!=Dst0_b.end(); ++l)
-            {
-                dst0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if((dst0_chisq < 0) || (dst0_chisq > bufchisq))
-                {
-                    Dst0_b.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = dst0_chisq;
-            }
-        }
+        //doMassVertexFit(Dst0_b);
         
         for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
         {
             Particle dstm(*i);
-            if(abs(dstm.mass()-dstm.child(0).mass())>0.025)
+            if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
             {
                 Dst_m.erase(i); 
                 --i;
             }
         }
         
-        doMassVertexFit(Dst_m);
-        double dstm_chisq;
-        bufchisq=1000000;
-        while(Dst_m.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
-            {
-                dstm_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if((dstm_chisq < 0) || (dstm_chisq > bufchisq))
-                {
-                    Dst_m.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = dstm_chisq;
-            }
-        }
-
+        //doMassVertexFit(Dst_m);
         
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
@@ -369,25 +250,6 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         
         if (L_b.size()+L_.size()==0) return; 
-        
-        doVertexFit(L_b);
-        double recoil_chisq;
-        bufchisq=1000000;
-        while(L_b.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
-            {
-                recoil_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if((recoil_chisq < 0) || (recoil_chisq > bufchisq))
-                {
-                    L_b.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = recoil_chisq;
-            }
-        }
-        
 
         for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
         {
@@ -634,6 +496,24 @@ namespace Belle {
             }
         }
     }
-    
-    
+        
+    /* FOR CHOOSING BEST CHI SQUARED 
+     * double d_m_chisq;
+        bufchisq=1000000;
+        while(D_m.size()>1)
+        {
+            for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
+            {
+                d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+                if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
+                {
+                    D_m.erase(l); 
+                    --l;
+                    continue;
+                }
+                bufchisq = d_m_chisq;
+            }
+        }
+     * 
+     */
 }
