@@ -533,29 +533,26 @@ namespace Belle {
 
                 int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                    dstch, dch;
-                double mD, mDst, mPi_D, mPi_Dst, mK;
+                    dstch=-1, dch;
+                double mD=-1, mDst=-1, mPi_D=-1, mPi_Dst=-1, mK=-1;
                     
                 if (tag<3)
                 {
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    dstch = -1;
-                    mDst = -1;
-                    mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    mPi_D = ALamC.child(1).child(1).mass();
-                    mPi_Dst = -1; 
+                //    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                 //   mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                 //   mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                //    mPi_D = ALamC.child(1).child(1).mass();
                 }
                 else
                 {
-                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                 //   dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                 //   mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                 //   dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                 //   mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     
-                    mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    mPi_D = ALamC.child(1).child(0).child(1).mass();
-                    mPi_Dst = ALamC.child(1).child(1).mass();
+                 //   mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                 //   mPi_D = ALamC.child(1).child(0).child(1).mass();
+                 //   mPi_Dst = ALamC.child(1).child(1).mass();
                     
                 }
                     
