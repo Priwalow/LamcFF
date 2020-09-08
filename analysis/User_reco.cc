@@ -231,7 +231,7 @@ namespace Belle {
         
         if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
         
-		std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
+	std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
 		
         setUserInfo(D0, 0); 
         setUserInfo(D0_b, 0); 
@@ -242,7 +242,7 @@ namespace Belle {
         setUserInfo(Dst0, 0); 
         setUserInfo(Dst0_b, 0); 
 		
-		//######################################    TAG SIDE
+	//######################################    TAG SIDE
         combination (pi_pm, ptype_D0B, pi_p, pi_m);
         
         combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
@@ -269,7 +269,7 @@ namespace Belle {
         combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
         setUserInfo(D_m, 4);
         
-        doMassVertexFit(D0_b);
+        /*doMassVertexFit(D0_b);
         double d0_chisq;
         bufchisq=1000000;
         while(D0_b.size()>1)
@@ -311,7 +311,7 @@ namespace Belle {
         
         if (!(nevent%1000))std::cout<<nevent<<"Best D0_b candidate's chisq/ndf = " << d0_chisq << '\n';
         if (!(nevent%1000))std::cout<<nevent<<"Best D_m candidate's chisq/ndf = " << d_m_chisq << '\n';
-        
+        */
         
                 
 
@@ -338,7 +338,7 @@ namespace Belle {
         }
         
         doMassVertexFit(Dst0_b);
-        double dst0_chisq;
+        /*double dst0_chisq;
         bufchisq=1000000;
         while(Dst0_b.size()>1)
         {
@@ -355,7 +355,7 @@ namespace Belle {
             }
         }
         if (!(nevent%1000))std::cout<<nevent<<"Best Dst0_b candidate's chisq/ndf = " << dst0_chisq << '\n';
-        
+        */
         
 
         for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
@@ -369,7 +369,7 @@ namespace Belle {
         }
         
         doMassVertexFit(Dst_m);
-        double dstm_chisq;
+        /*double dstm_chisq;
         bufchisq=1000000;
         while(Dst_m.size()>1)
         {
@@ -386,6 +386,7 @@ namespace Belle {
             }
         }
         if (!(nevent%1000))std::cout<<nevent<<"Best Dst_m candidate's chisq/ndf = " << dstm_chisq << '\n';
+	*/
         
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
@@ -397,7 +398,7 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         setUserInfo(L_b, 4);
         
-        doVertexFit(L_b);
+        /*doVertexFit(L_b);
         double recoil_chisq;
         bufchisq=1000000;
         while(L_b.size()>1)
@@ -416,7 +417,7 @@ namespace Belle {
         }
         
         if (L_b.size()+L_.size()==0) return; 
-        if (!(nevent%1000))std::cout<<nevent<<"Best recoil candidate's chisq/ndf = " << recoil_chisq << '\n';
+        if (!(nevent%1000))std::cout<<nevent<<"Best recoil candidate's chisq/ndf = " << recoil_chisq << '\n';*/
         
         
      /*   //######################################   SIGNAL SIDE
