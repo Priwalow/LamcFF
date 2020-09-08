@@ -539,9 +539,11 @@ namespace Belle {
                 if (tag<3)
                 {
                   dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                   mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                   mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                   mPi_D = ALamC.child(1).child(1).mass();
+                  // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                  // mK = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                  mPi_D = ALamC.child(1).child(1).mass();
+		  mD = ALamC.child(1).mass();
+	          mK = ALamC.child(1).child(0).mass();
                 }
                 else
                 {
