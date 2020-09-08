@@ -548,7 +548,7 @@ namespace Belle {
                 else
                 {
                   dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                  mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                 // mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                   dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                  //   mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                   mD = ALamC.child(1).child(0).mass();
