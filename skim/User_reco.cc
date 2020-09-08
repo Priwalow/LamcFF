@@ -124,7 +124,7 @@ namespace Belle {
             V.setZ(0.);
             if (abs(l->mass()-0.4976)>0.015 || V.perp()<0.1 ||
             V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
-            k_s.erase(l); --l;
+            k_s.erase(l); --l;}
         }
         //doMassVertexFit(k_s);
 
@@ -267,7 +267,7 @@ namespace Belle {
         if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
         
     }
-    
+   
     
     void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
     {
