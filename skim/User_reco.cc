@@ -176,31 +176,31 @@ namespace Belle {
         
         
         //######################################    TAG SIDE
-        combination (pi_pm, ptype_D0B, pi_p, pi_m);
-        
-        combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
-        setUserInfo(D0_b, 1); 
-        combination (D0_b,ptype_D0B, k_p, pi_m, pi_pm, 0.05);
-        setUserInfo(D0_b, 2); 
-        combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
-        setUserInfo(D0_b, 3);
-        combination (D0_b,ptype_D0B, k_p, pi_m, pi0, 0.06);
-        setUserInfo(D0_b, 4);
-        
-        
-        combination (D0_b,ptype_D0B, k_p, pi_m, pi0, pi_pm, 0.06);
-        setUserInfo(D0_b, 5);
-        combination (D0_b,ptype_D0B, k_s, pi_pm, pi0, 0.06);
-        setUserInfo(D0_b, 6);
-        
-        combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
-        setUserInfo(D_m, 1);
-        combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
-        setUserInfo(D_m, 2);
-        combination (D_m,ptype_Dm, k_s, pi_m, pi_pm, 0.05);
-        setUserInfo(D_m, 3);
-        combination (D_m,ptype_Dm, k_p, k_m, pi_m, 0.05);
-        setUserInfo(D_m, 4);
+            combination (pi_pm, ptype_D0B, pi_p, pi_m);
+            
+            combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
+            setUserInfo(D0_b, 1); 
+            combination (D0_b,ptype_D0B, k_p, pi_pm, pi_m, 0.05);
+            setUserInfo(D0_b, 2); 
+            combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
+            setUserInfo(D0_b, 3);
+            combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.06);
+            setUserInfo(D0_b, 4);
+            
+            
+            combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_pm, 0.06);
+            setUserInfo(D0_b, 5);
+            combination (D0_b,ptype_D0B, k_s, pi0, pi_pm, 0.06);
+            setUserInfo(D0_b, 6);
+            
+            combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
+            setUserInfo(D_m, 1);
+            combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
+            setUserInfo(D_m, 2);
+            combination (D_m,ptype_Dm, k_s, pi_pm, pi_m, 0.05);
+            setUserInfo(D_m, 3);
+            combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
+            setUserInfo(D_m, 4);
         
         //doMassVertexFit(D0_b);
         //doMassVertexFit(D_m);
