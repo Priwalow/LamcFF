@@ -77,7 +77,7 @@ namespace Belle {
         
         if(p_p.size()+p_m.size()==0) return; 
         
-
+        
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -99,20 +99,20 @@ namespace Belle {
         withPionId(pi_p,0.6,3,1,5,2,3);
         withPionId(pi_p,0.6,3,1,5,2,4);
         withPionId(pi_m,0.6,3,1,5,2,3);
-        withPionId(pi_p,0.6,3,1,5,2,4);
+        withPionId(pi_m,0.6,3,1,5,2,4);
         
-        eraseLeptons(k_p);
-        eraseLeptons(k_m);
-        eraseLeptons(pi_p);
-        eraseLeptons(pi_m);
+        // eraseLeptons(k_p);
+        // eraseLeptons(k_m);
+        // eraseLeptons(pi_p);
+        // eraseLeptons(pi_m);
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
             pions.push_back(*l);
         
-
-
+        
+        
         //Ks mesons
         std::vector<Particle> k_s;
         makeKs(k_s);
@@ -123,59 +123,61 @@ namespace Belle {
             V=V-runIp;
             V.setZ(0.);
             if (abs(l->mass()-0.4976)>0.015 || V.perp()<0.1 ||
-            V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
-            k_s.erase(l); --l;}
+                V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
+                k_s.erase(l); --l;}
         }
         //doMassVertexFit(k_s);
-
-
+        
+        
         //Pi0 mesons
         std::vector<Particle>  pi0;
         makePi0(pi0);
         
         for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
-        if(abs(i->mdstPi0().mass()-.135)>0.015)
-        {pi0.erase(i); --i;}
+            if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
+                i->mdstPi0().gamma(1).ecl().energy()<0.05||
+                abs(i->mdstPi0().mass()-.135)>0.015)
+            {pi0.erase(i); --i;}
             
-        //leptons    
-       /* std::vector<Particle>  e_p,e_m,mu_p,mu_m;
-        makeLepton(e_p,e_m,mu_p,mu_m);
-        
-        withMuId(mu_p);
-        withMuId(mu_m);
-        withEId(e_p);
-        withEId(e_m);
-        */
-
-        
-
-
-        //photons
-        std::vector<Particle> photons;
-        Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
-        for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
-        {
-            Particle prtcl(*it);
-            bool gam_from_pi0 = false;
-            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+            //leptons    
+            /* std::vector<Particle>  e_p,e_m,mu_p,mu_m;
+             *        makeLepton(e_p,e_m,mu_p,mu_m);
+             *        
+             *        withMuId(mu_p);
+             *        withMuId(mu_m);
+             *        withEId(e_p);
+             *        withEId(e_m);
+             */
+            
+            
+            
+            
+            //photons
+            std::vector<Particle> photons;
+            Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
+            for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
             {
-                if (checkSame(*it,*pi))
+                Particle prtcl(*it);
+                bool gam_from_pi0 = false;
+                for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
                 {
-                    gam_from_pi0 = true;
-                    break;
+                    if (checkSame(*it,*pi))
+                    {
+                        gam_from_pi0 = true;
+                        break;
+                    }
+                }
+                if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
+                {
+                    photons.push_back(prtcl);
                 }
             }
-            if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
-            {
-                photons.push_back(prtcl);
-            }
-        }
-        
-        
-        std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
-        
-        
-        //######################################    TAG SIDE
+            
+            
+            std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
+            
+            
+            //######################################    TAG SIDE
             combination (pi_pm, ptype_D0B, pi_p, pi_m);
             
             combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
@@ -201,74 +203,76 @@ namespace Belle {
             setUserInfo(D_m, 3);
             combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
             setUserInfo(D_m, 4);
-        
-        //doMassVertexFit(D0_b);
-        //doMassVertexFit(D_m);
-
-        if(D0_b.size()+D_m.size()==0) return;
-
-        combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
-        setUserInfo(Dst0_b, 1);
-        combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.2);
-        setUserInfo(Dst0_b, 2);
-        
-
-        combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
-        setUserInfo(Dst_m, 1);
-        combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
-        setUserInfo(Dst_m, 2);
-        
-        for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
-        {
-            Particle dst0b(*i);
-            if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
-            {
-                Dst0_b.erase(i); 
-                --i;
-            }
-        }
-        
-        //doMassVertexFit(Dst0_b);
-        
-        for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
-        {
-            Particle dstm(*i);
-            if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
-            {
-                Dst_m.erase(i); 
-                --i;
-            }
-        }
-        
-        //doMassVertexFit(Dst_m);
-        
-        if ((!(nevent%100)) || (Dst_m.size() + Dst0_b.size()>0) )std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() << "; Dst_m = " << Dst_m.size() <<'\n';
-        
-        std::vector <Particle> L_, L_b;
-        combination (L_b,ptype_Lamc, p_m, D0_b);
-        combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
-        combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
-        combination (L_b,ptype_Lamc, p_m, Dst0_b);
-        
-        if (L_b.size()+L_.size()==0) return; 
-
-        for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
-        {
-            Particle &ALamC=*a;
             
-            HepLorentzVector momentum=ALamC.p();
-            //       std::cout <<"a1\n";
-            // final selection 
-          
+            //doMassVertexFit(D0_b);
+            //doMassVertexFit(D_m);
             
-            if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
-            {*status=1; skimmed++; return;}
-        }
-        
-        if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
-        
+            if(D0_b.size()+D_m.size()==0) return;
+            
+            combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
+            setUserInfo(Dst0_b, 1);
+            combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.2);
+            setUserInfo(Dst0_b, 2);
+            
+            
+            combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
+            setUserInfo(Dst_m, 1);
+            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
+            setUserInfo(Dst_m, 2);
+            
+            for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+            {
+                Particle dst0b(*i);
+                if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
+                {
+                    Dst0_b.erase(i); 
+                    --i;
+                }
+            }
+            
+            //doMassVertexFit(Dst0_b);
+            
+            for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+            {
+                Particle dstm(*i);
+                if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
+                {
+                    Dst_m.erase(i); 
+                    --i;
+                }
+            }
+            
+            //doMassVertexFit(Dst_m);
+            
+            if (!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() << "; Dst_m = " << Dst_m.size() <<'\n';
+            
+            std::vector <Particle> L_, L_b;
+            combination (L_b,ptype_Lamc, p_m, D0_b);
+            combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
+            combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
+            combination (L_b,ptype_Lamc, p_m, Dst0_b);
+            
+            if (L_b.size()+L_.size()==0) return; 
+            
+            for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
+            {
+                Particle &ALamC=*a;
+                
+                HepLorentzVector momentum=ALamC.p();
+                //       std::cout <<"a1\n";
+                // final selection 
+                
+                
+                if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
+                {*status=1; skimmed++; return;}
+            }
+            
+            
+            if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
+            
+            
     }
-   
+    
     
     void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
     {
@@ -497,24 +501,24 @@ namespace Belle {
             }
         }
     }
-        
+    
     /* FOR CHOOSING BEST CHI SQUARED 
      * double d_m_chisq;
-        bufchisq=1000000;
-        while(D_m.size()>1)
-        {
-            for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
-            {
-                d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-                if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
-                {
-                    D_m.erase(l); 
-                    --l;
-                    continue;
-                }
-                bufchisq = d_m_chisq;
-            }
-        }
-     * 
-     */
+     *        bufchisq=1000000;
+     *        while(D_m.size()>1)
+     *        {
+     *            for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
+     *            {
+     *                d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
+     *                if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
+     *                {
+     *                    D_m.erase(l); 
+     *                    --l;
+     *                    continue;
+}
+bufchisq = d_m_chisq;
+}
+}
+* 
+*/
 }
