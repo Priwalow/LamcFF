@@ -125,49 +125,16 @@ namespace Belle {
         makeKs(k_s);
         for(std::vector<Particle>::iterator l = k_s.begin(); l!=k_s.end(); ++l)
         {
-            if (abs(l->mass()-0.4976)>0.0075)
-            {   
-                k_s.erase(l); 
-                --l;
-                continue;
-            }
-            
             HepPoint3D V(l->mdstVee2().vx(),l->mdstVee2().vy(),0);
-            Vector3 Pt(l->px(),l->py(),0);
-            double Ptot = (l->p()).vect().mag();
+            Vector3 P(l->px(),l->py(),0);
             V=V-runIp;
             V.setZ(0.);
-            
-            if (Ptot<0.5)
-            {
-                if(V.angle(Pt)>0.3 || l->mdstVee2().z_dist()>0.8)
-                {
-                    k_s.erase(l); 
-                    --l;
-                    continue;
-                }
-            }
-            else if (Ptot<1.5)
-            {
-                if(V.perp()<0.08 || V.angle(Pt)>0.1 || l->mdstVee2().z_dist()>1.8)
-                {
-                    k_s.erase(l); 
-                    --l;
-                    continue;
-                }
-            }
-            else 
-            {
-                if(V.perp()<0.22 || V.angle(Pt)>0.03 || l->mdstVee2().z_dist()>2.4)
-                {
-                    k_s.erase(l); 
-                    --l;
-                    continue;
-                }
-            }
-            
+            if (abs(l->mass()-0.4976)>0.015 || V.perp()<0.1 ||
+            V.angle(P)>0.01 || l->mdstVee2().z_dist()>10. ) {
+            k_s.erase(l); --l;}
         }
         doMassVertexFit(k_s);
+        
         double k_s_chisq, bufchisq=1000000;
         while(k_s.size()>1)
         {
@@ -207,26 +174,26 @@ namespace Belle {
             
             
             
-            //photons
-            std::vector<Particle> photons;
-            Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
-            for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
+        //photons
+        std::vector<Particle> photons;
+        Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
+        for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
+        {
+            Particle prtcl(*it);
+            bool gam_from_pi0 = false;
+            for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
             {
-                Particle prtcl(*it);
-                bool gam_from_pi0 = false;
-                for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
+                if (checkSame(*it,*pi))
                 {
-                    if (checkSame(*it,*pi))
-                    {
-                        gam_from_pi0 = true;
-                        break;
-                    }
-                }
-                if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
-                {
-                    photons.push_back(prtcl);
+                    gam_from_pi0 = true;
+                    break;
                 }
             }
+            if  ( (prtcl.e()>0.05) && (!gam_from_pi0) )
+            {
+                photons.push_back(prtcl);
+            }
+        
             
             
             if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';

@@ -206,7 +206,8 @@ namespace Belle {
         //doMassVertexFit(D_m);
 
         if(D0_b.size()+D_m.size()==0) return;
-    
+        
+        if (!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar" << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << '\n';
 
         combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
         setUserInfo(Dst0_b, 1);
