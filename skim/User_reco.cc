@@ -219,7 +219,7 @@ namespace Belle {
         setUserInfo(Dst_m, 2);
 
         
-        if ((!(nevent%100)) || (Dst_m.size() + Dst0_b.size()>0) )std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() "; Dst_m = " << Dst_m.size() <<'\n';
+        if ((!(nevent%100)) || (Dst_m.size() + Dst0_b.size()>0) )std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() << "; Dst_m = " << Dst_m.size() <<'\n';
         
         for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
         {
