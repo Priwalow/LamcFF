@@ -193,7 +193,7 @@ namespace Belle {
             {
                 photons.push_back(prtcl);
             }
-        
+        }
             
             
             if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
