@@ -181,37 +181,56 @@ namespace Belle {
             combination (pi_pm, ptype_D0B, pi_p, pi_m);
             
             combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
+            combination (D0,ptype_D0, k_m, pi_p, 0.06);
             setUserInfo(D0_b, 1); 
+            setUserInfo(D0, 1); 
             combination (D0_b,ptype_D0B, k_p, pi_pm, pi_m, 0.05);
+            combination (D0,ptype_D0, k_m, pi_pm, pi_p, 0.05);
             setUserInfo(D0_b, 2); 
+            setUserInfo(D0, 2); 
             combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
+            combination (D0,ptype_D0, k_s, pi_pm, 0.05);
             setUserInfo(D0_b, 3);
+            setUserInfo(D0, 3); 
             combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.06);
+            combination (D0,ptype_D0, k_m, pi0, pi_p,  0.06);
             setUserInfo(D0_b, 4);
-            
+            setUserInfo(D0, 4); 
             
             combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_pm, 0.06);
+            combination (D0,ptype_D0, k_m, pi0, pi_p, pi_pm, 0.06);
             setUserInfo(D0_b, 5);
+            setUserInfo(D0, 5);
             combination (D0_b,ptype_D0B, k_s, pi0, pi_pm, 0.06);
+            combination (D0,ptype_D0, k_s, pi0, pi_pm, 0.06);
             setUserInfo(D0_b, 6);
+            setUserInfo(D0, 6);
             
             combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_m, pi_p, pi_p, 0.05);
             setUserInfo(D_m, 1);
+            setUserInfo(D_p, 1);
             combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_s, pi_p, 0.05);
             setUserInfo(D_m, 2);
+            setUserInfo(D_p, 2);
             combination (D_m,ptype_Dm, k_s, pi_pm, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_s, pi_pm, pi_p, 0.05);
             setUserInfo(D_m, 3);
+            setUserInfo(D_p, 3);
             combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
+            combination (D_p,ptype_Dp, k_m, pi_p, k_p, 0.05);
             setUserInfo(D_m, 4);
+            setUserInfo(D_p, 4);
             
             //doMassVertexFit(D0_b);
             //doMassVertexFit(D_m);
             
-            if(D0_b.size()+D_m.size()==0) return;
+            if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
             
-            combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
+            combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.2);
             setUserInfo(Dst0_b, 1);
-            combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.2);
+            combination (Dst0_b,ptype_DstB, D0_b, photons, 0.2);
             setUserInfo(Dst0_b, 2);
             
             
@@ -244,13 +263,53 @@ namespace Belle {
             
             //doMassVertexFit(Dst_m);
             
-            if (!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() << "; Dst_m = " << Dst_m.size() <<'\n';
+            combination (Dst0,ptype_Dst0, D0, pi0, 0.2);
+            setUserInfo(Dst0, 1);
+            combination (Dst0,ptype_Dst0, D0, photons, 0.2);
+            setUserInfo(Dst0, 2);
+            
+            
+            combination (Dst_p,ptype_Dstp, D0, pi_p, 0.2);
+            setUserInfo(Dst_p, 1);
+            combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
+            setUserInfo(Dst_p, 2);
+            
+            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+            {
+                Particle dst0(*i);
+                if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
+                {
+                    Dst0.erase(i); 
+                    --i;
+                }
+            }
+            
+            //doMassVertexFit(Dst0);
+            
+            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+            {
+                Particle dstp(*i);
+                if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
+                {
+                    Dst_p.erase(i); 
+                    --i;
+                }
+            }
+            
+            //doMassVertexFit(Dst_p);
+            
+            if (!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() <<'\n';
             
             std::vector <Particle> L_, L_b;
             combination (L_b,ptype_Lamc, p_m, D0_b);
             combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
             combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
             combination (L_b,ptype_Lamc, p_m, Dst0_b);
+            
+            combination (L_,ptype_ALamc, p_p, D0);
+            combination (L_,ptype_ALamc, p_p, D_p, pi_m);
+            combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
+            combination (L_,ptype_ALamc, p_p, Dst0);
             
             if (L_b.size()+L_.size()==0) return; 
             
@@ -267,6 +326,18 @@ namespace Belle {
                 {*status=1; skimmed++; return;}
             }
             
+            for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
+            {
+                Particle &ALamC=*a;
+                
+                HepLorentzVector momentum=ALamC.p();
+                //       std::cout <<"a1\n";
+                // final selection 
+                
+                
+                if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
+                {*status=1; skimmed++; return;}
+            }
             
             if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
             
