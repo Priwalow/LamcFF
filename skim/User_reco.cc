@@ -217,9 +217,6 @@ namespace Belle {
         setUserInfo(Dst_m, 1);
         combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
         setUserInfo(Dst_m, 2);
-
-        
-        if ((!(nevent%100)) || (Dst_m.size() + Dst0_b.size()>0) )std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() << "; Dst_m = " << Dst_m.size() <<'\n';
         
         for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
         {
@@ -245,7 +242,7 @@ namespace Belle {
         
         //doMassVertexFit(Dst_m);
         
-        
+        if ((!(nevent%100)) || (Dst_m.size() + Dst0_b.size()>0) )std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0bar = " << D0_b.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0_b = " << Dst0_b.size() << "; Dst_m = " << Dst_m.size() <<'\n';
         
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
