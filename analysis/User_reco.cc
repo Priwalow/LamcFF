@@ -491,27 +491,38 @@ namespace Belle {
                     dstch=-1, dch;
                     double mD=-1, mDst=-1, mPi0_D=-1, mPi0_Dst=-1, mKs=-1;
                     
+                    cout << "Selected!" << endl;
+                    
                     if (tag<3)
                     {
+                        cout << "Saving D channel" << endl;
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                         // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                        cout << "Saving mD" << endl;
                         mD = ALamC.child(1).mass();
                         //mKs = ALamC.child(1).child(0).mass();
-                       
+                        cout << "Saving mpi0 from D" << endl;
                         if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
+                        cout << "Saving mKs" << endl;
                         if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     }
                     else
                     {
+                        cout << "Saving Dst channel" << endl;
                         dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                        cout << "Saving mDst" << endl;
                         mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                        cout << "Saving D channel" << endl;
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                         cout << "Saving mD" << endl;
                         //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                         mD = ALamC.child(1).child(0).mass();
-
-                        if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
                         
+                         cout << "Saving mpi0 from Dst" << endl;
+                        if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
+                        cout << "Saving mpi0 from D" << endl;
                         if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
+                        cout << "Saving mKs" << endl;
                         if( (((dch==3) || (dch==6)) && (tag==4)) ||  (((dch==2) || (dch==3)) && (tag==3)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                         
                         //mKs = ALamC.child(1).child(0).child(0).mass();   
