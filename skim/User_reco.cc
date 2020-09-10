@@ -298,8 +298,6 @@ namespace Belle {
             
             //doMassVertexFit(Dst_p);
             
-            if (!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() <<'\n';
-            
             std::vector <Particle> L_, L_b;
             combination (L_b,ptype_Lamc, p_m, D0_b);
             combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
@@ -311,7 +309,9 @@ namespace Belle {
             combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
             combination (L_,ptype_ALamc, p_p, Dst0);
             
-            if (L_b.size()+L_.size()==0) return; 
+            if (L_b.size()+L_.size()==0) return;
+            
+            if (!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
             
             for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
             {
