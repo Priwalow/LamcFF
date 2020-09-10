@@ -323,7 +323,7 @@ namespace Belle {
             
             doMassVertexFit(Dst_p);
             
-            std::vector <Particle> L_, L_b;
+            std::vector <Particle> L_, L_b, RecoilCandidates;
             combination (L_b,ptype_Lamc, p_m, D0_b);
             setUserInfo(L_b, 1);
             combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
@@ -332,6 +332,24 @@ namespace Belle {
             setUserInfo(L_b, 3);
             combination (L_b,ptype_Lamc, p_m, Dst0_b);
             setUserInfo(L_b, 4);
+            
+            combination (L_,ptype_ALamc, p_p, D0);
+            setUserInfo(L_, 1);
+            combination (L_,ptype_ALamc, p_p, D_p, pi_m);
+            setUserInfo(L_, 2);
+            combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
+            setUserInfo(L_, 3);
+            combination (L_,ptype_ALamc, p_p, Dst0);
+            setUserInfo(L_, 4);
+            
+            
+            
+            for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
+                RecoilCandidates.push_back(*l);
+            for(std::vector<Particle>::iterator l = L_.begin(); l!=L_.end(); ++l)
+                RecoilCandidates.push_back(*l);
+
+            
             
             /*doVertexFit(L_b);
              *       double recoil_chisq;
@@ -410,7 +428,7 @@ namespace Belle {
              *       combination(A,ptype_UPS4,Lcb,L_);
              */
             
-            for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
+            for (std::vector<Particle>::iterator a=RecoilCandidates.begin(); a!=RecoilCandidates.end();++a)
             {
                 Particle &ALamC=*a;
                 
