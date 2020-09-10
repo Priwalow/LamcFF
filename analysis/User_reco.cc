@@ -202,100 +202,67 @@ namespace Belle {
             
             std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
             
-            setUserInfo(D0, 0); 
-            setUserInfo(D0_b, 0); 
-            setUserInfo(D_p, 0); 
-            setUserInfo(D_m, 0); 
-            setUserInfo(Dst_p, 0); 
-            setUserInfo(Dst_m, 0); 
-            setUserInfo(Dst0, 0); 
-            setUserInfo(Dst0_b, 0); 
-            
             //######################################    TAG SIDE
             combination (pi_pm, ptype_D0B, pi_p, pi_m);
             
             combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
+            combination (D0,ptype_D0, k_m, pi_p, 0.06);
             setUserInfo(D0_b, 1); 
+            setUserInfo(D0, 1); 
             combination (D0_b,ptype_D0B, k_p, pi_pm, pi_m, 0.05);
+            combination (D0,ptype_D0, k_m, pi_pm, pi_p, 0.05);
             setUserInfo(D0_b, 2); 
+            setUserInfo(D0, 2); 
             combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
+            combination (D0,ptype_D0, k_s, pi_pm, 0.05);
             setUserInfo(D0_b, 3);
+            setUserInfo(D0, 3); 
             combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.06);
+            combination (D0,ptype_D0, k_m, pi0, pi_p,  0.06);
             setUserInfo(D0_b, 4);
-            
+            setUserInfo(D0, 4); 
             
             combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_pm, 0.06);
+            combination (D0,ptype_D0, k_m, pi0, pi_p, pi_pm, 0.06);
             setUserInfo(D0_b, 5);
+            setUserInfo(D0, 5);
             combination (D0_b,ptype_D0B, k_s, pi0, pi_pm, 0.06);
+            combination (D0,ptype_D0, k_s, pi0, pi_pm, 0.06);
             setUserInfo(D0_b, 6);
+            setUserInfo(D0, 6);
             
             combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_m, pi_p, pi_p, 0.05);
             setUserInfo(D_m, 1);
+            setUserInfo(D_p, 1);
             combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_s, pi_p, 0.05);
             setUserInfo(D_m, 2);
+            setUserInfo(D_p, 2);
             combination (D_m,ptype_Dm, k_s, pi_pm, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_s, pi_pm, pi_p, 0.05);
             setUserInfo(D_m, 3);
+            setUserInfo(D_p, 3);
             combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
+            combination (D_p,ptype_Dp, k_m, pi_p, k_p, 0.05);
             setUserInfo(D_m, 4);
+            setUserInfo(D_p, 4);
             
-            /*doMassVertexFit(D0_b);
-             *       double d0_chisq;
-             *       bufchisq=1000000;
-             *       while(D0_b.size()>1)
-             *       {
-             *           for(std::vector<Particle>::iterator l = D0_b.begin(); l!=D0_b.end(); ++l)
-             *           {
-             *               d0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-             *              
-             *               if((d0_chisq<0) || (d0_chisq > bufchisq))
-             *               {
-             *                   D0_b.erase(l); 
-             *                   --l;
-             *                   continue;
-    }
-    bufchisq = d0_chisq;
-    }
-    
-    }
-    
-    doMassVertexFit(D_m);
-    double d_m_chisq;
-    bufchisq=1000000;
-    while(D_m.size()>1)
-    {
-    for(std::vector<Particle>::iterator l = D_m.begin(); l!=D_m.end(); ++l)
-    {
-    d_m_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-    if((d_m_chisq < 0) || (d_m_chisq > bufchisq))
-    {
-    D_m.erase(l); 
-    --l;
-    continue;
-    }
-    bufchisq = d_m_chisq;
-    }
-    }
-    
-    if(D0_b.size()+D_m.size()==0) return;
-    
-    if (!(nevent%1000))std::cout<<nevent<<"Best D0_b candidate's chisq/ndf = " << d0_chisq << '\n';
-    if (!(nevent%1000))std::cout<<nevent<<"Best D_m candidate's chisq/ndf = " << d_m_chisq << '\n';
-    */
+            //doMassVertexFit(D0_b);
+            //doMassVertexFit(D_m);
             
+            if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
             
-            
-            combination (Dst0_b,ptype_Dst0, D0_b, pi0, 0.2);
+            combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.2);
             setUserInfo(Dst0_b, 1);
-            combination (Dst0_b,ptype_Dst0, D0_b, photons, 0.2);
+            combination (Dst0_b,ptype_DstB, D0_b, photons, 0.2);
             setUserInfo(Dst0_b, 2);
             
             
-            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
-            setUserInfo(Dst_m, 1);
             combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
+            setUserInfo(Dst_m, 1);
+            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
             setUserInfo(Dst_m, 2);
-
-            
             
             for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
             {
@@ -308,25 +275,6 @@ namespace Belle {
             }
             
             doMassVertexFit(Dst0_b);
-            /*double dst0_chisq;
-             *       bufchisq=1000000;
-             *       while(Dst0_b.size()>1)
-             *       {
-             *           for(std::vector<Particle>::iterator l = Dst0_b.begin(); l!=Dst0_b.end(); ++l)
-             *           {
-             *               dst0_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-             *               if((dst0_chisq < 0) || (dst0_chisq > bufchisq))
-             *               {
-             *                   Dst0_b.erase(l); 
-             *                   --l;
-             *                   continue;
-    }
-    bufchisq = dst0_chisq;
-    }
-    }
-    if (!(nevent%1000))std::cout<<nevent<<"Best Dst0_b candidate's chisq/ndf = " << dst0_chisq << '\n';
-    */
-            
             
             for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
             {
@@ -339,24 +287,41 @@ namespace Belle {
             }
             
             doMassVertexFit(Dst_m);
-            /*double dstm_chisq;
-             *       bufchisq=1000000;
-             *       while(Dst_m.size()>1)
-             *       {
-             *           for(std::vector<Particle>::iterator l = Dst_m.begin(); l!=Dst_m.end(); ++l)
-             *           {
-             *               dstm_chisq = dynamic_cast<UserInfo&>(l->userInfo()).vchisq();
-             *               if((dstm_chisq < 0) || (dstm_chisq > bufchisq))
-             *               {
-             *                   Dst_m.erase(l); 
-             *                   --l;
-             *                   continue;
-    }
-    bufchisq = dstm_chisq;
-    }
-    }
-    if (!(nevent%1000))std::cout<<nevent<<"Best Dst_m candidate's chisq/ndf = " << dstm_chisq << '\n';
-    */
+            
+            combination (Dst0,ptype_Dst0, D0, pi0, 0.2);
+            setUserInfo(Dst0, 1);
+            combination (Dst0,ptype_Dst0, D0, photons, 0.2);
+            setUserInfo(Dst0, 2);
+            
+            
+            combination (Dst_p,ptype_Dstp, D0, pi_p, 0.2);
+            setUserInfo(Dst_p, 1);
+            combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
+            setUserInfo(Dst_p, 2);
+            
+            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+            {
+                Particle dst0(*i);
+                if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
+                {
+                    Dst0.erase(i); 
+                    --i;
+                }
+            }
+            
+            doMassVertexFit(Dst0);
+            
+            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+            {
+                Particle dstp(*i);
+                if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
+                {
+                    Dst_p.erase(i); 
+                    --i;
+                }
+            }
+            
+            doMassVertexFit(Dst_p);
             
             std::vector <Particle> L_, L_b;
             combination (L_b,ptype_Lamc, p_m, D0_b);
