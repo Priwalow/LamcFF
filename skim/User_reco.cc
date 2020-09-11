@@ -106,10 +106,12 @@ namespace Belle {
         // eraseLeptons(pi_p);
         // eraseLeptons(pi_m);
         
-        for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
-            pions.push_back(*l);
-        for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
-            pions.push_back(*l);
+        /*
+         * for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
+         *            pions.push_back(*l);
+         *        for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
+         *            pions.push_back(*l);
+         */
         
         
         
@@ -134,11 +136,15 @@ namespace Belle {
         makePi0(pi0);
         
         for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
-            if(i->mdstPi0().gamma(0).ecl().energy()<0.05||
-                i->mdstPi0().gamma(1).ecl().energy()<0.05||
+        {   
+            if(i->mdstPi0().gamma(0).ecl().energy()<0.05 || 
+                i->mdstPi0().gamma(1).ecl().energy()<0.05 || 
                 abs(i->mdstPi0().mass()-.135)>0.015)
-            {pi0.erase(i); --i;}
-            
+            {
+                pi0.erase(i); 
+                --i;
+            }
+        }
             //leptons    
             /* std::vector<Particle>  e_p,e_m,mu_p,mu_m;
              *        makeLepton(e_p,e_m,mu_p,mu_m);
@@ -176,7 +182,6 @@ namespace Belle {
             
             std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
             
-            
             //######################################    TAG SIDE
             combination (pi_pm, ptype_D0B, pi_p, pi_m);
             
@@ -184,12 +189,12 @@ namespace Belle {
             combination (D0,ptype_D0, k_m, pi_p, 0.06);
             //setUserInfo(D0_b, 1); 
             //setUserInfo(D0, 1); 
-            combination (D0_b,ptype_D0B, k_p, pi_pm, pi_m, 0.05);
-            combination (D0,ptype_D0, k_m, pi_pm, pi_p, 0.05);
+            combination (D0_b,ptype_D0B, k_p, pi_p, pi_m, pi_m, 0.05);
+            combination (D0,ptype_D0, k_m, pi_p, pi_m, pi_p, 0.05);
             //setUserInfo(D0_b, 2); 
             //setUserInfo(D0, 2); 
-            combination (D0_b,ptype_D0B, k_s, pi_pm, 0.05);
-            combination (D0,ptype_D0, k_s, pi_pm, 0.05);
+            combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, 0.05);
+            combination (D0,ptype_D0, k_s, pi_p, pi_m, 0.05);
             //setUserInfo(D0_b, 3);
             //setUserInfo(D0, 3); 
             combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.06);
@@ -201,8 +206,8 @@ namespace Belle {
             combination (D0,ptype_D0, k_m, pi0, pi_p, pi_pm, 0.06);
             //setUserInfo(D0_b, 5);
             //setUserInfo(D0, 5);
-            combination (D0_b,ptype_D0B, k_s, pi0, pi_pm, 0.06);
-            combination (D0,ptype_D0, k_s, pi0, pi_pm, 0.06);
+            combination (D0_b,ptype_D0B, k_s, pi0, pi_p, pi_m, 0.06);
+            combination (D0,ptype_D0, k_s, pi0, pi_p, pi_m, 0.06);
             //setUserInfo(D0_b, 6);
             //setUserInfo(D0, 6);
             
@@ -214,8 +219,8 @@ namespace Belle {
             combination (D_p,ptype_Dp, k_s, pi_p, 0.05);
             //setUserInfo(D_m, 2);
             //setUserInfo(D_p, 2);
-            combination (D_m,ptype_Dm, k_s, pi_pm, pi_m, 0.05);
-            combination (D_p,ptype_Dp, k_s, pi_pm, pi_p, 0.05);
+            combination (D_m,ptype_Dm, k_s, pi_p, pi_m, pi_m, 0.05);
+            combination (D_p,ptype_Dp, k_s, pi_p, pi_m, pi_p, 0.05);
             //setUserInfo(D_m, 3);
             //setUserInfo(D_p, 3);
             combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
@@ -298,7 +303,7 @@ namespace Belle {
             
             //doMassVertexFit(Dst_p);
             
-            std::vector <Particle> L_, L_b;
+            std::vector <Particle> L_, L_b, RecoilCandidates;
             combination (L_b,ptype_Lamc, p_m, D0_b);
             combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
             combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
@@ -313,7 +318,13 @@ namespace Belle {
             
             if (!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
             
-            for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
+            for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
+                RecoilCandidates.push_back(*l);
+            for(std::vector<Particle>::iterator l = L_.begin(); l!=L_.end(); ++l)
+                RecoilCandidates.push_back(*l);
+            
+            
+            for (std::vector<Particle>::iterator a=RecoilCandidates.begin(); a!=RecoilCandidates.end();++a)
             {
                 Particle &ALamC=*a;
                 
@@ -326,20 +337,7 @@ namespace Belle {
                 {*status=1; skimmed++; return;}
             }
             
-            for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
-            {
-                Particle &ALamC=*a;
-                
-                HepLorentzVector momentum=ALamC.p();
-                //       std::cout <<"a1\n";
-                // final selection 
-                
-                
-                if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
-                {*status=1; skimmed++; return;}
-            }
-            
-            if (!(nevent%100))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
+            if (!(nevent%1000))std::cout<<nevent<<"     Skimmed: "<<skimmed << '\n';
             
             
     }
