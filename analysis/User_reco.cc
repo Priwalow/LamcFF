@@ -77,9 +77,7 @@ namespace Belle {
         makeProton(p_p,p_m);
         
         if(p_p.size()+p_m.size()==0) return; 
-        
-        if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
-        
+
         eraseLeptons(p_p);
         eraseLeptons(p_m);
         
@@ -89,43 +87,34 @@ namespace Belle {
         
         ntrk=k_p.size()+k_m.size();
         
-      
+      /*
         withdRdZcut(k_p,runIp.z());
         withdRdZcut(pi_p,runIp.z());
         withdRdZcut(k_m,runIp.z());
         withdRdZcut(pi_m,runIp.z());
-         
-         
-        withKaonId(k_p,0.6,3,1,5);
-        withKaonId(k_m,0.6,3,1,5);
+       */  
         
         withKaonId(k_p,0.6,3,1,5,3,4);
         withKaonId(k_p,0.6,3,1,5,3,2);
         withKaonId(k_m,0.6,3,1,5,3,4);
         withKaonId(k_m,0.6,3,1,5,3,2);
         
-        withPionId(pi_p,0.6,3,1,5);
-        withPionId(pi_p,0.6,3,1,5);
-        withPionId(pi_m,0.6,3,1,5);
-        withPionId(pi_m,0.6,3,1,5);
-        
-        withPionId(pi_p,0.6,3,1,5,2,3);
-        withPionId(pi_p,0.6,3,1,5,2,4);
-        withPionId(pi_m,0.6,3,1,5,2,3);
-        withPionId(pi_m,0.6,3,1,5,2,4);
-        
+        withPionId(pi_p,0.4,3,1,5,3,2);
+        withPionId(pi_p,0.4,3,1,5,4,2);
+        withPionId(pi_m,0.4,3,1,5,3,2);
+        withPionId(pi_m,0.4,3,1,5,4,2);
+
         eraseLeptons(k_p);
         eraseLeptons(k_m);
         eraseLeptons(pi_p);
         eraseLeptons(pi_m);
+        
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
             pions.push_back(*l);
         
-        if (!(nevent%1000))std::cout<<nevent<<" pi_p: "<< pi_p.size() << "  pi_m: " << pi_m.size() << '\n';
-        if (!(nevent%1000))std::cout<<nevent<<" k_p: "<< k_p.size() << "  k_m: " << k_m.size() << '\n';
         
         
         
@@ -182,7 +171,7 @@ namespace Belle {
              *       withEId(e_p);
              *       withEId(e_m);
              */
-            if (!(nevent%1000))std::cout<<nevent<<" npi0: " << pi0.size() << '\n';
+
             
             
             
@@ -208,7 +197,6 @@ namespace Belle {
         }
             
             
-            if (!(nevent%1000))std::cout<<nevent<<" ngamma: " << photons.size() << '\n';
             
             std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
             
