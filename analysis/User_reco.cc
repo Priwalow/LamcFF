@@ -491,34 +491,34 @@ namespace Belle {
                     
                     if (tag<3)
                     {
-                        std::cout<<nevent<<" 1" << endl;
+                        //std::cout<<nevent<<" 1" << endl;
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                         // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 2" << endl;
+                        //std::cout<<nevent<<" 2" << endl;
                         mD = ALamC.child(1).mass();
                         //mKs = ALamC.child(1).child(0).mass();
-                        std::cout<<nevent<<" 3" << endl;
+                        //std::cout<<nevent<<" 3" << endl;
                         if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 4" << endl;
+                        //std::cout<<nevent<<" 4" << endl;
                         if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     }
                     else
                     {
-                        std::cout<<nevent<<" 5" << endl;
+                        //std::cout<<nevent<<" 5" << endl;
                         dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                        std::cout<<nevent<<" 6" << endl;
+                        //std::cout<<nevent<<" 6" << endl;
                         mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 7" << endl;
+                        //std::cout<<nevent<<" 7" << endl;
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                         //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                        std::cout<<nevent<<" 8" << endl;
+                        //std::cout<<nevent<<" 8" << endl;
                         mD = ALamC.child(1).child(0).mass();
                         
-                        std::cout<<nevent<<" 9" << endl;
+                        //std::cout<<nevent<<" 9" << endl;
                         if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
-                        std::cout<<nevent<<" 10" << endl;
+                        //std::cout<<nevent<<" 10" << endl;
                         if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 11" << endl;
+                        //std::cout<<nevent<<" 11" << endl;
                         if( (((dch==3) || (dch==6)) && (tag==4) && (dstch==1)) ||  (((dch==2) || (dch==3)) && (tag==3) && (dstch==2))) 
                             mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                         
@@ -540,7 +540,7 @@ namespace Belle {
                     t1 -> column("mpi0_d",mPi0_D);
                     t1 -> column("mpi0_dst",mPi0_Dst);
                     t1 -> column("ch_tag", charge_tag);
-                    std::cout<<nevent<<" 12" << endl;
+                    //std::cout<<nevent<<" 12" << endl;
                     /*
                      *               t1 -> column("lcch", lcch);
                      *               t1 -> column("rmvis", rm);
@@ -624,7 +624,7 @@ namespace Belle {
                     t1->dumpData();
                 }
             }
-                std::cout<<nevent<<" 13" << endl;
+                //std::cout<<nevent<<" 13" << endl;
                 for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
             {
                 Particle &ALamC=*a;
@@ -636,7 +636,7 @@ namespace Belle {
                 
                 if (abs(rmx-2.286)<1.29) 
                 {
-                    std::cout<<nevent<<" Selected!" << endl;
+                    //std::cout<<nevent<<" Selected!" << endl;
                     int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
                     tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                     dstch=-1, dch;
@@ -648,41 +648,41 @@ namespace Belle {
                     
                     if (tag<3)
                     {
-                        std::cout<<nevent<<" 14" << endl;
+                        //std::cout<<nevent<<" 14" << endl;
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                         // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                       std::cout<<nevent<<" 15" << endl;
+                       //std::cout<<nevent<<" 15" << endl;
                         mD = ALamC.child(1).mass();
                         //mKs = ALamC.child(1).child(0).mass();
-                        std::cout<<nevent<<" 16" << endl;
+                        //std::cout<<nevent<<" 16" << endl;
                         if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 17" << endl;
+                        //std::cout<<nevent<<" 17" << endl;
                         if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     }
                     else
                     {
-                        std::cout<<nevent<<" 18" << endl;
+                        //std::cout<<nevent<<" 18" << endl;
                         dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                        std::cout<<nevent<<" 19" << endl;
+                        //std::cout<<nevent<<" 19" << endl;
                         mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 20" << endl;
+                        //std::cout<<nevent<<" 20" << endl;
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                        std::cout<<nevent<<" 21" << endl;
+                        //std::cout<<nevent<<" 21" << endl;
                         //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                         mD = ALamC.child(1).child(0).mass();
                         
-                        std::cout<<nevent<<" 22" << endl;
+                        //std::cout<<nevent<<" 22" << endl;
                         if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
-                        std::cout<<nevent<<" 23" << endl;
+                        //std::cout<<nevent<<" 23" << endl;
                         if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
-                        std::cout<<nevent<<" 24" << endl;
+                        //std::cout<<nevent<<" 24" << endl;
                         if( (((dch==3) || (dch==6)) && (tag==4) && (dstch==1)) ||  (((dch==2) || (dch==3)) && (tag==3) && (dstch==2))) 
                             mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                         
                         //mKs = ALamC.child(1).child(0).child(0).mass();   
                     }
                     
-                    std::cout<<nevent<<" 25" << endl;
+                    //std::cout<<nevent<<" 25" << endl;
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
                     t1 -> column("dstch", dstch);
@@ -699,7 +699,7 @@ namespace Belle {
                       
                     t1->dumpData();
                 }
-                std::cout<<nevent<<" 26" << endl;
+                //std::cout<<nevent<<" 26" << endl;
                 
             }
     }
