@@ -80,6 +80,8 @@ namespace Belle {
         
         if (!(nevent%1000))std::cout<<nevent<<" p: "<< p_p.size() << "  anti-p: " << p_m.size() << '\n';
         
+        eraseLeptons(p_p);
+        eraseLeptons(p_m);
         
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
@@ -87,29 +89,35 @@ namespace Belle {
         
         ntrk=k_p.size()+k_m.size();
         
-        /*
-         *   withdRdZcut(k_p,runIp.z());
-         *   withdRdZcut(pi_p,runIp.z());
-         *   withdRdZcut(k_m,runIp.z());
-         *   withdRdZcut(pi_m,runIp.z());
-         */
+      
+        withdRdZcut(k_p,runIp.z());
+        withdRdZcut(pi_p,runIp.z());
+        withdRdZcut(k_m,runIp.z());
+        withdRdZcut(pi_m,runIp.z());
+         
+         
+        withKaonId(k_p,0.6,3,1,5);
+        withKaonId(k_m,0.6,3,1,5);
         
         withKaonId(k_p,0.6,3,1,5,3,4);
         withKaonId(k_p,0.6,3,1,5,3,2);
         withKaonId(k_m,0.6,3,1,5,3,4);
         withKaonId(k_m,0.6,3,1,5,3,2);
         
+        withPionId(pi_p,0.6,3,1,5);
+        withPionId(pi_p,0.6,3,1,5);
+        withPionId(pi_m,0.6,3,1,5);
+        withPionId(pi_m,0.6,3,1,5);
+        
         withPionId(pi_p,0.6,3,1,5,2,3);
         withPionId(pi_p,0.6,3,1,5,2,4);
         withPionId(pi_m,0.6,3,1,5,2,3);
         withPionId(pi_m,0.6,3,1,5,2,4);
         
-        /*eraseLeptons(k_p);
+        eraseLeptons(k_p);
         eraseLeptons(k_m);
         eraseLeptons(pi_p);
         eraseLeptons(pi_m);
-        */
-        
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
@@ -266,7 +274,7 @@ namespace Belle {
             combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
             setUserInfo(Dst_m, 2);
             
-            for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
             {
                 Particle dst0b(*i);
                 if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
@@ -275,10 +283,11 @@ namespace Belle {
                     --i;
                 }
             }
+            */
             
             doMassVertexFit(Dst0_b);
             
-            for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
             {
                 Particle dstm(*i);
                 if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
@@ -287,6 +296,7 @@ namespace Belle {
                     --i;
                 }
             }
+            */
             
             doMassVertexFit(Dst_m);
             
@@ -301,7 +311,7 @@ namespace Belle {
             combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
             setUserInfo(Dst_p, 2);
             
-            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
             {
                 Particle dst0(*i);
                 if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
@@ -310,10 +320,10 @@ namespace Belle {
                     --i;
                 }
             }
-            
+            */
             doMassVertexFit(Dst0);
             
-            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
             {
                 Particle dstp(*i);
                 if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
@@ -322,7 +332,7 @@ namespace Belle {
                     --i;
                 }
             }
-            
+            */
             doMassVertexFit(Dst_p);
             
             std::vector <Particle> L_, L_b;
@@ -488,38 +498,37 @@ namespace Belle {
                     dstch=-1, dch;
                     double mD=-1, mDst=-1, mPi0_D=-1, mPi0_Dst=-1, mKs=-1;
                     
-                    cout << "Selected!" << endl;
+                   
                     
                     if (tag<3)
                     {
-                        cout << "Saving D channel" << endl;
+                        
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                         // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        cout << "Saving mD" << endl;
+                     
                         mD = ALamC.child(1).mass();
                         //mKs = ALamC.child(1).child(0).mass();
-                        cout << "Saving mpi0 from D" << endl;
+                     
                         if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
-                        cout << "Saving mKs" << endl;
+                       
                         if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     }
                     else
                     {
-                        cout << "Saving Dst channel" << endl;
+                       
                         dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                        cout << "Saving mDst" << endl;
+                     
                         mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        cout << "Saving D channel" << endl;
+                      
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                         cout << "Saving mD" << endl;
                         //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                         mD = ALamC.child(1).child(0).mass();
                         
-                         cout << "Saving mpi0 from Dst" << endl;
+                       
                         if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
-                        cout << "Saving mpi0 from D" << endl;
+                     
                         if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
-                        cout << "Saving mKs" << endl;
+                      
                         if( (((dch==3) || (dch==6)) && (tag==4)) ||  (((dch==2) || (dch==3)) && (tag==3)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                         
                         //mKs = ALamC.child(1).child(0).child(0).mass();   
@@ -644,38 +653,38 @@ namespace Belle {
                     
                     
                     
-                    cout << "Selected!" << endl;
+                 
                     
                     if (tag<3)
                     {
-                        cout << "Saving D channel" << endl;
+                        
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                         // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        cout << "Saving mD" << endl;
+                       
                         mD = ALamC.child(1).mass();
                         //mKs = ALamC.child(1).child(0).mass();
-                        cout << "Saving mpi0 from D" << endl;
+                       
                         if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
-                        cout << "Saving mKs" << endl;
+                      
                         if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     }
                     else
                     {
-                        cout << "Saving Dst channel" << endl;
+                        
                         dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                        cout << "Saving mDst" << endl;
+                        
                         mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                        cout << "Saving D channel" << endl;
+                      
                         dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                         cout << "Saving mD" << endl;
+                       
                         //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                         mD = ALamC.child(1).child(0).mass();
                         
-                         cout << "Saving mpi0 from Dst" << endl;
+                        
                         if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
-                        cout << "Saving mpi0 from D" << endl;
+                       
                         if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
-                        cout << "Saving mKs" << endl;
+                       
                         if( (((dch==3) || (dch==6)) && (tag==4)) ||  (((dch==2) || (dch==3)) && (tag==3)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                         
                         //mKs = ALamC.child(1).child(0).child(0).mass();   
