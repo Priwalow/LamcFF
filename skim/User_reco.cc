@@ -77,34 +77,25 @@ namespace Belle {
         
         if(p_p.size()+p_m.size()==0) return; 
         
-        
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
         ntrk=k_p.size()+k_m.size();
         
-        /*
-         *   withdRdZcut(k_p,runIp.z());
-         *   withdRdZcut(pi_p,runIp.z());
-         *   withdRdZcut(k_m,runIp.z());
-         *   withdRdZcut(pi_m,runIp.z());
-         */
+        withdRdZcut(k_p,runIp.z());
+        withdRdZcut(pi_p,runIp.z());
+        withdRdZcut(k_m,runIp.z());
+        withdRdZcut(pi_m,runIp.z());
+         
         
-        withKaonId(k_p,0.6,3,1,5,3,4);
-        withKaonId(k_p,0.6,3,1,5,3,2);
-        withKaonId(k_m,0.6,3,1,5,3,4);
-        withKaonId(k_m,0.6,3,1,5,3,2);
-        
-        withPionId(pi_p,0.6,3,1,5,2,3);
-        withPionId(pi_p,0.6,3,1,5,2,4);
-        withPionId(pi_m,0.6,3,1,5,2,3);
-        withPionId(pi_m,0.6,3,1,5,2,4);
-        
-        // eraseLeptons(k_p);
-        // eraseLeptons(k_m);
-        // eraseLeptons(pi_p);
-        // eraseLeptons(pi_m);
+        withKaonId(k_p,0.6,3,1,5);
+        withKaonId(k_m,0.6,3,1,5);
+
+        eraseLeptons(k_p);
+        eraseLeptons(k_m);
+        eraseLeptons(pi_p);
+        eraseLeptons(pi_m);
         
         /*
          * for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
@@ -244,27 +235,7 @@ namespace Belle {
             combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
             //setUserInfo(Dst_m, 2);
             
-            for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
-            {
-                Particle dst0b(*i);
-                if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
-                {
-                    Dst0_b.erase(i); 
-                    --i;
-                }
-            }
-            
             //doMassVertexFit(Dst0_b);
-            
-            for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
-            {
-                Particle dstm(*i);
-                if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
-                {
-                    Dst_m.erase(i); 
-                    --i;
-                }
-            }
             
             //doMassVertexFit(Dst_m);
             
@@ -279,27 +250,7 @@ namespace Belle {
             combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
             //setUserInfo(Dst_p, 2);
             
-            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
-            {
-                Particle dst0(*i);
-                if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
-                {
-                    Dst0.erase(i); 
-                    --i;
-                }
-            }
-            
             //doMassVertexFit(Dst0);
-            
-            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
-            {
-                Particle dstp(*i);
-                if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
-                {
-                    Dst_p.erase(i); 
-                    --i;
-                }
-            }
             
             //doMassVertexFit(Dst_p);
             
@@ -405,8 +356,7 @@ namespace Belle {
         {
             if(good_charged(*it) == 0) continue;
             double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
-            double prob_pipr = atc_pid(3, 1, 5, 2, 4).prob(*it);	
-            if( (prob_kpr > 0.4) || (prob_pipr > 0.4)) continue; //(prob_kpr > 0.4) || (prob_pipr > 0.4)
+            if(prob_kpr > 0.9 ) continue;
             Ptype ptype_PP("P+");
             Ptype ptype_AP("AP+");
             
