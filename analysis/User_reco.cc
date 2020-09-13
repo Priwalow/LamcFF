@@ -755,7 +755,7 @@ namespace Belle {
            if(good_charged(*it) == 0) continue;
             double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
             double prob_pipr = atc_pid(3, 1, 5, 2, 4).prob(*it);
-            if( (prob_kpr > 0.5) || (prob_pipr > 0.5) ) continue;
+            if( (prob_kpr > 0.4) || (prob_pipr > 0.4) ) continue;
             Ptype ptype_PP("P+");
             Ptype ptype_AP("AP+");
             
