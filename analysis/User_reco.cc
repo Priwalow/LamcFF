@@ -752,9 +752,10 @@ namespace Belle {
         Mdst_charged_Manager& ChgMgr = Mdst_charged_Manager::get_manager();
         for(std::vector<Mdst_charged>::iterator it = ChgMgr.begin(); it != ChgMgr.end(); ++it)
         {
-            if(good_charged(*it) == 0) continue;
+           if(good_charged(*it) == 0) continue;
             double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
-            if(prob_kpr > 0.9 ) continue;
+            double prob_pipr = atc_pid(3, 1, 5, 2, 4).prob(*it);
+            if( (prob_kpr > 0.5) || (prob_pipr > 0.5) ) continue;
             Ptype ptype_PP("P+");
             Ptype ptype_AP("AP+");
             
