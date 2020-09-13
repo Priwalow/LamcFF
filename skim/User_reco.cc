@@ -83,14 +83,23 @@ namespace Belle {
         
         ntrk=k_p.size()+k_m.size();
         
+        /*
         withdRdZcut(k_p,runIp.z());
         withdRdZcut(pi_p,runIp.z());
         withdRdZcut(k_m,runIp.z());
         withdRdZcut(pi_m,runIp.z());
-         
+        */ 
         
-        withKaonId(k_p,0.6,3,1,5);
-        withKaonId(k_m,0.6,3,1,5);
+        withKaonId(k_p,0.55,3,1,5,3,4);
+        withKaonId(k_p,0.55,3,1,5,3,2);
+        withKaonId(k_m,0.55,3,1,5,3,4);
+        withKaonId(k_m,0.55,3,1,5,3,2);
+        
+        
+        withPionId(pi_p,0.45,3,1,5,3,2);
+        withPionId(pi_p,0.45,3,1,5,4,2);
+        withPionId(pi_m,0.45,3,1,5,3,2);
+        withPionId(pi_m,0.45,3,1,5,4,2);
 
         eraseLeptons(k_p);
         eraseLeptons(k_m);
@@ -356,7 +365,8 @@ namespace Belle {
         {
             if(good_charged(*it) == 0) continue;
             double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
-            if(prob_kpr > 0.9 ) continue;
+            double prob_pipr = atc_pid(3, 1, 5, 2, 4).prob(*it);
+            if( (prob_kpr > 0.6) || (prob_pipr > 0.6) ) continue;
             Ptype ptype_PP("P+");
             Ptype ptype_AP("AP+");
             
