@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx px fox ecms mks mpi0_d mpi0_dst" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx px fox ecms mks mpi0_d mpi0_dst ch_tag" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -325,7 +325,7 @@ namespace Belle {
             
             doMassVertexFit(Dst_p);
             
-            std::vector <Particle> L_, L_b, RecoilCandidates;
+            std::vector <Particle> L_, L_b;
             combination (L_b,ptype_Lamc, p_m, D0_b);
             setUserInfo(L_b, 1);
             combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
@@ -346,10 +346,6 @@ namespace Belle {
             
             std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
             
-            for(std::vector<Particle>::iterator l = L_b.begin(); l!=L_b.end(); ++l)
-                RecoilCandidates.push_back(*l);
-            for(std::vector<Particle>::iterator l = L_.begin(); l!=L_.end(); ++l)
-                RecoilCandidates.push_back(*l);
 
             
             
@@ -430,11 +426,12 @@ namespace Belle {
              *       combination(A,ptype_UPS4,Lcb,L_);
              */
             
-            for (std::vector<Particle>::iterator a=RecoilCandidates.begin(); a!=RecoilCandidates.end();++a)
+            for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
             {
                 Particle &ALamC=*a;
                 
                 HepLorentzVector momentum=ALamC.p();
+                int charge_tag= calcuCharge (&ALamc);
                 /*   int charge= calcuCharge (&All);
                  *           
                  *           int n_pi = 0, n_pi0 = 0, n_k = 0, n_e = 0, n_mu = 0, n_p = 0, n_gam = 0 ;
@@ -542,6 +539,7 @@ namespace Belle {
                     t1 -> column("mks",mKs);
                     t1 -> column("mpi0_d",mPi0_D);
                     t1 -> column("mpi0_dst",mPi0_Dst);
+                    t1 -> column("ch_tag", charge_tag);
                     
                     /*
                      *               t1 -> column("lcch", lcch);
@@ -623,6 +621,81 @@ namespace Belle {
                 }
                 }
                 */
+                    t1->dumpData();
+                }
+                
+                
+                for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
+            {
+                Particle &ALamC=*a;
+                
+                HepLorentzVector momentum=ALamC.p();
+                int charge_tag= calcuCharge (&ALamc);
+                
+                double rmx = (pUPS-momentum).mag();//, rm =(pUPS-(momentum+LamC.p())).mag();
+                
+                if (abs(rmx-2.286)<1.29) 
+                {
+                    
+                    int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
+                    tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
+                    dstch=-1, dch;
+                    double mD=-1, mDst=-1, mPi0_D=-1, mPi0_Dst=-1, mKs=-1;
+                    
+                    
+                    
+                    cout << "Selected!" << endl;
+                    
+                    if (tag<3)
+                    {
+                        cout << "Saving D channel" << endl;
+                        dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                        // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                        cout << "Saving mD" << endl;
+                        mD = ALamC.child(1).mass();
+                        //mKs = ALamC.child(1).child(0).mass();
+                        cout << "Saving mpi0 from D" << endl;
+                        if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
+                        cout << "Saving mKs" << endl;
+                        if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    }
+                    else
+                    {
+                        cout << "Saving Dst channel" << endl;
+                        dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                        cout << "Saving mDst" << endl;
+                        mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                        cout << "Saving D channel" << endl;
+                        dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                         cout << "Saving mD" << endl;
+                        //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                        mD = ALamC.child(1).child(0).mass();
+                        
+                         cout << "Saving mpi0 from Dst" << endl;
+                        if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
+                        cout << "Saving mpi0 from D" << endl;
+                        if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
+                        cout << "Saving mKs" << endl;
+                        if( (((dch==3) || (dch==6)) && (tag==4)) ||  (((dch==2) || (dch==3)) && (tag==3)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                        
+                        //mKs = ALamC.child(1).child(0).child(0).mass();   
+                    }
+                    
+                    
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("mpi0_d",mPi0_D);
+                    t1 -> column("mpi0_dst",mPi0_Dst);
+                    t1 -> column("ch_tag", charge_tag);
+                      
                     t1->dumpData();
                 }
                 
