@@ -431,7 +431,7 @@ namespace Belle {
                 Particle &ALamC=*a;
                 
                 HepLorentzVector momentum=ALamC.p();
-                int charge_tag= calcuCharge (&ALamc);
+                int charge_tag= calcuCharge (&ALamC);
                 /*   int charge= calcuCharge (&All);
                  *           
                  *           int n_pi = 0, n_pi0 = 0, n_k = 0, n_e = 0, n_mu = 0, n_p = 0, n_gam = 0 ;
@@ -623,14 +623,14 @@ namespace Belle {
                 */
                     t1->dumpData();
                 }
-                
+            }
                 
                 for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
             {
                 Particle &ALamC=*a;
                 
                 HepLorentzVector momentum=ALamC.p();
-                int charge_tag= calcuCharge (&ALamc);
+                int charge_tag= calcuCharge (&ALamC);
                 
                 double rmx = (pUPS-momentum).mag();//, rm =(pUPS-(momentum+LamC.p())).mag();
                 
