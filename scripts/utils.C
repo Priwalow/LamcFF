@@ -151,11 +151,11 @@ void LctoLpi()
 
 } 
 
-void MergeExp()
+void MergeExp(TString DataINPUT, TString DataOUTPUT)
 {
     TChain chdat = new TChain("h1"); 
-    chdat -> Add("09*.root");
-    chdat -> Merge("09.root");
+    chdat -> Add(DataINPUT+"/09*.root");
+    chdat -> Merge(DataOUTPUT+"/09.root");
 }
 
 void SBpol2(double p3, double p4, double p5, double m, double s) //something is wrong!
