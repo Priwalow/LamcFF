@@ -153,7 +153,7 @@ void LctoLpi()
 
 void MergeExp(TString DataINPUT, TString DataOUTPUT)
 {
-    TChain chdat = new TChain("h1"); 
+    TChain * chdat = new TChain("h1"); 
     chdat -> Add(DataINPUT+"/09*.root");
     chdat -> Merge(DataOUTPUT+"/09.root");
 }
