@@ -153,9 +153,14 @@ void LctoLpi()
 
 void MergeExp(TString DataINPUT, TString DataOUTPUT)
 {
-    TChain * chdat = new TChain("h1"); 
-    chdat -> Add(DataINPUT+"/09*.root");
-    chdat -> Merge(DataOUTPUT+"/09.root");
+    for(int i = 7; i<73; i+=2)
+    {   
+        TChain chdat("h1"); 
+        TString fn = Form("%d",i);
+        if(i<10) fn = "0"+fn;
+        chdat.Add(DataINPUT+"/"+fn+"*.root");
+        chdat.Merge(DataOUTPUT+"/"+fn+".root");
+    }
 }
 
 void SBpol2(double p3, double p4, double p5, double m, double s) //something is wrong!
