@@ -153,7 +153,7 @@ void LctoLpi()
 
 void MergeExp(TString DataINPUT, TString DataOUTPUT)
 {
-    for(int i = 7; i<73; i+=2)
+    for(int i = 7; i<=73; i+=2)
     {   
         TChain chdat("h1"); 
         TString fn = Form("%d",i);
