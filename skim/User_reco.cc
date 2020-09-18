@@ -90,16 +90,16 @@ namespace Belle {
         withdRdZcut(pi_m,runIp.z());
         */ 
         
-        withKaonId(k_p,0.55,3,1,5,3,4);
-        withKaonId(k_p,0.55,3,1,5,3,2);
-        withKaonId(k_m,0.55,3,1,5,3,4);
-        withKaonId(k_m,0.55,3,1,5,3,2);
+        withKaonId(k_p,0.6,3,1,5,3,4);
+        withKaonId(k_p,0.6,3,1,5,3,2);
+        withKaonId(k_m,0.6,3,1,5,3,4);
+        withKaonId(k_m,0.6,3,1,5,3,2);
         
         
-        withPionId(pi_p,0.45,3,1,5,3,2);
-        withPionId(pi_p,0.45,3,1,5,4,2);
-        withPionId(pi_m,0.45,3,1,5,3,2);
-        withPionId(pi_m,0.45,3,1,5,4,2);
+        withPionId(pi_p,0.4,3,1,5,3,2);
+        withPionId(pi_p,0.4,3,1,5,4,2);
+        withPionId(pi_m,0.4,3,1,5,3,2);
+        withPionId(pi_m,0.4,3,1,5,4,2);
 
         eraseLeptons(k_p);
         eraseLeptons(k_m);
@@ -238,11 +238,31 @@ namespace Belle {
             combination (Dst0_b,ptype_DstB, D0_b, photons, 0.2);
             //setUserInfo(Dst0_b, 2);
             
+               
+            for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+            {
+                Particle dst0b(*i);
+                if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
+                {
+                    Dst0_b.erase(i); 
+                    --i;
+                }
+            }
             
             combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
             //setUserInfo(Dst_m, 1);
             combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
             //setUserInfo(Dst_m, 2);
+            
+            for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+            {
+                Particle dstm(*i);
+                if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
+                {
+                    Dst_m.erase(i); 
+                    --i;
+                }
+            }
             
             //doMassVertexFit(Dst0_b);
             
@@ -253,11 +273,32 @@ namespace Belle {
             combination (Dst0,ptype_Dst0, D0, photons, 0.2);
             //setUserInfo(Dst0, 2);
             
+            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+            {
+                Particle dst0(*i);
+                if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
+                {
+                    Dst0.erase(i); 
+                    --i;
+                }
+            }
             
             combination (Dst_p,ptype_Dstp, D0, pi_p, 0.2);
             //setUserInfo(Dst_p, 1);
             combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
             //setUserInfo(Dst_p, 2);
+            
+            
+            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+            {
+                Particle dstp(*i);
+                if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
+                {
+                    Dst_p.erase(i); 
+                    --i;
+                }
+            }
+            
             
             //doMassVertexFit(Dst0);
             
@@ -288,7 +329,7 @@ namespace Belle {
                 // final selection 
                 
                 
-                if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
+                if ( abs((pUPS-momentum).mag()-2.286)<0.7) 
                 {*status=1; skimmed++; return;}
             }
             
@@ -301,7 +342,7 @@ namespace Belle {
                 // final selection 
                 
                 
-                if ( abs((pUPS-momentum).mag()-2.286)<1.3) 
+                if ( abs((pUPS-momentum).mag()-2.286)<0.7) 
                 {*status=1; skimmed++; return;}
             }
             
@@ -366,7 +407,7 @@ namespace Belle {
             if(good_charged(*it) == 0) continue;
             double prob_kpr = atc_pid(3, 1, 5, 3, 4).prob(*it);
             double prob_pipr = atc_pid(3, 1, 5, 2, 4).prob(*it);
-            if( (prob_kpr > 0.5) || (prob_pipr > 0.5) ) continue;
+            if( (prob_kpr > 0.4) || (prob_pipr > 0.4) ) continue;
             Ptype ptype_PP("P+");
             Ptype ptype_AP("AP+");
             

@@ -263,7 +263,7 @@ namespace Belle {
             combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
             setUserInfo(Dst_m, 2);
             
-            /*for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+            for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
             {
                 Particle dst0b(*i);
                 if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
@@ -272,11 +272,11 @@ namespace Belle {
                     --i;
                 }
             }
-            */
+            
             
             doMassVertexFit(Dst0_b);
             
-            /*for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+            for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
             {
                 Particle dstm(*i);
                 if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
@@ -285,7 +285,7 @@ namespace Belle {
                     --i;
                 }
             }
-            */
+            
             
             doMassVertexFit(Dst_m);
             
@@ -300,7 +300,7 @@ namespace Belle {
             combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
             setUserInfo(Dst_p, 2);
             
-            /*for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
             {
                 Particle dst0(*i);
                 if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
@@ -309,10 +309,10 @@ namespace Belle {
                     --i;
                 }
             }
-            */
-            doMassVertexFit(Dst0);
             
-            /*for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+            doMassVertexFit(Dst0);
+        
+            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
             {
                 Particle dstp(*i);
                 if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
@@ -321,7 +321,7 @@ namespace Belle {
                     --i;
                 }
             }
-            */
+            
             doMassVertexFit(Dst_p);
             
             std::vector <Particle> L_, L_b;

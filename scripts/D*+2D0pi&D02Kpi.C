@@ -25,6 +25,28 @@ Double_t myfdat(Double_t* x, Double_t *par)
    else return binw*(par[0]*TMath::Gaus(xx,par[1],par[2],true)+par[3]*TMath::Gaus(xx,par[4],par[5],true));
 }
 
+
+
+double fx(double x, double a, double b, double c) { return c-b*pow(x,5./2)-a*pow(x,3./2);} // вычисляемая функция
+double dfx(double x, double a, double b, double c) { return -b*5/2*pow(x,3./2)-a*3/2*sqrt(x);} // производная функции
+
+
+
+double solve(double x0,double a, double b, double c) {
+  double x1  = x0 - fx(x0,a,b,c)/dfx(x0,a,b,c); // первое приближение
+  while (fabs(x1-x0)>0.000001) { // пока не достигнута точность 0.000001
+    x0 = x1;
+    x1 = x0 - fx(x0,a,b,c)/dfx(x0,a,b,c); // последующие приближения
+  }
+  return x1;
+}
+
+
+
+
+
+
+
 void FitDst()
 {
     gStyle->SetOptStat(0);
@@ -154,5 +176,10 @@ void FitDst()
     tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig1} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
     tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig2} = %0.4lf #pm %0.4lf",par[5], fdat -> GetParError(5)));
 
-    
+    double widthNbkg3s = fbkg -> Integral(par[1]-3*par[5],par[1]+3*par[5]);
+    double C = widthNbkg3s + par[7]*2/3*pow(par[1]+4*par[5]-par[6],3./2)+par[8]*2/5*pow(par[1]+4*par[5]-par[6],5./2), A = par[7]*2/3, B = par[8]*2/5;
+    cout << "Useful width = " << solve(par[1]+10*par[5]-par[6],A,B,C)-par[1]-4*par[5]+par[6] << endl;
 } 
+
+
+
