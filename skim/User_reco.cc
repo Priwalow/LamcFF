@@ -267,9 +267,9 @@ namespace Belle {
                 }
             }*/
             
-            //doMassVertexFit(Dst0_b);
+            doMassVertexFit(Dst0_b);
             
-            //doMassVertexFit(Dst_m);
+            doMassVertexFit(Dst_m);
             
             combination (Dst0,ptype_Dst0, D0, pi0, 0.025);
             //setUserInfo(Dst0, 1);
@@ -303,9 +303,9 @@ namespace Belle {
             }
             */
             
-            //doMassVertexFit(Dst0);
+            doMassVertexFit(Dst0);
             
-            //doMassVertexFit(Dst_p);
+            doMassVertexFit(Dst_p);
             
             std::vector <Particle> L_, L_b;
             combination (L_b,ptype_Lamc, p_m, D0_b);
@@ -332,7 +332,7 @@ namespace Belle {
                 // final selection 
                 
                 
-                if ( abs((pUPS-momentum).mag()-2.286)<1) 
+                if ( abs((pUPS-momentum).mag()-2.286)<0.7) 
                 {*status=1; skimmed++; return;}
             }
             
@@ -345,7 +345,7 @@ namespace Belle {
                 // final selection 
                 
                 
-                if ( abs((pUPS-momentum).mag()-2.286)<1) 
+                if ( abs((pUPS-momentum).mag()-2.286)<0.7) 
                 {*status=1; skimmed++; return;}
             }
             
