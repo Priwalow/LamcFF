@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx px fox ecms mks mpi0_d mpi0_dst ch_tag" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -262,78 +262,36 @@ namespace Belle {
         
         if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
         
-        combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.1);
-        setUserInfo(Dst0_b, 1);
-        combination (Dst0_b,ptype_DstB, D0_b, photons, 0.1);
-        setUserInfo(Dst0_b, 2);
-        
-        
-        combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.1);
-        setUserInfo(Dst_m, 1);
-        combination (Dst_m,ptype_Dstm, D_m, pi0, 0.1);
-        setUserInfo(Dst_m, 2);
-        
-        for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
-        {
-            Particle dst0b(*i);
-            if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
-            {
-                Dst0_b.erase(i); 
-                --i;
-            }
-        }
-        
-        
-        for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
-        {
-            Particle dstm(*i);
-            if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
-            {
-                Dst_m.erase(i); 
-                --i;
-            }
-        }
-        
         doMassVertexFit(D0_b);
         doMassVertexFit(D_m);
+        doMassVertexFit(D0);
+        doMassVertexFit(D_p);
+        
+        
+        combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.025);
+        setUserInfo(Dst0_b, 1);
+        combination (Dst0_b,ptype_DstB, D0_b, photons, 0.025);
+        setUserInfo(Dst0_b, 2);
+        
+        combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.025);
+        setUserInfo(Dst_m, 1);
+        combination (Dst_m,ptype_Dstm, D_m, pi0, 0.025);
+        setUserInfo(Dst_m, 2);
+
         doMassVertexFit(Dst0_b);
         doMassVertexFit(Dst_m);
         
-        combination (Dst0,ptype_Dst0, D0, pi0, 0.1);
+        
+        combination (Dst0,ptype_Dst0, D0, pi0, 0.025);
         setUserInfo(Dst0, 1);
-        combination (Dst0,ptype_Dst0, D0, photons, 0.1);
+        combination (Dst0,ptype_Dst0, D0, photons, 0.025);
         setUserInfo(Dst0, 2);
         
-        
-        combination (Dst_p,ptype_Dstp, D0, pi_p, 0.1);
+        combination (Dst_p,ptype_Dstp, D0, pi_p, 0.025);
         setUserInfo(Dst_p, 1);
-        combination (Dst_p,ptype_Dstp, D_p, pi0, 0.1);
+        combination (Dst_p,ptype_Dstp, D_p, pi0, 0.025);
         setUserInfo(Dst_p, 2);
-        
-        for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
-        {
-            Particle dst0(*i);
-            if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
-            {
-                Dst0.erase(i); 
-                --i;
-            }
-        }
-        
-        
-        
-        for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
-        {
-            Particle dstp(*i);
-            if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
-            {
-                Dst_p.erase(i); 
-                --i;
-            }
-        }
-        
-        doMassVertexFit(D0);
-        doMassVertexFit(D_p); 
+ 
         doMassVertexFit(Dst0);
         doMassVertexFit(Dst_p);
         
@@ -398,7 +356,7 @@ namespace Belle {
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
-        if(!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
+        if(!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
         
      
         //######################################   FINAL SELECTION
@@ -411,280 +369,291 @@ namespace Belle {
         for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
         {
             Particle &ALamC=*a;
-            
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
-            /*   int charge= calcuCharge (&All);
-             *           
-             *           int n_pi = 0, n_pi0 = 0, n_k = 0, n_e = 0, n_mu = 0, n_p = 0, n_gam = 0 ;
-             *           for (std::vector<Particle>::iterator pi=pions.begin(); pi!=pions.end();++pi)
-             *           {
-             *               //pion cuts
-             *               if ( checkSame(*a,*pi) ) continue;
-             *               //
-             *               n_pi++;
-             *               charge+=pi->charge();
-             *               momentum+=pi->p();
-        }
-        
-        for (std::vector<Particle>::iterator k=kaons.begin(); k!=kaons.end();++k)
-        {
-        //pion cuts
-        if ( checkSame(*a,*k) ) continue;
-        //
-        n_k++;
-        charge+=k->charge();
-        momentum+=k->p();
-        }
-        
-        HepLorentzVector momentum0 = momentum;
-        
-        for (std::vector<Particle>::iterator pi=pi0.begin(); pi!=pi0.end();++pi)
-        {
-        //pion cuts
-        if ( checkSame(*a,*pi) ) continue;
-        //
-        n_pi0++;
-        momentum0+=pi->p();
-        }
-        
-        for (std::vector<Particle>::iterator g=photons.begin(); g!=photons.end();++g)
-        {
-        //pion cuts
-        if ( checkSame(*a,*g) ) continue;
-        //
-        n_gam++;
-        momentum0+=g->p();
-        }
-        
-        // FINAL SELECTION
-        if (charge!=0) continue;
-        */
-            double rmx = (pUPS-momentum).mag();//, rm =(pUPS-(momentum+LamC.p())).mag();
             
-            if (abs(rmx-2.286)<1.29) 
+            double rmx = (pUPS-momentum).mag(), rm=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
+            
+            if (abs(rmx-2.286)<0.65) 
             {
                 //std::cout<<nevent<<" Selected!" << endl;
-                int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
-                tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                dstch=-1, dch;
-                double mD=-1, mDst=-1, mPi0_D=-1, mPi0_Dst=-1, mKs=-1;
+                int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
+                dstch=-1, dch=-1, lcch=0;
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1;
+        
                 
-                
-                
-                if (tag<3)
+                if (tag==1)
                 {
-                    //std::cout<<nevent<<" 1" << endl;
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 2" << endl;
-                    mD = ALamC.child(1).mass();
+                    mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     //mKs = ALamC.child(1).child(0).mass();
-                    //std::cout<<nevent<<" 3" << endl;
-                    if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 4" << endl;
-                    if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                }
+                else if (tag==2)
+                {
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    if( dch==2 || dch==3 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                }
+                else if (tag==3)
+                {
+                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass()
+                    else if( dstch==2 && (dch==2 || dch==3)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                }
+                else if (tag==4)
+                {
+                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                }
+                
+                if (Lcb.size()>0) for(std::vector<Particle>::iterator l=Lcb.begin(); l!=Lcb.end();++l)
+                {
+                    if ( checkSame(*a,*l) ) continue;
+                    Particle &LamC=*l;
+                    
+                    rm =(pUPS-(momentum+LamC.p())).mag();
+                    
+                    lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
+                    t1 -> column("lcch",lcch);
+                    t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
+                    t1 -> column("mlc", LamC.mass());
+                                 
+                    // lamc heli
+                    HepLorentzVector p_lamc;
+                    if (lcch==1) p_lamc=LamC.p();
+                    else p_lamc = pUPS-momentum;
+                    
+                    t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
+                                
+                    //lam heli
+                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
+                    if (abs(LamC.child(0).child(0).lund())>1000)
+                    {
+                        p_proton_from_lam=LamC.child(0).child(0).p(); 
+                        p_pi_from_lam=LamC.child(0).child(1).p();
+                    }
+                    else
+                    {
+                        p_proton_from_lam=LamC.child(0).child(1).p();
+                        p_pi_from_lam=LamC.child(0).child(0).p();
+                    }
+                    
+                    t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
+            
+                    //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
+                    HepLorentzVector p_W_from_lamc;
+                    p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
+            
+                    if ((lcch==1) || (lcch==2)) t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
+                    else t1 -> column("q",(p_W_from_lamc).mag()); 	
+            
+                    
+                    //W heli and angle chi
+                    HepLorentzVector p_l, p_nu;
+                    p_l = LamC.child(1).p();
+
+                    if ((lcch==3) || (lcch==4)) t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
+                    else t1->column("hw",-999);
+            
+                    p_nu = p_W_from_lamc-p_l;
+            
+                    Hep3Vector norm_lambda, norm_W;
+                    norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                    norm_lambda = norm_lambda*(1./norm_lambda.mag());
+                    norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
+                    norm_W = norm_W*(1./norm_W.mag());
+            
+                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W))
+                    else t1->column("chi",-999);
+                     
+                    
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                    t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
+                    t1 -> column("rmvis", rm);
+                    t1->dumpData();
                 }
                 else
                 {
-                    //std::cout<<nevent<<" 5" << endl;
-                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    //std::cout<<nevent<<" 6" << endl;
-                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 7" << endl;
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                    //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    //std::cout<<nevent<<" 8" << endl;
-                    mD = ALamC.child(1).child(0).mass();
-                    
-                    //std::cout<<nevent<<" 9" << endl;
-                    if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
-                    //std::cout<<nevent<<" 10" << endl;
-                    if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 11" << endl;
-                    if( (((dch==3) || (dch==6)) && (tag==4) && (dstch==1)) ||  (((dch==2) || (dch==3)) && (tag==3) && (dstch==2))) 
-                        mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    
-                    //mKs = ALamC.child(1).child(0).child(0).mass();   
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                    t1->dumpData();
                 }
                 
-                
-                //
-                t1 -> column("tag", tag);
-                t1 -> column("rmx", rmx);
-                t1 -> column("dstch", dstch);
-                t1 -> column("mdst", mDst);
-                t1 -> column("dch", dch);
-                t1 -> column("md", mD);
-                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("fox", fox);  
-                t1 -> column("ecms",pUPS.mag());
-                t1 -> column("mks",mKs);
-                t1 -> column("mpi0_d",mPi0_D);
-                t1 -> column("mpi0_dst",mPi0_Dst);
-                t1 -> column("ch_tag", charge_tag);
-                //std::cout<<nevent<<" 12" << endl;
-                /*
-                 *               t1 -> column("lcch", lcch);
-                 *               t1 -> column("rmvis", rm);
-                 *               t1 -> column("npi", n_pi);
-                 *               t1 -> column("nk", n_k);
-                 *               t1 -> column("npi0", n_pi0);  
-                 *               t1 -> column("ngam", n_gam);  
-                 *               t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
-                 *               if (lcch==0) t1 -> column("ml", LamC.mass());
-                 *               
-                 *               if (lcch!=0)
-                 *               {
-                 *                   t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
-                 *                   t1 -> column("mlc", LamC.mass());
-                 *                   
-                 *                   // lamc heli
-                 *                   HepLorentzVector p_lamc;
-                 *                   if (lcch==1) 
-                 *                       p_lamc=LamC.p();
-                 *                   else 
-                 *                       p_lamc = pUPS-momentum;
-                 *               
-                 *                   t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
-                 *               
-                 *                   //lam heli
-                 *                   HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
-                 *                   if (abs(LamC.child(0).child(0).lund())>1000)
-                 *                   {
-                 *                       p_proton_from_lam=LamC.child(0).child(0).p(); 
-                 *                       p_pi_from_lam=LamC.child(0).child(1).p();
-            }
-            else
-            {
-            p_proton_from_lam=LamC.child(0).child(1).p();
-            p_pi_from_lam=LamC.child(0).child(0).p();
-            }
-            t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
-            
-            
-            //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
-            HepLorentzVector p_W_from_lamc;
-            p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
-            
-            if ((lcch==1) || (lcch==2))
-                t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
-            else
-                t1 -> column("q",(p_W_from_lamc).mag()); 	
-            
-            
-            //W heli and angle chi
-            HepLorentzVector p_l, p_nu;
-            p_l = LamC.child(1).p();
-            
-            if ((lcch==3) || (lcch==4))
-            {
-            t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
-            }
-            else 
-            {
-            t1->column("hw",-999);
-            }
-            
-            p_nu = p_W_from_lamc-p_l;
-            
-            Hep3Vector norm_lambda, norm_W;
-            norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-            norm_lambda = norm_lambda*(1./norm_lambda.mag());
-            norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-            norm_W = norm_W*(1./norm_W.mag());
-            
-            if ((lcch==3) || (lcch==4))
-            {
-            t1->column("chi",norm_lambda.angle(norm_W));
-            }
-            else 
-            {
-            t1->column("chi",-999);
-            }
-            }
-            */
-                t1->dumpData();
             }
         }
-        //std::cout<<nevent<<" 13" << endl;
+        
+        
+        
         for (std::vector<Particle>::iterator a=L_b.begin(); a!=L_b.end();++a)
         {
             Particle &ALamC=*a;
-            
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
             
-            double rmx = (pUPS-momentum).mag();//, rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag(), rm=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
             
-            if (abs(rmx-2.286)<1.29) 
+            if (abs(rmx-2.286)<0.65) 
             {
                 //std::cout<<nevent<<" Selected!" << endl;
-                int //lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(), 
-                tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                dstch=-1, dch;
-                double mD=-1, mDst=-1, mPi0_D=-1, mPi0_Dst=-1, mKs=-1;
+                int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
+                dstch=-1, dch=-1, lcch=0;
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1;
+        
                 
-                
-                
-                
-                
-                if (tag<3)
+                if (tag==1)
                 {
-                    //std::cout<<nevent<<" 14" << endl;
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    // mD = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 15" << endl;
-                    mD = ALamC.child(1).mass();
+                    mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     //mKs = ALamC.child(1).child(0).mass();
-                    //std::cout<<nevent<<" 16" << endl;
-                    if((dch>3) && (dch<7) && (tag==1))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 17" << endl;
-                    if( (((dch==3) || (dch==6)) && (tag==1)) ||  (((dch==2) || (dch==3)) && (tag==2)) ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                }
+                else if (tag==2)
+                {
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    if( dch==2 || dch==3 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                }
+                else if (tag==3)
+                {
+                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass()
+                    else if( dstch==2 && (dch==2 || dch==3)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                }
+                else if (tag==4)
+                {
+                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                }
+                
+                if (Lc.size()>0) for(std::vector<Particle>::iterator l=Lc.begin(); l!=Lc.end();++l)
+                {
+                    if ( checkSame(*a,*l) ) continue;
+                    Particle &LamC=*l;
+                    
+                    rm =(pUPS-(momentum+LamC.p())).mag();
+                    
+                    lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
+                    t1 -> column("lcch",lcch);
+                    t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
+                    t1 -> column("mlc", LamC.mass());
+                                 
+                    // lamc heli
+                    HepLorentzVector p_lamc;
+                    if (lcch==1) p_lamc=LamC.p();
+                    else p_lamc = pUPS-momentum;
+                    
+                    t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
+                                
+                    //lam heli
+                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
+                    if (abs(LamC.child(0).child(0).lund())>1000)
+                    {
+                        p_proton_from_lam=LamC.child(0).child(0).p(); 
+                        p_pi_from_lam=LamC.child(0).child(1).p();
+                    }
+                    else
+                    {
+                        p_proton_from_lam=LamC.child(0).child(1).p();
+                        p_pi_from_lam=LamC.child(0).child(0).p();
+                    }
+                    
+                    t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
+            
+                    //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
+                    HepLorentzVector p_W_from_lamc;
+                    p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
+            
+                    if ((lcch==1) || (lcch==2)) t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
+                    else t1 -> column("q",(p_W_from_lamc).mag()); 	
+            
+                    
+                    //W heli and angle chi
+                    HepLorentzVector p_l, p_nu;
+                    p_l = LamC.child(1).p();
+
+                    if ((lcch==3) || (lcch==4)) t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
+                    else t1->column("hw",-999);
+            
+                    p_nu = p_W_from_lamc-p_l;
+            
+                    Hep3Vector norm_lambda, norm_W;
+                    norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                    norm_lambda = norm_lambda*(1./norm_lambda.mag());
+                    norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
+                    norm_W = norm_W*(1./norm_W.mag());
+            
+                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W))
+                    else t1->column("chi",-999);
+                     
+                    
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                    t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
+                    t1 -> column("rmvis", rm);
+                    t1->dumpData();
                 }
                 else
                 {
-                    //std::cout<<nevent<<" 18" << endl;
-                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    //std::cout<<nevent<<" 19" << endl;
-                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 20" << endl;
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                    //std::cout<<nevent<<" 21" << endl;
-                    //mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    mD = ALamC.child(1).child(0).mass();
-                    
-                    //std::cout<<nevent<<" 22" << endl;
-                    if (dstch == 1) mPi0_Dst = ALamC.child(1).child(1).mass();
-                    //std::cout<<nevent<<" 23" << endl;
-                    if((dch>3) && (dch<7) && (tag==4))  mPi0_D = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(1).userInfo()).mass();
-                    //std::cout<<nevent<<" 24" << endl;
-                    if( (((dch==3) || (dch==6)) && (tag==4) && (dstch==1)) ||  (((dch==2) || (dch==3)) && (tag==3) && (dstch==2))) 
-                        mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    
-                    //mKs = ALamC.child(1).child(0).child(0).mass();   
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                    t1->dumpData();
                 }
                 
-                //std::cout<<nevent<<" 25" << endl;
-                t1 -> column("tag", tag);
-                t1 -> column("rmx", rmx);
-                t1 -> column("dstch", dstch);
-                t1 -> column("mdst", mDst);
-                t1 -> column("dch", dch);
-                t1 -> column("md", mD);
-                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("fox", fox);  
-                t1 -> column("ecms",pUPS.mag());
-                t1 -> column("mks",mKs);
-                t1 -> column("mpi0_d",mPi0_D);
-                t1 -> column("mpi0_dst",mPi0_Dst);
-                t1 -> column("ch_tag", charge_tag);
-                
-                t1->dumpData();
             }
-            //std::cout<<nevent<<" 26" << endl;
             
         }
+        
+        
     }
     
     void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
