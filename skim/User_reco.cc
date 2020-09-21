@@ -244,6 +244,7 @@ namespace Belle {
                 Particle dst0b(*i);
                 if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
                 {
+                    cout << "Erasing bad D*0_bar" << endl;
                     Dst0_b.erase(i); 
                     --i;
                 }
