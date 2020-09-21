@@ -228,18 +228,21 @@ namespace Belle {
             //setUserInfo(D_m, 4);
             //setUserInfo(D_p, 4);
             
-            //doMassVertexFit(D0_b);
-            //doMassVertexFit(D_m);
-            
+
             if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
             
-            combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.1);
+            doMassVertexFit(D0_b);
+            doMassVertexFit(D0);
+            doMassVertexFit(D_m);
+            doMassVertexFit(D_p);
+            
+            combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.025);
             //setUserInfo(Dst0_b, 1);
-            combination (Dst0_b,ptype_DstB, D0_b, photons, 0.1);
+            combination (Dst0_b,ptype_DstB, D0_b, photons, 0.025);
             //setUserInfo(Dst0_b, 2);
             
                
-            for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
             {
                 Particle dst0b(*i);
                 if(abs(dst0b.mass()-dst0b.child(0).mass()-0.1425)>0.025)
@@ -247,14 +250,14 @@ namespace Belle {
                     Dst0_b.erase(i); 
                     --i;
                 }
-            }
+            }*/
             
-            combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.1);
+            combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.025);
             //setUserInfo(Dst_m, 1);
-            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.1);
+            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.025);
             //setUserInfo(Dst_m, 2);
             
-            for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
             {
                 Particle dstm(*i);
                 if(abs(dstm.mass()-dstm.child(0).mass()-0.143)>0.025)
@@ -262,18 +265,18 @@ namespace Belle {
                     Dst_m.erase(i); 
                     --i;
                 }
-            }
+            }*/
             
             //doMassVertexFit(Dst0_b);
             
             //doMassVertexFit(Dst_m);
             
-            combination (Dst0,ptype_Dst0, D0, pi0, 0.1);
+            combination (Dst0,ptype_Dst0, D0, pi0, 0.025);
             //setUserInfo(Dst0, 1);
-            combination (Dst0,ptype_Dst0, D0, photons, 0.1);
+            combination (Dst0,ptype_Dst0, D0, photons, 0.025);
             //setUserInfo(Dst0, 2);
             
-            for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
             {
                 Particle dst0(*i);
                 if(abs(dst0.mass()-dst0.child(0).mass()-0.1425)>0.025)
@@ -281,15 +284,15 @@ namespace Belle {
                     Dst0.erase(i); 
                     --i;
                 }
-            }
+            }*/
             
-            combination (Dst_p,ptype_Dstp, D0, pi_p, 0.1);
+            combination (Dst_p,ptype_Dstp, D0, pi_p, 0.025);
             //setUserInfo(Dst_p, 1);
-            combination (Dst_p,ptype_Dstp, D_p, pi0, 0.1);
+            combination (Dst_p,ptype_Dstp, D_p, pi0, 0.025);
             //setUserInfo(Dst_p, 2);
             
             
-            for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+            /*for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
             {
                 Particle dstp(*i);
                 if(abs(dstp.mass()-dstp.child(0).mass()-0.143)>0.025)
@@ -298,7 +301,7 @@ namespace Belle {
                     --i;
                 }
             }
-            
+            */
             
             //doMassVertexFit(Dst0);
             
@@ -329,7 +332,7 @@ namespace Belle {
                 // final selection 
                 
                 
-                if ( abs((pUPS-momentum).mag()-2.286)<0.7) 
+                if ( abs((pUPS-momentum).mag()-2.286)<1) 
                 {*status=1; skimmed++; return;}
             }
             
@@ -342,7 +345,7 @@ namespace Belle {
                 // final selection 
                 
                 
-                if ( abs((pUPS-momentum).mag()-2.286)<0.7) 
+                if ( abs((pUPS-momentum).mag()-2.286)<1) 
                 {*status=1; skimmed++; return;}
             }
             
