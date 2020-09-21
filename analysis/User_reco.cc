@@ -252,15 +252,15 @@ namespace Belle {
             
             if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
             
-            combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.2);
+            combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.1);
             setUserInfo(Dst0_b, 1);
-            combination (Dst0_b,ptype_DstB, D0_b, photons, 0.2);
+            combination (Dst0_b,ptype_DstB, D0_b, photons, 0.1);
             setUserInfo(Dst0_b, 2);
             
             
-            combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.2);
+            combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.1);
             setUserInfo(Dst_m, 1);
-            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.2);
+            combination (Dst_m,ptype_Dstm, D_m, pi0, 0.1);
             setUserInfo(Dst_m, 2);
             
             for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
@@ -289,15 +289,15 @@ namespace Belle {
             
             doMassVertexFit(Dst_m);
             
-            combination (Dst0,ptype_Dst0, D0, pi0, 0.2);
+            combination (Dst0,ptype_Dst0, D0, pi0, 0.1);
             setUserInfo(Dst0, 1);
-            combination (Dst0,ptype_Dst0, D0, photons, 0.2);
+            combination (Dst0,ptype_Dst0, D0, photons, 0.1);
             setUserInfo(Dst0, 2);
             
             
-            combination (Dst_p,ptype_Dstp, D0, pi_p, 0.2);
+            combination (Dst_p,ptype_Dstp, D0, pi_p, 0.1);
             setUserInfo(Dst_p, 1);
-            combination (Dst_p,ptype_Dstp, D_p, pi0, 0.2);
+            combination (Dst_p,ptype_Dstp, D_p, pi0, 0.1);
             setUserInfo(Dst_p, 2);
             
             for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
