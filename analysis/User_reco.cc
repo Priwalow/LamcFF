@@ -401,7 +401,7 @@ namespace Belle {
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass()
+                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                     else if( dstch==2 && (dch==2 || dch==3)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                 }
                 else if (tag==4)
@@ -470,7 +470,7 @@ namespace Belle {
                     norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
                     norm_W = norm_W*(1./norm_W.mag());
             
-                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W))
+                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W));
                     else t1->column("chi",-999);
                      
                     
@@ -545,7 +545,7 @@ namespace Belle {
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass()
+                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                     else if( dstch==2 && (dch==2 || dch==3)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                 }
                 else if (tag==4)
@@ -614,7 +614,7 @@ namespace Belle {
                     norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
                     norm_W = norm_W*(1./norm_W.mag());
             
-                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W))
+                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W));
                     else t1->column("chi",-999);
                      
                     
