@@ -77,6 +77,9 @@ namespace Belle {
         
         if(p_p.size()+p_m.size()==0) return; 
         
+        eraseLeptons(p_p);
+        eraseLeptons(p_m);
+        
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
