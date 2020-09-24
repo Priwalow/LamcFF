@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi nlc" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -502,6 +502,7 @@ namespace Belle {
                 t1 -> column("pvis",pvis);
                 t1 -> column("rmvis", rm);
                 
+                t1 -> column("nlc", Lcb.size());
                 t1->dumpData();
             }
                 
@@ -657,6 +658,8 @@ namespace Belle {
                 t1 -> column("pvis",pvis);
                 t1 -> column("rmvis", rm);
                 
+                
+                t1 -> column("nlc", Lc.size());
                 t1->dumpData();
             }
                 
