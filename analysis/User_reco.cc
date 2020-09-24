@@ -157,18 +157,7 @@ namespace Belle {
                 i->mdstPi0().gamma(1).ecl().energy()<0.05||
                 abs(i->mdstPi0().mass()-.135)>0.015)
             {pi0.erase(i); --i;}
-            setPi0Error(pi0);
-        //leptons    
-        /* std::vector<Particle>  e_p,e_m,mu_p,mu_m;
-         *       makeLepton(e_p,e_m,mu_p,mu_m);
-         *       
-         *       withMuId(mu_p);
-         *       withMuId(mu_m);
-         *       withEId(e_p);
-         *       withEId(e_m);
-         */
-        
-        
+        setPi0Error(pi0);        
         
         
         //photons
@@ -356,7 +345,7 @@ namespace Belle {
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
-        if(!(nevent%1000))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
+        if(!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
         
      
         //######################################   FINAL SELECTION
@@ -379,7 +368,7 @@ namespace Belle {
                 //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1;
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
         
                 
                 if (tag==1)
@@ -421,16 +410,17 @@ namespace Belle {
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
-                    t1 -> column("lcch",lcch);
-                    t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
-                    t1 -> column("mlc", LamC.mass());
-                                 
+                    mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
+                    mLc = LamC.mass();           
+                    pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
+                    
                     // lamc heli
                     HepLorentzVector p_lamc;
-                    if (lcch==1) p_lamc=LamC.p();
+                    if (lcch==1 || lcch==2) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
                     
-                    t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
+                    coshlc = cos(heli(LamC.child(0).p(),2*p_lamc,p_lamc));
+                    
                                 
                     //lam heli
                     HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
@@ -445,68 +435,69 @@ namespace Belle {
                         p_pi_from_lam=LamC.child(0).child(0).p();
                     }
                     
-                    t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
+                    coshl  = cos(heli(p_proton_from_lam,  2*LamC.child(0).p(),  LamC.child(0).p()))
+                 
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
                     HepLorentzVector p_W_from_lamc;
                     p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
-            
-                    if ((lcch==1) || (lcch==2)) t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
-                    else t1 -> column("q",(p_W_from_lamc).mag()); 	
-            
+                    
+                    
+                    if ((lcch==1) || (lcch==2)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
+                    else qW =  p_W_from_lamc.mag();	
                     
                     //W heli and angle chi
-                    HepLorentzVector p_l, p_nu;
-                    p_l = LamC.child(1).p();
+                    if (lcch==3 || lcch==4)
+                    {
+                        HepLorentzVector p_l, p_nu;
+                        p_l = LamC.child(1).p();
 
-                    if ((lcch==3) || (lcch==4)) t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
-                    else t1->column("hw",-999);
+                        cosW = cos(heli(p_l,2*p_W_from_lamc,p_W_from_lamc));
             
-                    p_nu = p_W_from_lamc-p_l;
+                        p_nu = p_W_from_lamc-p_l;
             
-                    Hep3Vector norm_lambda, norm_W;
-                    norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                    norm_lambda = norm_lambda*(1./norm_lambda.mag());
-                    norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                    norm_W = norm_W*(1./norm_W.mag());
-            
-                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W));
-                    else t1->column("chi",-999);
-                     
+                        Hep3Vector norm_lambda, norm_W;
                     
-                    t1 -> column("tag", tag);
-                    t1 -> column("rmx", rmx);
-                    t1 -> column("dstch", dstch);
-                    t1 -> column("mdst", mDst);
-                    t1 -> column("dch", dch);
-                    t1 -> column("md", mD);
-                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                    t1 -> column("fox", fox);  
-                    t1 -> column("ecms",pUPS.mag());
-                    t1 -> column("mks",mKs);
-                    t1 -> column("ch_tag", charge_tag);
-                    t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
-                    t1 -> column("rmvis", rm);
-                    t1->dumpData();
-                }
-                else
-                {
-                    t1 -> column("tag", tag);
-                    t1 -> column("rmx", rmx);
-                    t1 -> column("dstch", dstch);
-                    t1 -> column("mdst", mDst);
-                    t1 -> column("dch", dch);
-                    t1 -> column("md", mD);
-                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                    t1 -> column("fox", fox);  
-                    t1 -> column("ecms",pUPS.mag());
-                    t1 -> column("mks",mKs);
-                    t1 -> column("ch_tag", charge_tag);
-                    t1->dumpData();
+                        norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                        norm_lambda = norm_lambda*(1./norm_lambda.mag());
+                        norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
+                        norm_W = norm_W*(1./norm_W.mag());
+            
+                        angchi = norm_lambda.angle(norm_W);
+                    }
+                     
                 }
                 
+                t1 -> column("tag", tag);
+                t1 -> column("rmx", rmx);
+                t1 -> column("dstch", dstch);
+                t1 -> column("mdst", mDst);
+                t1 -> column("dch", dch);
+                t1 -> column("md", mD);
+                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                t1 -> column("fox", fox);  
+                t1 -> column("ecms",pUPS.mag());
+                t1 -> column("mks",mKs);
+                t1 -> column("ch_tag", charge_tag);
+                
+                t1 -> column("lcch",lcch);
+                t1 -> column("ml", mL);
+                t1 -> column("mlc", mLc);
+                t1->column("hl", coshl);
+                t1 -> column("hlc", coshlc);
+                
+                t1 -> column("q", qW);
+                t1->column("hw",cosW)
+                t1->column("chi",angchi); 
+                
+                t1 -> column("pvis",pvis);
+                t1 -> column("rmvis", rm);
+                
+                t1->dumpData();
             }
+                
         }
+        
         
         
         
@@ -523,7 +514,7 @@ namespace Belle {
                 //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1;
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
         
                 
                 if (tag==1)
@@ -565,16 +556,17 @@ namespace Belle {
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
-                    t1 -> column("lcch",lcch);
-                    t1 -> column("ml", dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass());
-                    t1 -> column("mlc", LamC.mass());
-                                 
+                    mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
+                    mLc = LamC.mass();           
+                    pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
+                    
                     // lamc heli
                     HepLorentzVector p_lamc;
-                    if (lcch==1) p_lamc=LamC.p();
+                    if (lcch==1 || lcch==2) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
                     
-                    t1 -> column("hlc",-cos(heli(LamC.child(0).p(),pUPS,p_lamc)));
+                    coshlc = cos(heli(LamC.child(0).p(),2*p_lamc,p_lamc));
+                    
                                 
                     //lam heli
                     HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
@@ -589,68 +581,67 @@ namespace Belle {
                         p_pi_from_lam=LamC.child(0).child(0).p();
                     }
                     
-                    t1->column("hl",-cos(heli (p_proton_from_lam, p_lamc,  LamC.child(0).p())));
+                    coshl  = cos(heli(p_proton_from_lam,  2*LamC.child(0).p(),  LamC.child(0).p()))
+                 
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
                     HepLorentzVector p_W_from_lamc;
                     p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
-            
-                    if ((lcch==1) || (lcch==2)) t1 -> column("q",(LamC.p()-LamC.child(0).p()).mag());
-                    else t1 -> column("q",(p_W_from_lamc).mag()); 	
-            
+                    
+                    
+                    if ((lcch==1) || (lcch==2)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
+                    else qW =  p_W_from_lamc.mag();	
                     
                     //W heli and angle chi
-                    HepLorentzVector p_l, p_nu;
-                    p_l = LamC.child(1).p();
+                    if (lcch==3 || lcch==4)
+                    {
+                        HepLorentzVector p_l, p_nu;
+                        p_l = LamC.child(1).p();
 
-                    if ((lcch==3) || (lcch==4)) t1->column("hw",-cos( heli(p_l,p_lamc,p_W_from_lamc)));
-                    else t1->column("hw",-999);
+                        cosW = cos(heli(p_l,2*p_W_from_lamc,p_W_from_lamc));
             
-                    p_nu = p_W_from_lamc-p_l;
+                        p_nu = p_W_from_lamc-p_l;
             
-                    Hep3Vector norm_lambda, norm_W;
-                    norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                    norm_lambda = norm_lambda*(1./norm_lambda.mag());
-                    norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                    norm_W = norm_W*(1./norm_W.mag());
-            
-                    if ((lcch==3) || (lcch==4)) t1->column("chi",norm_lambda.angle(norm_W));
-                    else t1->column("chi",-999);
-                     
+                        Hep3Vector norm_lambda, norm_W;
                     
-                    t1 -> column("tag", tag);
-                    t1 -> column("rmx", rmx);
-                    t1 -> column("dstch", dstch);
-                    t1 -> column("mdst", mDst);
-                    t1 -> column("dch", dch);
-                    t1 -> column("md", mD);
-                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                    t1 -> column("fox", fox);  
-                    t1 -> column("ecms",pUPS.mag());
-                    t1 -> column("mks",mKs);
-                    t1 -> column("ch_tag", charge_tag);
-                    t1 -> column("pvis",pStar(momentum+LamC.p(),elec,posi).vect().mag());
-                    t1 -> column("rmvis", rm);
-                    t1->dumpData();
-                }
-                else
-                {
-                    t1 -> column("tag", tag);
-                    t1 -> column("rmx", rmx);
-                    t1 -> column("dstch", dstch);
-                    t1 -> column("mdst", mDst);
-                    t1 -> column("dch", dch);
-                    t1 -> column("md", mD);
-                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                    t1 -> column("fox", fox);  
-                    t1 -> column("ecms",pUPS.mag());
-                    t1 -> column("mks",mKs);
-                    t1 -> column("ch_tag", charge_tag);
-                    t1->dumpData();
+                        norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                        norm_lambda = norm_lambda*(1./norm_lambda.mag());
+                        norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
+                        norm_W = norm_W*(1./norm_W.mag());
+            
+                        angchi = norm_lambda.angle(norm_W);
+                    }
+                     
                 }
                 
+                t1 -> column("tag", tag);
+                t1 -> column("rmx", rmx);
+                t1 -> column("dstch", dstch);
+                t1 -> column("mdst", mDst);
+                t1 -> column("dch", dch);
+                t1 -> column("md", mD);
+                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                t1 -> column("fox", fox);  
+                t1 -> column("ecms",pUPS.mag());
+                t1 -> column("mks",mKs);
+                t1 -> column("ch_tag", charge_tag);
+                
+                t1 -> column("lcch",lcch);
+                t1 -> column("ml", mL);
+                t1 -> column("mlc", mLc);
+                t1->column("hl", coshl);
+                t1 -> column("hlc", coshlc);
+                
+                t1 -> column("q", qW);
+                t1->column("hw",cosW)
+                t1->column("chi",angchi); 
+                
+                t1 -> column("pvis",pvis);
+                t1 -> column("rmvis", rm);
+                
+                t1->dumpData();
             }
-            
+                
         }
         
         
