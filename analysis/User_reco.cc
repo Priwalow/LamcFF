@@ -506,7 +506,7 @@ namespace Belle {
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
             
-            
+            double rmx = (pUPS-momentum).mag(), rm=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
             
             if (abs(rmx-2.286)<0.65) 
             {
@@ -673,8 +673,8 @@ namespace Belle {
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
                     t1->dumpData();
+                }
             }
-                
         }
         
         
@@ -856,7 +856,7 @@ namespace Belle {
                 }
                 
             }
-        
+        }
         
     }
     
