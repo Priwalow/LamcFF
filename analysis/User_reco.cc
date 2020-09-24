@@ -550,7 +550,7 @@ namespace Belle {
                 if (Lcb.size()>0) for(std::vector<Particle>::iterator l=Lcb.begin(); l!=Lcb.end();++l)
                 {
                     if ( checkSame(*a,*l) ) continue;
-                    Particle LamC=*l;
+                    Particle &LamC=*l;
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
@@ -730,7 +730,7 @@ namespace Belle {
                 if (Lc.size()>0) for(std::vector<Particle>::iterator l=Lc.begin(); l!=Lc.end();++l)
                 {
                     if ( checkSame(*a,*l) ) continue;
-                    Particle LamC=*l;
+                    Particle &LamC=*l;
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
