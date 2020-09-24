@@ -350,12 +350,10 @@ namespace Belle {
      
         //######################################   FINAL SELECTION
             
-        std::vector<Particle> A; 
+        /*std::vector<Particle> A; 
         combination(A,ptype_UPS4,Lc,L_b);
         combination(A,ptype_UPS4,Lcb,L_);
-         
-        
-        
+
         for (std::vector<Particle>::iterator a=A.begin(); a!=A.end();++a)
         {
             Particle &All=*a;
@@ -501,8 +499,8 @@ namespace Belle {
                 t1->dumpData();
             }
         }
-        
-        /*for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
+        */
+        for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
         {
             Particle &ALamC=*a;
             HepLorentzVector momentum=ALamC.p();
@@ -552,7 +550,7 @@ namespace Belle {
                 if (Lcb.size()>0) for(std::vector<Particle>::iterator l=Lcb.begin(); l!=Lcb.end();++l)
                 {
                     if ( checkSame(*a,*l) ) continue;
-                    Particle &LamC=*l;
+                    Particle LamC=*l;
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
@@ -621,35 +619,60 @@ namespace Belle {
             
                         angchi = norm_lambda.angle(norm_W);
                     }
-                     
+                    
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                
+                    t1 -> column("lcch",lcch);
+                    t1 -> column("ml", mL);
+                    t1 -> column("mlc", mLc);
+                    t1->column("hl", coshl);
+                    t1 -> column("hlc", coshlc);
+                
+                    t1 -> column("q", qW);
+                    t1->column("hw",cosW);
+                    t1->column("chi",angchi); 
+                
+                    t1 -> column("pvis",pvis);
+                    t1 -> column("rmvis", rm);
+                    t1->dumpData();
                 }
+                else
+                {
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
                 
-                t1 -> column("tag", tag);
-                t1 -> column("rmx", rmx);
-                t1 -> column("dstch", dstch);
-                t1 -> column("mdst", mDst);
-                t1 -> column("dch", dch);
-                t1 -> column("md", mD);
-                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("fox", fox);  
-                t1 -> column("ecms",pUPS.mag());
-                t1 -> column("mks",mKs);
-                t1 -> column("ch_tag", charge_tag);
+                    t1 -> column("lcch",lcch);
+                    t1 -> column("ml", mL);
+                    t1 -> column("mlc", mLc);
+                    t1->column("hl", coshl);
+                    t1 -> column("hlc", coshlc);
                 
-                t1 -> column("lcch",lcch);
-                t1 -> column("ml", mL);
-                t1 -> column("mlc", mLc);
-                t1->column("hl", coshl);
-                t1 -> column("hlc", coshlc);
+                    t1 -> column("q", qW);
+                    t1->column("hw",cosW);
+                    t1->column("chi",angchi); 
                 
-                t1 -> column("q", qW);
-                t1->column("hw",cosW);
-                t1->column("chi",angchi); 
-                
-                t1 -> column("pvis",pvis);
-                t1 -> column("rmvis", rm);
-                
-                t1->dumpData();
+                    t1 -> column("pvis",pvis);
+                    t1 -> column("rmvis", rm);
+                    t1->dumpData();
             }
                 
         }
@@ -707,7 +730,7 @@ namespace Belle {
                 if (Lc.size()>0) for(std::vector<Particle>::iterator l=Lc.begin(); l!=Lc.end();++l)
                 {
                     if ( checkSame(*a,*l) ) continue;
-                    Particle &LamC=*l;
+                    Particle LamC=*l;
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
@@ -777,37 +800,62 @@ namespace Belle {
                         angchi = norm_lambda.angle(norm_W);
                     }
                      
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                
+                    t1 -> column("lcch",lcch);
+                    t1 -> column("ml", mL);
+                    t1 -> column("mlc", mLc);
+                    t1->column("hl", coshl);
+                    t1 -> column("hlc", coshlc);
+                
+                    t1 -> column("q", qW);
+                    t1->column("hw",cosW);
+                    t1->column("chi",angchi); 
+                
+                    t1 -> column("pvis",pvis);
+                    t1 -> column("rmvis", rm);
+                    t1->dumpData();
+                }
+                else
+                {
+                    t1 -> column("tag", tag);
+                    t1 -> column("rmx", rmx);
+                    t1 -> column("dstch", dstch);
+                    t1 -> column("mdst", mDst);
+                    t1 -> column("dch", dch);
+                    t1 -> column("md", mD);
+                    t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
+                    t1 -> column("fox", fox);  
+                    t1 -> column("ecms",pUPS.mag());
+                    t1 -> column("mks",mKs);
+                    t1 -> column("ch_tag", charge_tag);
+                
+                    t1 -> column("lcch",lcch);
+                    t1 -> column("ml", mL);
+                    t1 -> column("mlc", mLc);
+                    t1->column("hl", coshl);
+                    t1 -> column("hlc", coshlc);
+                
+                    t1 -> column("q", qW);
+                    t1->column("hw",cosW);
+                    t1->column("chi",angchi); 
+                
+                    t1 -> column("pvis",pvis);
+                    t1 -> column("rmvis", rm);
+                    t1->dumpData();
                 }
                 
-                t1 -> column("tag", tag);
-                t1 -> column("rmx", rmx);
-                t1 -> column("dstch", dstch);
-                t1 -> column("mdst", mDst);
-                t1 -> column("dch", dch);
-                t1 -> column("md", mD);
-                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("fox", fox);  
-                t1 -> column("ecms",pUPS.mag());
-                t1 -> column("mks",mKs);
-                t1 -> column("ch_tag", charge_tag);
-                
-                t1 -> column("lcch",lcch);
-                t1 -> column("ml", mL);
-                t1 -> column("mlc", mLc);
-                t1->column("hl", coshl);
-                t1 -> column("hlc", coshlc);
-                
-                t1 -> column("q", qW);
-                t1->column("hw",cosW);
-                t1->column("chi",angchi); 
-                
-                t1 -> column("pvis",pvis);
-                t1 -> column("rmvis", rm);
-                
-                t1->dumpData();
             }
-                
-        }*/
         
         
     }
