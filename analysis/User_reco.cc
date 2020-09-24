@@ -441,7 +441,7 @@ namespace Belle {
                     
                     tmp_lorentz_vector = -LamC.child(0).p(); 
                     tmp_lorentz_vector.setE(LamC.child(0).p().e());
-                    coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()))
+                    coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()));
                  
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -496,7 +496,7 @@ namespace Belle {
                 t1 -> column("hlc", coshlc);
                 
                 t1 -> column("q", qW);
-                t1->column("hw",cosW)
+                t1->column("hw",cosW);
                 t1->column("chi",angchi); 
                 
                 t1 -> column("pvis",pvis);
@@ -596,7 +596,7 @@ namespace Belle {
                     
                     tmp_lorentz_vector = -LamC.child(0).p(); 
                     tmp_lorentz_vector.setE(LamC.child(0).p().e());
-                    coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()))
+                    coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()));
                  
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
