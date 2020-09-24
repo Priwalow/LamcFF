@@ -499,8 +499,8 @@ namespace Belle {
                 t1 -> column("rmvis", rm);
 
                 t1->dumpData();
+            }
         }
-        
         
         /*for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
         {
