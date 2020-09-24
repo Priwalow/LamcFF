@@ -553,6 +553,7 @@ namespace Belle {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
                     
+                    
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
@@ -565,7 +566,8 @@ namespace Belle {
                     if (lcch==1 || lcch==2) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
                     
-                    coshlc = cos(heli(LamC.child(0).p(),2*p_lamc,p_lamc));
+                    
+                    coshlc = cos(heli(LamC.child(0).p(),p_lamc*2,p_lamc));
                     
                                 
                     //lam heli
@@ -581,7 +583,7 @@ namespace Belle {
                         p_pi_from_lam=LamC.child(0).child(0).p();
                     }
                     
-                    coshl  = cos(heli(p_proton_from_lam,  2*LamC.child(0).p(),  LamC.child(0).p()))
+                    coshl  = cos(heli(p_proton_from_lam,  LamC.child(0).p()*2,  LamC.child(0).p()));
                  
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -598,7 +600,7 @@ namespace Belle {
                         HepLorentzVector p_l, p_nu;
                         p_l = LamC.child(1).p();
 
-                        cosW = cos(heli(p_l,2*p_W_from_lamc,p_W_from_lamc));
+                        cosW = cos(heli(p_l,p_W_from_lamc*2,p_W_from_lamc));
             
                         p_nu = p_W_from_lamc-p_l;
             
@@ -633,7 +635,7 @@ namespace Belle {
                 t1 -> column("hlc", coshlc);
                 
                 t1 -> column("q", qW);
-                t1->column("hw",cosW)
+                t1->column("hw",cosW);
                 t1->column("chi",angchi); 
                 
                 t1 -> column("pvis",pvis);
