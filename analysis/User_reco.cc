@@ -255,7 +255,7 @@ namespace Belle {
         doMassVertexFit(D0);
         doMassVertexFit(D_p);
         
-        cout << "D mesons ready" << endl;
+       
         
         combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.025);
         setUserInfo(Dst0_b, 1);
@@ -284,7 +284,7 @@ namespace Belle {
         doMassVertexFit(Dst0);
         doMassVertexFit(Dst_p);
         
-        cout << "D* mesons ready" << endl;
+        
         
         
         std::vector <Particle> L_, L_b;
@@ -518,7 +518,7 @@ namespace Belle {
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
         
-                
+                cout << "Selected! Filling tag" << endl; 
                 if (tag==1)
                 {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
@@ -554,6 +554,8 @@ namespace Belle {
                 {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
+                    
+                    cout << "Filling LamC" << endl; 
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
@@ -698,7 +700,7 @@ namespace Belle {
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
         
-                
+                cout << "Selected! Filling tag" << endl; 
                 if (tag==1)
                 {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
@@ -734,6 +736,8 @@ namespace Belle {
                 {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
+                    
+                    cout << "Filling LamC" << endl; 
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
