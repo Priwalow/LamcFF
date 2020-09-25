@@ -221,10 +221,10 @@ namespace Belle {
         setUserInfo(D0_b, 4);
         setUserInfo(D0, 4); 
         
-        //combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_p, pi_m, 0.06);
-        //combination (D0,ptype_D0, k_m, pi0, pi_p, pi_p, pi_m, 0.06);
-        //setUserInfo(D0_b, 5);
-        //setUserInfo(D0, 5);
+        combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_p, pi_m, 0.06);
+        combination (D0,ptype_D0, k_m, pi0, pi_p, pi_p, pi_m, 0.06);
+        setUserInfo(D0_b, 5);
+        setUserInfo(D0, 5);
         combination (D0_b,ptype_D0B, k_s, pi0, pi_p, pi_m, 0.06);
         combination (D0,ptype_D0, k_s, pi0, pi_p, pi_m, 0.06);
         setUserInfo(D0_b, 6);
