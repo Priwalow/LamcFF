@@ -221,10 +221,10 @@ namespace Belle {
         setUserInfo(D0_b, 4);
         setUserInfo(D0, 4); 
         
-        combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_p, pi_m, 0.06);
-        combination (D0,ptype_D0, k_m, pi0, pi_p, pi_p, pi_m, 0.06);
-        setUserInfo(D0_b, 5);
-        setUserInfo(D0, 5);
+        //combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_p, pi_m, 0.06);
+        //combination (D0,ptype_D0, k_m, pi0, pi_p, pi_p, pi_m, 0.06);
+        //setUserInfo(D0_b, 5);
+        //setUserInfo(D0, 5);
         combination (D0_b,ptype_D0B, k_s, pi0, pi_p, pi_m, 0.06);
         combination (D0,ptype_D0, k_s, pi0, pi_p, pi_m, 0.06);
         setUserInfo(D0_b, 6);
@@ -255,6 +255,7 @@ namespace Belle {
         doMassVertexFit(D0);
         doMassVertexFit(D_p);
         
+        cout << "D mesons ready" << endl;
         
         combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.025);
         setUserInfo(Dst0_b, 1);
@@ -282,6 +283,9 @@ namespace Belle {
  
         doMassVertexFit(Dst0);
         doMassVertexFit(Dst_p);
+        
+        cout << "D* mesons ready" << endl;
+        
         
         std::vector <Particle> L_, L_b;
         combination (L_b,ptype_Lamc, p_m, D0_b);
@@ -344,7 +348,7 @@ namespace Belle {
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
-        if(!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
+        if(!(nevent%1))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
         
      
         //######################################   FINAL SELECTION
