@@ -44,14 +44,14 @@ void FitDst()
     
     
     TCanvas *c1 = new TCanvas("c1","D^{*+} invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","D^{*} #rightarrow D^{0}#pi, D^{0} #rightarrow K#pi#pi^{0}",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","D^{*} #rightarrow D^{0}#pi, D^{0} #rightarrow K#pi#pi^{0}",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","D^{*} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{*} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
     
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("tag==3 && dch==4 && dstch==1 && mdst > %lf && mdst < %lf && abs(md-1.8639)<0.0294",lend,rend);
-    Ntot = ch1dat -> Draw("mdst-md+1.86483>>hdat",Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
+    Ntot = ch1dat -> Draw("mdst>>hdat",Mwindow,"goff"); //-md+1.86483
     //ch1dat -> Draw("mdst-md+2.01026>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
     

@@ -16,8 +16,8 @@
     double lend=1.82, rend=1.91, MD0=1.86483; //lend=2.21, rend=2.36
     int Nbins=90;
     TCanvas *c1 = new TCanvas("c1","D^{0} invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","D^{0} #rightarrow K#pi#pi#pi",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","D^{0} #rightarrow K#pi#pi#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","D^{0} #rightarrow K^{-}#pi^{-}#pi^{+}#pi^{+}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{0} #rightarrow K^{-}#pi^{-}#pi^{+}#pi^{+}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
@@ -64,7 +64,7 @@
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(K#pi#pi#pi) [GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(K^{-}#pi^{-}#pi^{+}#pi^{+}) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.0f MeV ",binw*1000));

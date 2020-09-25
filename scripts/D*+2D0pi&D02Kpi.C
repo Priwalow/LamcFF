@@ -66,8 +66,8 @@ void FitDst()
     
     
     TCanvas *c1 = new TCanvas("c1","D^{*+} invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","D^{*} #rightarrow D^{0}#pi, D^{0} #rightarrow K#pi",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","D^{*} #rightarrow D^{0}#pi, D^{0} #rightarrow K#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","D^{*+} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{*+} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}",Nbins,lend,rend);
     
     
     
@@ -82,7 +82,7 @@ void FitDst()
     TF1* fsig = new TF1("fsig",mysig,lend,rend,6);
     TF1* fbkg = new TF1("fbkg",mybkg,lend,rend,3);
     TF1* fdat = new TF1("fdat",myfdat,lend,rend,9);
-    double initpar[] = {10000,MDst_p,0.0005,10000,MDst_p,0.001,1.98,1675,25000};//-1500000};
+    double initpar[] = {13000,MDst_p,0.0005,6000,MDst_p,0.001,1.98,253,-21};//-1500000};
     fdat -> SetParameters(initpar); 
     fdat -> SetParLimits(1,MDst_p-0.002,MDst_p+0.002);
     fdat -> SetParLimits(2,0.0001,0.0005);
@@ -92,7 +92,7 @@ void FitDst()
     fdat -> SetParLimits(6,1.97,2.01);
 
     TFitResultPtr fitResult;
-    fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
+    fitResult = hdat -> Fit("fdat","S M N","goff"); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
     TMatrixDSym covSignal, covBackground;
     covFit.GetSub(0,5,covSignal);
@@ -120,7 +120,7 @@ void FitDst()
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(K#pi#pi)-M(K#pi)+M^{PDG}_{D^{0}}[GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(D^{0}#pi^{+})[GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f MeV ",binw*1000));

@@ -16,13 +16,13 @@
     double lend=1.82, rend=1.91, MD0=1.86483; //lend=2.21, rend=2.36
     int Nbins=90;
     TCanvas *c1 = new TCanvas("c1","D^{0} invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","D^{0} #rightarrow K_{S}#pi#pi",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","D^{0} #rightarrow K_{S}pi#pi#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","D^{0} #rightarrow K_{S}#pi^{-}#pi^{+}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{0} #rightarrow K_{S}#pi^{-}#pi^{+}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("tag==1 && dch==3 && md > %lf && md < %lf",lend,rend); //&& abs(mks-0.4979)<0.008
+    TCut Mwindow = Form("tag==1 && dch==3 && abs(mks-0.4979)<0.0075 && md > %lf && md < %lf",lend,rend); //&& abs(mks-0.4979)<0.008
     Ntot = ch1dat -> Draw("md>>hdat",Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
     ch1dat -> Draw("md>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
@@ -64,7 +64,7 @@
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(K_{S}#pi#pi) [GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(K_{S}#pi^{-}#pi^{+}) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.0f MeV ",binw*1000));

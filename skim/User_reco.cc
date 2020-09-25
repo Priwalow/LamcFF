@@ -183,17 +183,16 @@ namespace Belle {
             }
             
             
-            std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b, pi_pm;
+            std::vector<Particle> D0, D0_b, D_p, D_m, Dst_p, Dst_m, Dst0, Dst0_b;
             
             //######################################    TAG SIDE
-            combination (pi_pm, ptype_D0B, pi_p, pi_m);
             
             combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
             combination (D0,ptype_D0, k_m, pi_p, 0.06);
             //setUserInfo(D0_b, 1); 
             //setUserInfo(D0, 1); 
-            combination (D0_b,ptype_D0B, k_p, pi_p, pi_m, pi_m, 0.05);
-            combination (D0,ptype_D0, k_m, pi_p, pi_m, pi_p, 0.05);
+            combination (D0_b,ptype_D0B, pi_m, pi_m, k_p, pi_p, 0.05);
+            combination (D0,ptype_D0, pi_p, pi_p, k_m, pi_m, 0.05);
             //setUserInfo(D0_b, 2); 
             //setUserInfo(D0, 2); 
             combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, 0.05);
@@ -205,8 +204,8 @@ namespace Belle {
             //setUserInfo(D0_b, 4);
             //setUserInfo(D0, 4); 
             
-            combination (D0_b,ptype_D0B, k_p, pi0, pi_m, pi_pm, 0.06);
-            combination (D0,ptype_D0, k_m, pi0, pi_p, pi_pm, 0.06);
+            //combination (D0_b,ptype_D0B, pi_m, pi_m, k_p, pi0, pi_p, 0.06);
+            //combination (D0,ptype_D0, pi_p, pi_p, k_m, pi0, pi_m, 0.06);
             //setUserInfo(D0_b, 5);
             //setUserInfo(D0, 5);
             combination (D0_b,ptype_D0B, k_s, pi0, pi_p, pi_m, 0.06);
