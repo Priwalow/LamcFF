@@ -521,35 +521,50 @@ namespace Belle {
                 cout << "Selected! Filling tag" << endl; 
                 if (tag==1)
                 {
+                    cout << "1 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "2 ";
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    cout << "3 ";
                     if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     //mKs = ALamC.child(1).child(0).mass();
                 }
                 else if (tag==2)
                 {
+                    cout << "4 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "5 ";
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    if( dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                        else if (dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();
+                    cout << "6 ";
+                    if( dch==2) {cout << "7 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();}
+                        else if (dch == 3) {cout << "8 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();}
                 }
                 else if (tag==3)
                 {
+                    cout << "9 ";
                     dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "10 ";
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    cout << "11 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    cout << "12 ";
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();
+                    cout << "13 ";
+                    if( dstch==1 && (dch==3 || dch==6)) {cout << "14 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();}
+                    else if (dstch==2 && dch==2) {cout << "15 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();}
+                    else if (dstch==2 && dch == 3) {cout << "16 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();}
                 }
                 else if (tag==4)
                 {
+                    cout << "17 ";
                     dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "18 ";
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    cout << "19 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    cout << "20 ";
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                    if( dch==3 || dch==6 ) {cout << "21 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();}
                 }
 
                 if (Lcb.size()>0) for(std::vector<Particle>::iterator l=Lcb.begin(); l!=Lcb.end();++l)
@@ -705,35 +720,50 @@ namespace Belle {
                 cout << "Selected! Filling tag" << endl; 
                 if (tag==1)
                 {
+                    cout << "1 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "2 ";
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    cout << "3 ";
                     if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     //mKs = ALamC.child(1).child(0).mass();
                 }
                 else if (tag==2)
                 {
+                    cout << "4 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "5 ";
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                     if( dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                        else if (dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();
+                    cout << "6 ";
+                    if( dch==2) {cout << "7 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();}
+                        else if (dch == 3) {cout << "8 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();}
                 }
                 else if (tag==3)
                 {
+                    cout << "9 ";
                     dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "10 ";
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    cout << "11 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    cout << "12 ";
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();
+                    cout << "13 ";
+                    if( dstch==1 && (dch==3 || dch==6)) {cout << "14 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();}
+                    else if (dstch==2 && dch==2) {cout << "15 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();}
+                    else if (dstch==2 && dch == 3) {cout << "16 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();}
                 }
                 else if (tag==4)
                 {
+                    cout << "17 ";
                     dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
+                    cout << "18 ";
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
+                    cout << "19 ";
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
+                    cout << "20 ";
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                    if( dch==3 || dch==6 ) {cout << "21 "; mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();}
                 }
                 
                 if (Lc.size()>0) for(std::vector<Particle>::iterator l=Lc.begin(); l!=Lc.end();++l)
