@@ -518,7 +518,6 @@ namespace Belle {
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
         
-                cout << "Selected! Filling tag" << endl; 
                 if (tag==1)
                 {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
@@ -540,9 +539,8 @@ namespace Belle {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                        else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                            else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(2).userInfo()).mass();
-                }
+                    else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                    else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(2).userInfo()).mass();
                 }
                 else if (tag==4)
                 {
@@ -698,14 +696,12 @@ namespace Belle {
             
             if (abs(rmx-2.286)<0.65) 
             {
-                //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
         
-                cout << "Selected! Filling tag" << endl; 
                 if (tag==1)
-                {   
+                {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
@@ -715,7 +711,7 @@ namespace Belle {
                 {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    if( dch == 2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
+                     if( dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                         else if (dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();
                 }
                 else if (tag==3)
@@ -725,8 +721,8 @@ namespace Belle {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
                     mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                        else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                            else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(2).userInfo()).mass();
+                    else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
+                    else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0)child(2).userInfo()).mass();
                 }
                 else if (tag==4)
                 {
