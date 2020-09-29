@@ -565,7 +565,7 @@ namespace Belle {
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
-                    mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
+                   
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
                     
                     
@@ -580,6 +580,7 @@ namespace Belle {
                     HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                     if(lcch!=5)
                     {
+                        mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
                         if (abs(LamC.child(0).child(0).lund())>1000)
                         {
                             p_proton_from_lam=LamC.child(0).child(0).p(); 
@@ -737,7 +738,6 @@ namespace Belle {
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
-                    mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
                     
                     
@@ -752,6 +752,7 @@ namespace Belle {
                     HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                     if(lcch!=5)
                     {
+                        mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
                         if (abs(LamC.child(0).child(0).lund())>1000)
                         {
                             p_proton_from_lam=LamC.child(0).child(0).p(); 
