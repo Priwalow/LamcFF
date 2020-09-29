@@ -567,13 +567,11 @@ namespace Belle {
                     
                     
                     // lamc heli
-                    HepLorentzVector p_lamc, tmp_lorentz_vector;
+                    HepLorentzVector p_lamc;
                     if (lcch==1 || lcch==2) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
                     
-                    tmp_lorentz_vector = -p_lamc; 
-                    tmp_lorentz_vector.setE(p_lamc.e());
-                    coshlc = -cos(heli(LamC.child(0).p(),tmp_lorentz_vector,p_lamc));
+                    coshlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc));
                     
                                 
                     //lam heli
@@ -590,9 +588,7 @@ namespace Belle {
                     }
                     
                     
-                    tmp_lorentz_vector = -LamC.child(0).p(); 
-                    tmp_lorentz_vector.setE(LamC.child(0).p().e());
-                    coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()));
+                    coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                  
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -610,9 +606,8 @@ namespace Belle {
                         p_l = LamC.child(1).p();
 
                         
-                        tmp_lorentz_vector = -p_W_from_lamc; 
-                        tmp_lorentz_vector.setE(p_W_from_lamc.e());
-                        cosW = -cos(heli(p_l,tmp_lorentz_vector,p_W_from_lamc));
+                        
+                        cosW = -cos(heli(p_l,p_lamc,p_W_from_lamc));
             
                         p_nu = p_W_from_lamc-p_l;
             
@@ -749,13 +744,11 @@ namespace Belle {
                     
                     
                     // lamc heli
-                    HepLorentzVector p_lamc, tmp_lorentz_vector;
+                    HepLorentzVector p_lamc;
                     if (lcch==1 || lcch==2) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
                     
-                    tmp_lorentz_vector = -p_lamc; 
-                    tmp_lorentz_vector.setE(p_lamc.e());
-                    coshlc = -cos(heli(LamC.child(0).p(),tmp_lorentz_vector,p_lamc));
+                    coshlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc));
                     
                                 
                     //lam heli
@@ -772,9 +765,7 @@ namespace Belle {
                     }
                     
                     
-                    tmp_lorentz_vector = -LamC.child(0).p(); 
-                    tmp_lorentz_vector.setE(LamC.child(0).p().e());
-                    coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()));
+                    coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                  
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -792,9 +783,8 @@ namespace Belle {
                         p_l = LamC.child(1).p();
 
                         
-                        tmp_lorentz_vector = -p_W_from_lamc; 
-                        tmp_lorentz_vector.setE(p_W_from_lamc.e());
-                        cosW = -cos(heli(p_l,tmp_lorentz_vector,p_W_from_lamc));
+                        
+                        cosW = -cos(heli(p_l,p_lamc,p_W_from_lamc));
             
                         p_nu = p_W_from_lamc-p_l;
             

@@ -44,8 +44,8 @@ void FitDst()
     
     
     TCanvas *c1 = new TCanvas("c1","D^{*+} invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","D^{*} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","D^{*} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","D^{*+} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{*+} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
     
     
     
@@ -98,7 +98,7 @@ void FitDst()
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(K#pi#pi#pi^{0})-M(K#pi#pi^{0})+M^{PDG}_{D^{0}}[GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(D^{0}#pi^{+})[GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f MeV ",binw*1000));

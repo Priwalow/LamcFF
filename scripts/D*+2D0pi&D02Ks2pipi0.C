@@ -44,14 +44,14 @@ void FitDst()
     
     
     TCanvas *c1 = new TCanvas("c1","D^{*+} invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","D^{*} #rightarrow D^{0}#pi, D^{0} #rightarrow K_{S}#pi#pi#pi^{0}, K_{S} #rightarrow #pi^{+}#pi^{-}",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","D^{*} #rightarrow D^{0}#pi, D^{0} #rightarrow K_{S}#pi#pi#pi^{0}, K_{S} #rightarrow #pi^{+}#pi^{-}",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","D^{*+} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K_{S}#pi^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{*+} #rightarrow D^{0}#pi^{+}, D^{0} #rightarrow K_{S}#pi^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
     
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut Mwindow = Form("tag==3 && dch==6 && dstch==1 && mdst > %lf && mdst < %lf && abs(md-1.8645)<0.0237",lend,rend);
-    Ntot = ch1dat -> Draw("mdst-md+1.86483>>hdat",Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
+    Ntot = ch1dat -> Draw("mdst>>hdat",Mwindow,"goff"); //-md+1.86483
     //ch1dat -> Draw("mdst-md+2.01026>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
     
@@ -97,7 +97,7 @@ void FitDst()
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(K_{S}#pi#pi#pi#pi^{0})-M(K_{S}#pi#pi#pi^{0})+M^{PDG}_{D^{0}}[GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(D^{0}#pi^{+})[GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f MeV ",binw*1000));
