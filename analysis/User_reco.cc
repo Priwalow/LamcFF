@@ -577,9 +577,9 @@ namespace Belle {
                     
                     
                     //lam heli
+                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                     if(lcch!=5)
                     {
-                        HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                         if (abs(LamC.child(0).child(0).lund())>1000)
                         {
                             p_proton_from_lam=LamC.child(0).child(0).p(); 
@@ -749,9 +749,9 @@ namespace Belle {
                     
                     
                     //lam heli
+                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                     if(lcch!=5)
                     {
-                        HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                         if (abs(LamC.child(0).child(0).lund())>1000)
                         {
                             p_proton_from_lam=LamC.child(0).child(0).p(); 
