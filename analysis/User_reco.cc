@@ -348,6 +348,11 @@ namespace Belle {
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
+        combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.1);
+        combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.1);
+        setUserInfo(Lc,5);
+        setUserInfo(Lcb,5);
+        
         if(!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; gamma = " << photons.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
         
      
@@ -556,47 +561,44 @@ namespace Belle {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
                     
-                    cout << "Filling LamC" << endl; 
-                    
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
+                    mLc = LamC.mass();          
                     mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
-                    mLc = LamC.mass();           
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
                     
                     
                     // lamc heli
                     HepLorentzVector p_lamc;
-                    if (lcch==1 || lcch==2) p_lamc=LamC.p();
+                    if (lcch==1 || lcch==2 || lcch==5) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
-                    
                     coshlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc));
                     
-                                
+                    
                     //lam heli
-                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
-                    if (abs(LamC.child(0).child(0).lund())>1000)
+                    if(lcch!=5)
                     {
-                        p_proton_from_lam=LamC.child(0).child(0).p(); 
-                        p_pi_from_lam=LamC.child(0).child(1).p();
+                        HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
+                        if (abs(LamC.child(0).child(0).lund())>1000)
+                        {
+                            p_proton_from_lam=LamC.child(0).child(0).p(); 
+                            p_pi_from_lam=LamC.child(0).child(1).p();
+                        }
+                        else
+                        {
+                            p_proton_from_lam=LamC.child(0).child(1).p();
+                            p_pi_from_lam=LamC.child(0).child(0).p();
+                        }
+                        coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                     }
-                    else
-                    {
-                        p_proton_from_lam=LamC.child(0).child(1).p();
-                        p_pi_from_lam=LamC.child(0).child(0).p();
-                    }
-                    
-                    
-                    coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
-                 
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
                     HepLorentzVector p_W_from_lamc;
                     p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
                     
                     
-                    if ((lcch==1) || (lcch==2)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
+                    if ((lcch==1) || (lcch==2) || (lcch==5)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
                     else qW =  p_W_from_lamc.mag();	
                     
                     //W heli and angle chi
@@ -604,8 +606,6 @@ namespace Belle {
                     {
                         HepLorentzVector p_l, p_nu;
                         p_l = LamC.child(1).p();
-
-                        
                         
                         cosW = -cos(heli(p_l,p_lamc,p_W_from_lamc));
             
@@ -733,47 +733,44 @@ namespace Belle {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
                     
-                    cout << "Filling LamC" << endl; 
-                    
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
+                    mLc = LamC.mass();          
                     mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
-                    mLc = LamC.mass();           
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
                     
                     
                     // lamc heli
                     HepLorentzVector p_lamc;
-                    if (lcch==1 || lcch==2) p_lamc=LamC.p();
+                    if (lcch==1 || lcch==2 || lcch==5) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
-                    
                     coshlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc));
                     
-                                
+                    
                     //lam heli
-                    HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
-                    if (abs(LamC.child(0).child(0).lund())>1000)
+                    if(lcch!=5)
                     {
-                        p_proton_from_lam=LamC.child(0).child(0).p(); 
-                        p_pi_from_lam=LamC.child(0).child(1).p();
+                        HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
+                        if (abs(LamC.child(0).child(0).lund())>1000)
+                        {
+                            p_proton_from_lam=LamC.child(0).child(0).p(); 
+                            p_pi_from_lam=LamC.child(0).child(1).p();
+                        }
+                        else
+                        {
+                            p_proton_from_lam=LamC.child(0).child(1).p();
+                            p_pi_from_lam=LamC.child(0).child(0).p();
+                        }
+                        coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                     }
-                    else
-                    {
-                        p_proton_from_lam=LamC.child(0).child(1).p();
-                        p_pi_from_lam=LamC.child(0).child(0).p();
-                    }
-                    
-                    
-                    coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
-                 
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
                     HepLorentzVector p_W_from_lamc;
                     p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
                     
                     
-                    if ((lcch==1) || (lcch==2)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
+                    if ((lcch==1) || (lcch==2) || (lcch==5)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
                     else qW =  p_W_from_lamc.mag();	
                     
                     //W heli and angle chi
@@ -781,8 +778,6 @@ namespace Belle {
                     {
                         HepLorentzVector p_l, p_nu;
                         p_l = LamC.child(1).p();
-
-                        
                         
                         cosW = -cos(heli(p_l,p_lamc,p_W_from_lamc));
             
