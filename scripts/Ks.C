@@ -33,7 +33,6 @@
 
     fdat -> SetParameters(4000000,MKS,0.0025,10000,0); //100,,0.01,40,-300
     fdat -> SetParLimits(1,MKS-0.01,MKS+0.01);
-    fdat -> SetParLimits(0,0,1e7);
 
     TFitResultPtr fitResult;
     fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
