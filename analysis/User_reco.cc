@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -78,42 +78,31 @@ namespace Belle {
         
         if(p_p.size()+p_m.size()==0) return; 
         
-        eraseLeptons(p_p);
-        eraseLeptons(p_m);
         
         //kaons and pions
-        std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
+        std::vector<Particle>  k_p, k_m, pi_p, pi_m;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
         ntrk=k_p.size()+k_m.size();
         
-        /*
-         *        withdRdZcut(k_p,runIp.z());
-         *        withdRdZcut(pi_p,runIp.z());
-         *        withdRdZcut(k_m,runIp.z());
-         *        withdRdZcut(pi_m,runIp.z());
-         */  
-        
-        withKaonId(k_p,0.6,3,1,5,3,4);
-        withKaonId(k_p,0.6,3,1,5,3,2);
-        withKaonId(k_m,0.6,3,1,5,3,4);
-        withKaonId(k_m,0.6,3,1,5,3,2);
-        
-        withPionId(pi_p,0.4,3,1,5,3,2);
-        withPionId(pi_p,0.4,3,1,5,4,2);
-        withPionId(pi_m,0.4,3,1,5,3,2);
-        withPionId(pi_m,0.4,3,1,5,4,2);
-        
-        eraseLeptons(k_p);
-        eraseLeptons(k_m);
-        eraseLeptons(pi_p);
-        eraseLeptons(pi_m);
+        withdRdZcut(k_p,runIp.z());
+        withdRdZcut(pi_p,runIp.z());
+        withdRdZcut(k_m,runIp.z());
+        withdRdZcut(pi_m,runIp.z());
         
         
-        for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
+        withKaonId(k_p,0.1,3,1,5,3,4);
+        withKaonId(k_p,0.1,3,1,5,3,2);
+        withKaonId(k_m,0.1,3,1,5,3,4);
+        withKaonId(k_m,0.1,3,1,5,3,2);
+        
+        
+        
+        
+        /*for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
-            pions.push_back(*l);
+            pions.push_back(*l);*/
         
         //Ks mesons
         std::vector<Particle> k_s;
@@ -161,7 +150,7 @@ namespace Belle {
         
         
         //photons
-        std::vector<Particle> photons;
+        /*std::vector<Particle> photons;
         Mdst_gamma_Manager& GamMgr = Mdst_gamma_Manager::get_manager();
         for (std::vector<Mdst_gamma>::iterator it=GamMgr.begin();it!=GamMgr.end(); it++) 
         {
@@ -179,7 +168,7 @@ namespace Belle {
             {
                 photons.push_back(prtcl);
             }
-        }
+        }*/
         
         //Lambda hyperons
         std::vector<Particle> lam, lamb;
@@ -204,20 +193,20 @@ namespace Belle {
         
         //######################################    TAG SIDE
     
-        combination (D0_b,ptype_D0B, k_p, pi_m, 0.06);
-        combination (D0,ptype_D0, k_m, pi_p, 0.06);
+        combination (D0_b,ptype_D0B, k_p, pi_m, 0.04);
+        combination (D0,ptype_D0, k_m, pi_p, 0.04);
         setUserInfo(D0_b, 1); 
         setUserInfo(D0, 1); 
-        combination (D0_b,ptype_D0B, pi_m, pi_m, k_p, pi_p, 0.05);
-        combination (D0,ptype_D0, pi_p, pi_p, k_m, pi_m, 0.05);
+        combination (D0_b,ptype_D0B, pi_m, pi_m, k_p, pi_p, 0.04);
+        combination (D0,ptype_D0, pi_p, pi_p, k_m, pi_m, 0.04);
         setUserInfo(D0_b, 2); 
         setUserInfo(D0, 2); 
-        combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, 0.05);
-        combination (D0,ptype_D0, k_s, pi_p, pi_m, 0.05);
+        combination (D0_b,ptype_D0B, k_s, pi_p, pi_m, 0.04);
+        combination (D0,ptype_D0, k_s, pi_p, pi_m, 0.04);
         setUserInfo(D0_b, 3);
         setUserInfo(D0, 3); 
-        combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.06);
-        combination (D0,ptype_D0, k_m, pi0, pi_p,  0.06);
+        combination (D0_b,ptype_D0B, k_p, pi0, pi_m,  0.04);
+        combination (D0,ptype_D0, k_m, pi0, pi_p,  0.04);
         setUserInfo(D0_b, 4);
         setUserInfo(D0, 4); 
         
@@ -225,28 +214,27 @@ namespace Belle {
         //combination (D0,ptype_D0, k_m, pi0, pi_p, pi_p, pi_m, 0.06);
         //setUserInfo(D0_b, 5);
         //setUserInfo(D0, 5);
-        combination (D0_b,ptype_D0B, k_s, pi0, pi_p, pi_m, 0.06);
-        combination (D0,ptype_D0, k_s, pi0, pi_p, pi_m, 0.06);
+        combination (D0_b,ptype_D0B, k_s, pi0, pi_p, pi_m, 0.04);
+        combination (D0,ptype_D0, k_s, pi0, pi_p, pi_m, 0.04);
         setUserInfo(D0_b, 6);
         setUserInfo(D0, 6);
         
-        combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.05);
-        combination (D_p,ptype_Dp, k_m, pi_p, pi_p, 0.05);
+        combination (D_m,ptype_Dm, k_p, pi_m, pi_m, 0.04);
+        combination (D_p,ptype_Dp, k_m, pi_p, pi_p, 0.04);
         setUserInfo(D_m, 1);
         setUserInfo(D_p, 1);
-        combination (D_m,ptype_Dm, k_s, pi_m, 0.05);
-        combination (D_p,ptype_Dp, k_s, pi_p, 0.05);
+        combination (D_m,ptype_Dm, k_s, pi_m, 0.04);
+        combination (D_p,ptype_Dp, k_s, pi_p, 0.04);
         setUserInfo(D_m, 2);
         setUserInfo(D_p, 2);
-        combination (D_m,ptype_Dm, pi_m, pi_m, k_s, pi_p, 0.05);
-        combination (D_p,ptype_Dp, pi_p, pi_p, k_s, pi_m,0.05);
+        combination (D_m,ptype_Dm, pi_m, pi_m, k_s, pi_p, 0.04);
+        combination (D_p,ptype_Dp, pi_p, pi_p, k_s, pi_m,0.04);
         setUserInfo(D_m, 3);
         setUserInfo(D_p, 3);
-        combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.05);
-        combination (D_p,ptype_Dp, k_m, pi_p, k_p, 0.05);
+        combination (D_m,ptype_Dm, k_p, pi_m, k_m, 0.04);
+        combination (D_p,ptype_Dp, k_m, pi_p, k_p, 0.04);
         setUserInfo(D_m, 4);
         setUserInfo(D_p, 4);
-        
         
         if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
         
@@ -257,30 +245,70 @@ namespace Belle {
         
        
         
-        combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.025);
+        combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.04);
         setUserInfo(Dst0_b, 1);
-        combination (Dst0_b,ptype_DstB, D0_b, photons, 0.025);
-        setUserInfo(Dst0_b, 2);
+        //combination (Dst0_b,ptype_DstB, D0_b, photons, 0.025);
+        //setUserInfo(Dst0_b, 2);
         
-        combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.025);
+        for (std::vector<Particle>::iterator i=Dst0_b.begin(); i!=Dst0_b.end();++i)
+        {
+            Particle dst0b(*i);
+            if(abs(dst0b.mass()-dst0b.child(0).mass()-0.142)>0.01)
+            {
+                Dst0_b.erase(i); 
+                --i;
+            }
+        }        
+        
+        combination (Dst_m,ptype_Dstm, D0_b, pi_m, 0.04);
         setUserInfo(Dst_m, 1);
-        combination (Dst_m,ptype_Dstm, D_m, pi0, 0.025);
+        combination (Dst_m,ptype_Dstm, D_m, pi0, 0.04);
         setUserInfo(Dst_m, 2);
-
+            
+        for (std::vector<Particle>::iterator i=Dst_m.begin(); i!=Dst_m.end();++i)
+        {
+            Particle dstm(*i);
+            if(abs(dstm.mass()-dstm.child(0).mass()-0.1425)>0.01)
+            {
+                Dst_m.erase(i); 
+                --i;
+            }
+        }
+        
         doMassVertexFit(Dst0_b);
         doMassVertexFit(Dst_m);
         
         
-        combination (Dst0,ptype_Dst0, D0, pi0, 0.025);
+        combination (Dst0,ptype_Dst0, D0, pi0, 0.04);
         setUserInfo(Dst0, 1);
-        combination (Dst0,ptype_Dst0, D0, photons, 0.025);
-        setUserInfo(Dst0, 2);
+        //combination (Dst0,ptype_Dst0, D0, photons, 0.025);
+        //setUserInfo(Dst0, 2);
         
-        combination (Dst_p,ptype_Dstp, D0, pi_p, 0.025);
+        for (std::vector<Particle>::iterator i=Dst0.begin(); i!=Dst0.end();++i)
+        {
+            Particle dst0(*i);
+            if(abs(dst0.mass()-dst0.child(0).mass()-0.142)>0.01)
+            {
+                Dst0.erase(i); 
+                --i;
+            }
+        }
+        
+        combination (Dst_p,ptype_Dstp, D0, pi_p, 0.04);
         setUserInfo(Dst_p, 1);
-        combination (Dst_p,ptype_Dstp, D_p, pi0, 0.025);
+        combination (Dst_p,ptype_Dstp, D_p, pi0, 0.04);
         setUserInfo(Dst_p, 2);
  
+        for (std::vector<Particle>::iterator i=Dst_p.begin(); i!=Dst_p.end();++i)
+        {
+            Particle dstp(*i);
+            if(abs(dstp.mass()-dstp.child(0).mass()-0.1425)>0.01)
+            {
+                Dst_p.erase(i); 
+                --i;
+            }
+        }
+        
         doMassVertexFit(Dst0);
         doMassVertexFit(Dst_p);
         
@@ -288,19 +316,19 @@ namespace Belle {
         
         
         std::vector <Particle> L_, L_b;
-        combination (L_b,ptype_Lamc, p_m, D0_b);
-        setUserInfo(L_b, 1);
-        combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
-        setUserInfo(L_b, 2);
+        //combination (L_b,ptype_Lamc, p_m, D0_b);
+        //setUserInfo(L_b, 1);
+        //combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
+        //setUserInfo(L_b, 2);
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         setUserInfo(L_b, 3);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         setUserInfo(L_b, 4);
         
-        combination (L_,ptype_ALamc, p_p, D0);
-        setUserInfo(L_, 1);
-        combination (L_,ptype_ALamc, p_p, D_p, pi_m);
-        setUserInfo(L_, 2);
+        //combination (L_,ptype_ALamc, p_p, D0);
+        //setUserInfo(L_, 1);
+        //combination (L_,ptype_ALamc, p_p, D_p, pi_m);
+        //setUserInfo(L_, 2);
         combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
         setUserInfo(L_, 3);
         combination (L_,ptype_ALamc, p_p, Dst0);
@@ -338,18 +366,18 @@ namespace Belle {
                 {Lcb.erase(l); --l;}
                 
                 
-        combination (Lc,ptype_Lamc, lam, pi_p,0.1);
-        combination (Lcb,ptype_Lamc, lamb, pi_m,0.1);
+        combination (Lc,ptype_Lamc, lam, pi_p,0.05);
+        combination (Lcb,ptype_Lamc, lamb, pi_m,0.05);
         setUserInfo(Lc,1);
         setUserInfo(Lcb,1);
         
-        combination (Lc,ptype_Lamc, lam, pi_p, pi0, 0.1);
-        combination (Lcb,ptype_Lamc, lamb, pi_m, pi0, 0.1);
+        combination (Lc,ptype_Lamc, lam, pi_p, pi0, 0.05);
+        combination (Lcb,ptype_Lamc, lamb, pi_m, pi0, 0.05);
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
-        combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.1);
-        combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.1);
+        combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.05);
+        combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.05);
         setUserInfo(Lc,5);
         setUserInfo(Lcb,5);
         
@@ -358,165 +386,15 @@ namespace Belle {
      
         //######################################   FINAL SELECTION
             
-        /*std::vector<Particle> A; 
-        combination(A,ptype_UPS4,Lc,L_b);
-        combination(A,ptype_UPS4,Lcb,L_);
-
-        for (std::vector<Particle>::iterator a=A.begin(); a!=A.end();++a)
-        {
-            Particle &All=*a;
-            Particle &LamC=All.child(0);
-            Particle &ALamC=All.child(1);
-            
-            HepLorentzVector momentum=ALamC.p();
-            int charge_tag= calcuCharge (&ALamC);
-            
-            double rmx = (pUPS-momentum).mag(), rm=(pUPS-(momentum+LamC.p())).mag();//, rm =(pUPS-(momentum+LamC.p())).mag();
-        
-        
-            if (abs(rm)<1.5 && abs(rmx-2.286)<0.65)//&& (abs(rmx-2.3)<1.5)
-            {
-                //std::cout<<nevent<<" Selected!" << endl;
-                int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
-        
-                
-                if (tag==1)
-                {
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    //mKs = ALamC.child(1).child(0).mass();
-                }
-                else if (tag==2)
-                {
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    if( dch==2 || dch==3 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                }
-                else if (tag==3)
-                {
-                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dstch==1 && (dch==3 || dch==6)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                    else if( dstch==2 && (dch==2 || dch==3)) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                }
-                else if (tag==4)
-                {
-                    dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
-                    mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
-                    dch = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).channel();
-                    mD = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
-                    if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
-                }
-                
-                
-                lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
-                mL  = dynamic_cast<UserInfo&>(LamC.child(0).userInfo()).mass();
-                mLc = LamC.mass();           
-                pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
-                    
-                    
-                // lamc heli
-                HepLorentzVector p_lamc, tmp_lorentz_vector;
-                if (lcch==1 || lcch==2) p_lamc=LamC.p();
-                else p_lamc = pUPS-momentum;
-                    
-                tmp_lorentz_vector = -p_lamc; 
-                tmp_lorentz_vector.setE(p_lamc.e());
-                coshlc = -cos(heli(LamC.child(0).p(),tmp_lorentz_vector,p_lamc));
-                
-                                
-                //lam heli
-                HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
-                if (abs(LamC.child(0).child(0).lund())>1000)
-                {
-                    p_proton_from_lam=LamC.child(0).child(0).p(); 
-                    p_pi_from_lam=LamC.child(0).child(1).p();
-                }
-                else
-                {
-                    p_proton_from_lam=LamC.child(0).child(1).p();
-                    p_pi_from_lam=LamC.child(0).child(0).p();
-                }
-                
-                
-                tmp_lorentz_vector = -LamC.child(0).p(); 
-                tmp_lorentz_vector.setE(LamC.child(0).p().e());
-                coshl  = -cos(heli(p_proton_from_lam, tmp_lorentz_vector,  LamC.child(0).p()));
-                
-        
-                //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
-                HepLorentzVector p_W_from_lamc;
-                p_W_from_lamc = pUPS-LamC.child(0).p()-momentum;
-                
-                    
-                if ((lcch==1) || (lcch==2)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
-                else qW =  p_W_from_lamc.mag();	
-                
-                //W heli and angle chi
-                if (lcch==3 || lcch==4)
-                {
-                    HepLorentzVector p_l, p_nu;
-                    p_l = LamC.child(1).p();
-                        
-                    tmp_lorentz_vector = -p_W_from_lamc; 
-                    tmp_lorentz_vector.setE(p_W_from_lamc.e());
-                    cosW = -cos(heli(p_l,tmp_lorentz_vector,p_W_from_lamc));
-        
-                    p_nu = p_W_from_lamc-p_l;
-        
-                    Hep3Vector norm_lambda, norm_W;
-                
-                    norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                    norm_lambda = norm_lambda*(1./norm_lambda.mag());
-                    norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                    norm_W = norm_W*(1./norm_W.mag());
-        
-                    angchi = norm_lambda.angle(norm_W);
-                }
-                
-                t1 -> column("tag", tag);
-                t1 -> column("rmx", rmx);
-                t1 -> column("dstch", dstch);
-                t1 -> column("mdst", mDst);
-                t1 -> column("dch", dch);
-                t1 -> column("md", mD);
-                t1 -> column("px", pStar(momentum,elec,posi).vect().mag());
-                t1 -> column("fox", fox);  
-                t1 -> column("ecms",pUPS.mag());
-                t1 -> column("mks",mKs);
-                t1 -> column("ch_tag", charge_tag);
-                
-                t1 -> column("lcch",lcch);
-                t1 -> column("ml", mL);
-                t1 -> column("mlc", mLc);
-                t1->column("hl", coshl);
-                t1 -> column("hlc", coshlc);
-                
-                t1 -> column("q", qW);
-                t1->column("hw",cosW);
-                t1->column("chi",angchi); 
-                
-                t1 -> column("pvis",pvis);
-                t1 -> column("rmvis", rm);
-
-                t1->dumpData();
-            }
-        }
-        */
         for (std::vector<Particle>::iterator a=L_.begin(); a!=L_.end();++a)
         {
             Particle &ALamC=*a;
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
             
-            double rmx = (pUPS-momentum).mag(), rm=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag(), rm=-1000, Mvis=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
             
-            if (abs(rmx-2.286)<0.65) 
+            if (rmx > 0 && rmx < 2.6) 
             {
                 //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
@@ -562,6 +440,7 @@ namespace Belle {
                     Particle &LamC=*l;
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
+                    Mvis = (momentum+LamC.p()).mag();
                     
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
@@ -646,6 +525,7 @@ namespace Belle {
                 
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
+                    t1 -> column("mvis", Mvis);
                     t1->dumpData();
                 }
                 else
@@ -674,6 +554,7 @@ namespace Belle {
                 
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
+                    t1 -> column("mvis", Mvis);
                     t1->dumpData();
                 }
             }
@@ -688,9 +569,9 @@ namespace Belle {
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
             
-            double rmx = (pUPS-momentum).mag(), rm=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag(), rm=-1000, Mvis=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
             
-            if (abs(rmx-2.286)<0.65) 
+            if (rmx > 0 && rmx < 2.6) 
             {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
@@ -735,7 +616,9 @@ namespace Belle {
                     Particle &LamC=*l;
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
+                    Mvis = (momentum+LamC.p()).mag();
                     
+
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
@@ -818,6 +701,7 @@ namespace Belle {
                 
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
+                    t1 -> column("mvis", Mvis);
                     t1->dumpData();
                 }
                 else
@@ -846,6 +730,7 @@ namespace Belle {
                 
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
+                    t1 -> column("mvis", Mvis);
                     t1->dumpData();
                 }
                 
