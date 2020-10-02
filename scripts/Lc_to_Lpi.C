@@ -13,8 +13,8 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=2.188, rend=2.384, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=196;
+    double lend=2.236, rend=2.336, MLambdac=2.28646; //lend=2.21, rend=2.36
+    int Nbins=100;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda^{+}_{c} #rightarrow pK^{-}#pi^{+}",Nbins,lend,rend);
     TH1D* hrsb = new TH1D("hrsb","right sb",Nbins,lend,rend);
@@ -22,7 +22,7 @@
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
-    double D1_mean = 1.8651, D1_sigma = 0.0064, Dst1_mean = 2.0100, Dst1_sigma = 0.0011, rsbwidth1 = 0.00445;
+    double D1_mean = 1.8651, D1_sigma = 0.0064, Dst1_mean = 2.010, Dst1_sigma = 0.0011, rsbwidth1 = 0.00445;
     TCut Dst1_D_window = Form("dch==1 && abs(md-%lf)<%lf && abs(mdst-%lf)<%lf",D1_mean,3*D1_sigma,Dst1_mean,3*Dst1_sigma);
     TCut Dst1_rightsb = Form("dch==1 && abs(md-%lf)<%lf && mdst>%lf && mdst<%lf",D1_mean,3*D1_sigma,Dst1_mean + 4*Dst1_sigma, Dst1_mean + 4*Dst1_sigma + rsbwidth1);
     
@@ -34,14 +34,14 @@
     TCut Dst3_D_window = Form("dch==3 && abs(md-%lf)<%lf && abs(mdst-%lf)<%lf",D3_mean,3*D3_sigma,Dst3_mean,3*Dst3_sigma);
     TCut Dst3_rightsb = Form("dch==3 && abs(md-%lf)<%lf && mdst>%lf && mdst<%lf",D3_mean,3*D3_sigma,Dst3_mean + 4*Dst3_sigma, Dst3_mean + 4*Dst3_sigma + rsbwidth3);
     
-    double D4_mean = 1.8639, D4_sigma = 0.0098, Dst4_mean = 2.0100, Dst4_sigma = 0.0015, rsbwidth4 = 0.00698;
+    double D4_mean = 1.8639, D4_sigma = 0.0098, Dst4_mean = 2.010, Dst4_sigma = 0.0015, rsbwidth4 = 0.00698;
     TCut Dst4_D_window = Form("dch==4 && abs(md-%lf)<%lf && abs(mdst-%lf)<%lf",D4_mean,3*D4_sigma,Dst4_mean,3*Dst4_sigma);
     TCut Dst4_rightsb = Form("dch==4 && abs(md-%lf)<%lf && mdst>%lf && mdst<%lf",D4_mean,3*D4_sigma,Dst4_mean + 4*Dst4_sigma, Dst4_mean + 4*Dst4_sigma + rsbwidth4);
 
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("mlc > %lf && mlc < %lf",lend,rend);
-    TCut commonLcLpiCut = "lcch==1 && tag==3 && dstch==1";
+    TCut commonLcLpiCut = "lcch==2 && tag==3 && dstch==1";
     TCut rmxlsbCut = "rmx-2.301 < -0.1159 && rmx-2.301 > -0.23172";
     TCut rmxrsbCut = "rmx-2.301 > 0.1159 && rmx-2.301 < 0.23172";
     Ntot +=  ch1dat -> Draw("mlc>>+hdat","abs(rmx-2.301)<0.1159"+commonLcLpiCut+Dst1_D_window+Mwindow,"goff");
