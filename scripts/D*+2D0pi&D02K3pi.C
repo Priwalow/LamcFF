@@ -66,8 +66,8 @@ void FitDst()
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("tag==3 && dch==2 && dstch==1 && mdst > %lf && mdst < %lf && abs(md-1.8651)<0.0153",lend,rend);
-    Ntot = ch1dat -> Draw("mdst>>hdat",Mwindow,"goff"); //-md+1.86483
+    TCut Mwindow = Form("tag==3 && dstch==1 && dch==2 && mdst > %lf && mdst < %lf && abs(md-1.86483)<0.015",lend,rend);
+    Ntot = ch1dat -> Draw("mdst-md+1.86483>>hdat",Mwindow,"goff"); //
     //ch1dat -> Draw("mdst-md+2.01026>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
     
@@ -83,7 +83,7 @@ void FitDst()
     fdat -> SetParLimits(4,MDst_p-0.002,MDst_p+0.002);
     fdat -> SetParLimits(5,0.0005,0.0015);
     fdat -> SetParLimits(0,0,1e6);
-    fdat -> SetParLimits(6,1.97,2.01);
+    fdat -> SetParLimits(6,2,2.01);
 
     TFitResultPtr fitResult;
     fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
@@ -114,7 +114,7 @@ void FitDst()
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(D^{0}#pi^{+})[GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(K^{-}#pi^{-}#pi^{+}#pi^{+}#pi^{+})-M(K^{-}#pi^{-}#pi^{+}#pi^{+})+M_{D^{0}}^{PDG}[GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f MeV ",binw*1000));

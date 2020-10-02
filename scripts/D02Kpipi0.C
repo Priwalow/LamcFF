@@ -13,8 +13,8 @@
     TChain* ch1dat = new TChain("h1"); //
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=1.81, rend=1.92, MD0=1.86483; //lend=2.21, rend=2.36
-    int Nbins=110;
+    double lend=1.83, rend=1.895, MD0=1.86483; //lend=2.21, rend=2.36
+    int Nbins=65;
     TCanvas *c1 = new TCanvas("c1","D^{0} invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
     TH1D* hsb = new TH1D("hsb","D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
@@ -22,7 +22,7 @@
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("tag==1 && dch==4 && md > %lf && md < %lf",lend,rend);
+    TCut Mwindow = Form("dstch==1 && dch==4 && md > %lf && md < %lf",lend,rend);
     Ntot = ch1dat -> Draw("md>>hdat",Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
     ch1dat -> Draw("md>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     

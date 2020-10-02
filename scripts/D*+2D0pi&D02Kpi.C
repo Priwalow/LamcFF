@@ -1,4 +1,4 @@
-double MDst_p=2.01026, lend=2.004, rend=2.016;
+double MDst_p=2.01026, MD0 = 1.86483, lend=2.004, rend=2.016;
 int Nbins=120;
 double hwidth = rend-lend, binw = hwidth/Nbins;
 
@@ -72,8 +72,8 @@ void FitDst()
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("tag==3 && dch==1 && dstch==1 && mdst > %lf && mdst < %lf && abs(md-1.8651)<0.0192",lend,rend);
-    Ntot = ch1dat -> Draw("mdst>>hdat",Mwindow,"goff"); // -md+1.86483
+    TCut Mwindow = Form("tag==3 && dstch==1 && dch==1 && mdst > %lf && mdst < %lf && abs(md-1.86483)<0.015",lend,rend);
+    Ntot = ch1dat -> Draw("mdst-md+1.86483>>hdat",Mwindow,"goff"); //
     //ch1dat -> Draw("mdst-md+2.01026>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
     
@@ -120,7 +120,7 @@ void FitDst()
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M(D^{0}#pi^{+})[GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(K^{-}#pi^{+}#pi^{+})-M(K^{-}#pi^{+})+M_{D^{0}}^{PDG}[GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f MeV ",binw*1000));

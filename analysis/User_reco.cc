@@ -238,6 +238,12 @@ namespace Belle {
         
         if(D0_b.size()+D_m.size()+D0.size()+D_p.size()==0) return;
         
+        doMassVertexFit(D0_b);
+        doMassVertexFit(D_m);
+        doMassVertexFit(D0);
+        doMassVertexFit(D_p);        
+        
+        
         combination (Dst0_b,ptype_DstB, D0_b, pi0, 0.04);
         setUserInfo(Dst0_b, 1);
         //combination (Dst0_b,ptype_DstB, D0_b, photons, 0.025);
@@ -297,11 +303,6 @@ namespace Belle {
                 --i;
             }
         }
-        
-        doMassVertexFit(D0_b);
-        doMassVertexFit(D_m);
-        doMassVertexFit(D0);
-        doMassVertexFit(D_p);
         
         
         doMassVertexFit(Dst0_b);
