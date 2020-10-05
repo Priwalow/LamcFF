@@ -38,7 +38,7 @@
     
 
     fdat -> SetParameters(10,0,0.05,1); //100,MLambdac,0.01,40,-300
-    fdat -> SetParLimits(1,-0.001,+0.001);
+    fdat -> SetParLimits(1,-0.1,+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
     TFitResultPtr fitResult;
