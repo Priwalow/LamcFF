@@ -13,15 +13,15 @@
     
     
     double qsqmax = 1.370726;
-    TCut gencut = "abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && plept>0.7 && abs(lepcost)<0.7 && fox>0.2 && plc>1.4 &&  abs(rmx-2.2965)<0.0466*2 && abs(rmvis)*rmvis<0.05 && lcch==4";
+    TCut gencut = "lcch==4 && abs(rmvis)<0.3 && abs(ml-1.11568)<0.003 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
     
     TCanvas *c0 = new TCanvas("c1","Lc -> Lmunu observables",740,600);
     c0 -> Divide(2,2);
     
-    TH1D* hqsq = new TH1D("hqsq","q^{2}/q^{2}_{max}",8,0,1);
-    TH1D* hcosw = new TH1D("hcosw","cos#theta_{W}",8,-1,1);
-    TH1D* hcosl = new TH1D("hcosl","cos#theta_{#Lambda}",8,-1,1);
-    TH1D* hcoschi = new TH1D("hcoschi","#chi",8,0,TMath::Pi());
+    TH1D* hqsq = new TH1D("hqsq","q^{2}/q^{2}_{max}",10,0,1);
+    TH1D* hcosw = new TH1D("hcosw","cos#theta_{W}",10,-1,1);
+    TH1D* hcosl = new TH1D("hcosl","cos#theta_{#Lambda}",10,-1,1);
+    TH1D* hcoschi = new TH1D("hcoschi","#chi",10,0,TMath::Pi());
     
     ch1dat -> Draw("q*fabs(q)/1.370726>>hqsq",gencut,"goff");
     ch1dat -> Draw("hw>>hcosw",gencut,"goff");

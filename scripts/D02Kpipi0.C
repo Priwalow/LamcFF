@@ -13,8 +13,8 @@
     TChain* ch1dat = new TChain("h1"); //
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=1.83, rend=1.895, MD0=1.86483; //lend=2.21, rend=2.36
-    int Nbins=65;
+    double lend=1.83, rend=1.9, MD0=1.86483; //lend=2.21, rend=2.36
+    int Nbins=70;
     TCanvas *c1 = new TCanvas("c1","D^{0} invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);
     TH1D* hsb = new TH1D("hsb","D^{0} #rightarrow K^{-}#pi^{+}#pi^{0}",Nbins,lend,rend);

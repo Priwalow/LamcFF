@@ -1,5 +1,5 @@
-double MDst_p=2.01026, lend=2.004, rend=2.02;
-int Nbins=160;
+double MDst_p=2.01026, lend=2.004, rend=2.016;
+int Nbins=120;
 double hwidth = rend-lend, binw = hwidth/Nbins;
 
 
@@ -65,7 +65,7 @@ void FitDst()
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("tag==3 && dch==3 && abs(mks-0.4979)<0.0075 && dstch==1 && mdst > %lf && mdst < %lf && abs(md-1.8653)<0.0165",lend,rend);
+    TCut Mwindow = Form("tag==3 && dstch==1 && dch==3 && abs(mks-0.4979)<0.0075 && mdst > %lf && mdst < %lf && abs(md-1.86483)<0.015",lend,rend);
     Ntot = ch1dat -> Draw("mdst>>hdat",Mwindow,"goff"); //-md+1.86483
     //ch1dat -> Draw("mdst-md+2.01026>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     

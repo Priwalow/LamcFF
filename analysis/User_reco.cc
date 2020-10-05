@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -390,7 +390,7 @@ namespace Belle {
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
             
-            double rmx = (pUPS-momentum).mag(), rm=-1000, Mvis=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag(), rm=-1000, Mvis=-1000, rmNopi0 = -1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
             
             if (rmx > 0 && rmx < 2.6) 
             {
@@ -439,12 +439,14 @@ namespace Belle {
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     Mvis = (momentum+LamC.p()).mag();
-                    
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
                    
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
-                    
+                    if(lcch==2)
+                    {
+                        rmNopi0 = (pUPS-(momentum+LamC.child(0).p()+LamC.child(1).p())).mag();
+                    }
                     
                     // lamc heli
                     HepLorentzVector p_lamc;
@@ -524,6 +526,7 @@ namespace Belle {
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
+                    t1 -> column("rmvis_nopi0", rmNopi0);
                     t1->dumpData();
                 }
                 else
@@ -553,6 +556,7 @@ namespace Belle {
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
+                    t1 -> column("rmvis_nopi0", rmNopi0);
                     t1->dumpData();
                 }
             }
@@ -567,7 +571,7 @@ namespace Belle {
             HepLorentzVector momentum=ALamC.p();
             int charge_tag= calcuCharge (&ALamC);
             
-            double rmx = (pUPS-momentum).mag(), rm=-1000, Mvis=-1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
+            double rmx = (pUPS-momentum).mag(), rm=-1000, Mvis=-1000, rmNopi0 = -1000;//, rm =(pUPS-(momentum+LamC.p())).mag();
             
             if (rmx > 0 && rmx < 2.6) 
             {
@@ -620,7 +624,10 @@ namespace Belle {
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
-                    
+                    if(lcch==2)
+                    {
+                        rmNopi0 = (pUPS-(momentum+LamC.child(0).p()+LamC.child(1).p())).mag();
+                    }
                     
                     // lamc heli
                     HepLorentzVector p_lamc;
@@ -700,6 +707,7 @@ namespace Belle {
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
+                    t1 -> column("rmvis_nopi0", rmNopi0);
                     t1->dumpData();
                 }
                 else
@@ -729,6 +737,7 @@ namespace Belle {
                     t1 -> column("pvis",pvis);
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
+                    t1 -> column("rmvis_nopi0", rmNopi0);
                     t1->dumpData();
                 }
                 
