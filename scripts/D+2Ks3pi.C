@@ -10,38 +10,37 @@
     
     
     TString datapath = "../analysis/hmerge/";    
-    TChain* ch1dat = new TChain("h1"); //without pi0
+    TChain* ch1dat = new TChain("h1"); //
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=1.5, rend=3, MLambdac=2.28646; //lend=2., rend=2.6
-    int Nbins=60;
-    TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambdae#nu",Nbins,lend,rend);
-    TH1D* hws = new TH1D("hws","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
+    double lend=1.83, rend=1.895, MDp=1.86965; //lend=2.21, rend=2.36
+    int Nbins=65;
+    TCanvas *c1 = new TCanvas("c1","D^{+} invariant mass",1600,900);
+    TH1D* hdat = new TH1D("hdat","D^{+} #rightarrow K_{S}#pi^{-}#pi^{+}#pi^{+}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","D^{+} #rightarrow K_{S}#pi^{-}#pi^{+}#pi^{+}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot = ch1dat -> Draw("rmx>>+hdat","lcch == 3 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && plept>0.7 && abs(lepcost)<0.7 && fox>0.2 && plc>1.4"+Mwindow,"goff"); //"lcch == 1 && ml>1.1 && ml<1.12"
-    ch1dat -> Draw("rmx>>+hws","lcch == 300 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && mlc < 2.13 && plept>0.7 && abs(lepcost)<0.7 && fox>0.2 && plc>1.4"+Mwindow,"goff");
+    TCut Mwindow = Form("tag==3 && dstch==2 && dch==3 && abs(mks-0.4979)<0.0075 && md > %lf && md < %lf",lend,rend);
+    Ntot = ch1dat -> Draw("md>>hdat",Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
+    ch1dat -> Draw("md>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
-    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,rend);
+    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-1.86965)+[5]*(x-1.86965)^2",binw),lend,rend);
     TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
-    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2",lend,rend);    
+    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-1.86965)+[2]*(x-1.86965)^2",lend,rend);    
     
 
-    fdat -> SetParameters(1000,MLambdac,0.1,50,300,20);
-    fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
-    fdat -> SetParLimits(0,0,1e5);
-    fdat -> SetParLimits(2,0.01,0.3);
+    fdat -> SetParameters(30000,MDp,0.007,3000,0,10); //100,,0.01,40,-300
+    fdat -> SetParLimits(1,MDp-0.1,MDp+0.1);
+    fdat -> SetParLimits(0,0,1e6);
 
     TFitResultPtr fitResult;
     fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
     TMatrixDSym covSignal, covBackground;
     covFit.GetSub(0,2,covSignal);
-    covFit.GetSub(3,5,covBackground);
+    covFit.GetSub(3,4,covBackground);
     double * par;
     par = fdat -> GetParameters();
   
@@ -55,7 +54,7 @@
     dNbkg = fbkg -> IntegralError(lend,rend,par+3,covBackground.GetMatrixArray())/binw;
     
     cout << "Total number of events: " << Ntot << endl;
-    cout << "N Lambda_c: " << (int) Nsig <<" +- " << (int) dNsig << endl;
+    cout << "N D+: " << (int) Nsig <<" +- " << (int) dNsig << endl;
     cout << "N background: " << (int) Nbkg << " +- " << (int) dNbkg << endl;
  
     double chisq = fdat->GetChisquare(); 
@@ -65,10 +64,10 @@
   
     
   
-    hdat -> GetXaxis()-> SetTitle("RM(X) [GeV]");
+    hdat -> GetXaxis()-> SetTitle("M(K_{S}#pi^{-}#pi^{+}#pi^{+}) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / ( %.3f )",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events /  %.0f MeV ",binw*1000));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(0.9);
@@ -82,46 +81,45 @@
     hdat -> SetMinimum(0);
     hdat -> Draw("e p");
     
-    hws -> SetLineColor(4);
-    hws -> SetLineWidth(4);
-    hws -> Draw("same");
+    //hsb -> SetLineColor(8);
+   // hsb -> SetLineWidth(4);
+    //hsb -> Draw("same");
     
-   
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
-    fbkg -> DrawCopy("same");    
+    fbkg -> DrawCopy("same");
+    
+    
+    fsig -> SetLineColor(4);
+    fsig -> SetLineWidth(4);
+    //fsig -> Draw("same");
+    
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(4);
-    fdat-> DrawCopy("same");   
+    fdat-> DrawCopy("same");
     
-    /*
-    fsig -> SetLineColor(4);
-    fsig -> SetLineWidth(4);
-    fsig -> Draw("same");
-    */
     
-    TLegend* leg = new TLegend(0.7,0.7,0.9,0.9);
-    leg->AddEntry("hdat","data","ep");
-	//leg->AddEntry("fsig","Signal","l");    
-	leg->AddEntry("fdat","fit","l");
-    leg->AddEntry("fbkg","background","l");
-    leg->AddEntry("hws","wrong sign","l");
+    TLegend* leg = new TLegend(0.77,0.75,0.89,0.95);
+    leg -> AddEntry("hdat","data","E P");
+   // leg->AddEntry("fsig","Signal","l");
+    leg -> AddEntry("fdat","fit","l");
+    leg -> AddEntry("fbkg","background","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
-    leg->Draw("same"); 
+    leg -> Draw("same");
     
     TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
-    tstatfit -> DrawLatex(0.67, 0.45, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
+    tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
-    tstatfit -> DrawLatex(0.67, 0.39, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.33, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
+    tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
+    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
    
     
-}  
+} 

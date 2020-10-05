@@ -14,16 +14,16 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=-1, rend=1, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=40;
+    int Nbins=4;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    Ntot = ch1dat -> Draw("hl>>hdat","abs(mlc-2.2868)<0.0054*3 && lcch == 1 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)","goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)
-    ch1dat -> Draw("hl>>hsb","abs(mlc-2.2868)>0.0054*4 && abs(mlc-2.2868)<0.0054*7 && lcch == 1 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)","goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
+    Ntot = ch1dat -> Draw("hl>>hdat","lcch==1 && abs(mlc-2.28646)<0.015 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(rmvis)<0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))","goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003)
+    ch1dat -> Draw("hl>>hsb","lcch==1 && abs(mlc-2.28646)>0.02 && abs(mlc-2.28646)<0.035 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(rmvis)<0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))","goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
     
   
@@ -50,10 +50,11 @@
     hdat -> GetXaxis()-> SetTitle("-cos(p_{p},p_{#Lambda_{c}}) in #Lambda system");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events /  %.2f ",binw));
+    hdat -> GetXaxis()-> SetTitleOffset(1);
+    hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f ",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.9);
+    hdat -> GetYaxis()-> SetTitleOffset(0.7);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
@@ -68,8 +69,8 @@
     hsb -> SetLineColor(8);
     hsb -> SetLineWidth(4);
     hsb -> Draw("hist same");
-      /* 
-     fbkg -> SetLineStyle(2);
+    /*  
+    fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
     fbkg -> DrawCopy("same");
@@ -102,7 +103,7 @@
     tstatfit -> SetTextAngle(0);
    // tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
-    tstatfit -> DrawLatex(0.67, 0.59, Form("#alpha = %0.2lf #pm %0.2lf",par[1], fdat -> GetParError(1)));
+   // tstatfit -> DrawLatex(0.67, 0.59, Form("#alpha = %0.2lf #pm %0.2lf",par[1], fdat -> GetParError(1)));
    // tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
   

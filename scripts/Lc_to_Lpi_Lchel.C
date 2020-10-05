@@ -14,16 +14,16 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=-1, rend=1, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=10;
+    int Nbins=4;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
-    TH1D* hdat = new TH1D("hdat","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
-    TH1D* hsb = new TH1D("hsb","#Lambda_{c} #rightarrow #Lambda#pi",Nbins,lend,rend);
+    TH1D* hdat = new TH1D("hdat","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
-    Ntot = ch1dat -> Draw("hlc>>hdat","abs(mlc-2.2868)<0.0054*3 && lcch == 1 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && pvis<0.05","goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && pvis<0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)<0.05 && abs(rmvis)<0.1
-    ch1dat -> Draw("hlc>>hsb","abs(mlc-2.2868)>0.0054*4 && abs(mlc-2.2868)<0.0054*7 && lcch == 1 && abs(ml-1.11568)<0.003 && ((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && pvis<0.05","goff"); //
+    Ntot = ch1dat -> Draw("hlc>>hdat","lcch==1 && abs(mlc-2.28646)<0.015 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(rmvis)<0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))","goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && pvis<0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)<0.05 && abs(rmvis)<0.1
+    ch1dat -> Draw("hlc>>hsb","lcch==1 && abs(mlc-2.28646)>0.02 && abs(mlc-2.28646)<0.035 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))","goff"); //
     
     
   
@@ -53,7 +53,7 @@
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.1f ",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.8);
+    hdat -> GetYaxis()-> SetTitleOffset(0.7);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
