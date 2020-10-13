@@ -369,8 +369,8 @@ namespace Belle {
         setUserInfo(Lc,1);
         setUserInfo(Lcb,1);
         
-        combination (Lc,ptype_Lamc, lam, pi_p, pi0, 0.05);
-        combination (Lcb,ptype_Lamc, lamb, pi_m, pi0, 0.05);
+        combination (Lc,ptype_Lamc, lam, pi_p, pi0, 0.08);
+        combination (Lcb,ptype_Lamc, lamb, pi_m, pi0, 0.08);
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
