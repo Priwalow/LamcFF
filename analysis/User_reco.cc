@@ -474,7 +474,7 @@ namespace Belle {
                         coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                         
                         Hep3Vector norm_lam_c, norm_lam;
-                        norm_lam_c = (boostT(pLamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
+                        norm_lam_c = (boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
                         norm_lam_c = norm_lam_c*(1./norm_lam_c.mag());
                         norm_lam = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
                         norm_lam = norm_lam*(1./norm_lam.mag());
@@ -510,7 +510,7 @@ namespace Belle {
                     }
                     
                     //Lam_c 2nd daughter's momentum
-                    P_2d_from_LamC=LamC.child(1).p();
+                    HepLorentzVector P_2d_from_LamC=LamC.child(1).p();
                     p_2d_from_lamc_cms=pStar(P_2d_from_LamC,elec,posi).vect().mag(); 
                     p_2d_from_lamc_lamcs=boostT(P_2d_from_LamC, p_lamc).vect().mag();
                     
@@ -676,7 +676,7 @@ namespace Belle {
                         coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                         
                         Hep3Vector norm_lam_c, norm_lam;
-                        norm_lam_c = (boostT(pLamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
+                        norm_lam_c = (boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
                         norm_lam_c = norm_lam_c*(1./norm_lam_c.mag());
                         norm_lam = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
                         norm_lam = norm_lam*(1./norm_lam.mag());
@@ -713,7 +713,7 @@ namespace Belle {
                     }
                     
                     //Lam_c 2nd daughter's momentum
-                    P_2d_from_LamC=LamC.child(1).p();
+                    HepLorentzVector P_2d_from_LamC=LamC.child(1).p();
                     p_2d_from_lamc_cms=pStar(P_2d_from_LamC,elec,posi).vect().mag(); 
                     p_2d_from_lamc_lamcs=boostT(P_2d_from_LamC, p_lamc).vect().mag();
                     
