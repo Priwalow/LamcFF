@@ -17,19 +17,17 @@
     int Nbins=40;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend);
-    TH1D* hrsb = new TH1D("hrsb","right sb",Nbins,lend,rend);
-    TH1D* hlsb = new TH1D("hlsb","left sb",Nbins,lend,rend);
+    TH1D* hsb = new TH1D("hsb","sideband",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
 
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    TCut commonLcLpiCut = "lcch==1 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
-    TCut rmxlsbCut = "mlc-2.28646 < -0.02 && mlc-2.28646 > -0.035";
-    TCut rmxrsbCut = "mlc-2.28646 > 0.02 && mlc-2.28646 < 0.035";
+    TCut commonLcLpiCut = "lcch==1 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+
     Ntot +=  ch1dat -> Draw("rmvis*fabs(rmvis)>>+hdat","abs(mlc-2.28646)<0.015"+ commonLcLpiCut+Mwindow,"goff");
-    ch1dat -> Draw("rmvis*fabs(rmvis)>>+hrsb",rmxrsbCut+commonLcLpiCut+Mwindow,"goff");
-    ch1dat -> Draw("rmvis*fabs(rmvis)>>+hlsb",rmxlsbCut+commonLcLpiCut+Mwindow,"goff");
+    ch1dat -> Draw("rmvis*fabs(rmvis)>>+hsb","abs(mlc-2.28646)>0.02 && abs(mlc-2.28646)<0.035"+commonLcLpiCut+Mwindow,"goff");
+
     
     
     TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]",binw),lend,rend);
@@ -88,13 +86,9 @@
     hdat -> SetMinimum(0);
     hdat -> Draw("e p");
     
-    hrsb -> SetLineColor(4);
-    hrsb -> SetLineWidth(4);
-    hrsb -> Draw("same");
-    
-    hlsb -> SetLineColor(8);
-    hlsb -> SetLineWidth(4);
-    hlsb -> Draw("same");
+    hsb -> SetLineColor(8);
+    hsb -> SetLineWidth(4);
+    hsb -> Draw("same");
     
     
     fbkg -> SetLineStyle(2);
@@ -118,8 +112,7 @@
    // leg->AddEntry("fsig","Signal","l");
     leg -> AddEntry("fdat","fit","l");
     leg -> AddEntry("fbkg","background","l");
-    leg -> AddEntry("hrsb","M(#Lambda#pi^{+}) right sb","l");
-    leg -> AddEntry("hlsb","M(#Lambda#pi^{+}) left sb","l");
+    leg -> AddEntry("hsb","M(#Lambda#pi^{+}) sideband","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
     leg -> Draw("same");

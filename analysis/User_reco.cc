@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlc philclam" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -397,7 +397,8 @@ namespace Belle {
                 //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, 
+                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_lamcs=-1, dphi_lc_lam = -1000;
         
                 if (tag==1)
                 {
@@ -471,6 +472,13 @@ namespace Belle {
                             p_pi_from_lam=LamC.child(0).child(0).p();
                         }
                         coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
+                        
+                        Hep3Vector norm_lam_c, norm_lam;
+                        norm_lam_c = (boostT(pLamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
+                        norm_lam_c = norm_lam_c*(1./norm_lam_c.mag());
+                        norm_lam = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                        norm_lam = norm_lam*(1./norm_lam.mag());
+                        dphi_lc_lam=norm_lam_c.angle(norm_lam);
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -501,6 +509,11 @@ namespace Belle {
                         angchi = norm_lambda.angle(norm_W);
                     }
                     
+                    //Lam_c 2nd daughter's momentum
+                    P_2d_from_LamC=LamC.child(1).p();
+                    p_2d_from_lamc_cms=pStar(P_2d_from_LamC,elec,posi).vect().mag(); 
+                    p_2d_from_lamc_lamcs=boostT(P_2d_from_LamC, p_lamc).vect().mag();
+                    
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
                     t1 -> column("dstch", dstch);
@@ -527,6 +540,10 @@ namespace Belle {
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
                     t1 -> column("rmvis_nopi0", rmNopi0);
+                    
+                    t1 -> column("philclam",dphi_lc_lam);
+                    t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
+                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
                     t1->dumpData();
                 }
                 else
@@ -557,6 +574,10 @@ namespace Belle {
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
                     t1 -> column("rmvis_nopi0", rmNopi0);
+                    
+                    t1 -> column("philclam",dphi_lc_lam);
+                    t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
+                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
                     t1->dumpData();
                 }
             }
@@ -577,7 +598,8 @@ namespace Belle {
             {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, pvis=-10, qW=1000;
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, 
+                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_lamcs=-1, dphi_lc_lam = -1000;
         
                 if (tag==1)
                 {
@@ -636,7 +658,7 @@ namespace Belle {
                     coshlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc));
                     
                     
-                    //lam heli
+                    //lam heli and dphi_lamc_lam
                     HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
                     if(lcch!=5)
                     {
@@ -652,6 +674,14 @@ namespace Belle {
                             p_pi_from_lam=LamC.child(0).child(0).p();
                         }
                         coshl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
+                        
+                        Hep3Vector norm_lam_c, norm_lam;
+                        norm_lam_c = (boostT(pLamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
+                        norm_lam_c = norm_lam_c*(1./norm_lam_c.mag());
+                        norm_lam = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
+                        norm_lam = norm_lam*(1./norm_lam.mag());
+                        dphi_lc_lam=norm_lam_c.angle(norm_lam);
+
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -681,7 +711,12 @@ namespace Belle {
             
                         angchi = norm_lambda.angle(norm_W);
                     }
-                     
+                    
+                    //Lam_c 2nd daughter's momentum
+                    P_2d_from_LamC=LamC.child(1).p();
+                    p_2d_from_lamc_cms=pStar(P_2d_from_LamC,elec,posi).vect().mag(); 
+                    p_2d_from_lamc_lamcs=boostT(P_2d_from_LamC, p_lamc).vect().mag();
+                    
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
                     t1 -> column("dstch", dstch);
@@ -708,6 +743,10 @@ namespace Belle {
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
                     t1 -> column("rmvis_nopi0", rmNopi0);
+                    
+                    t1 -> column("philclam",dphi_lc_lam);
+                    t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
+                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
                     t1->dumpData();
                 }
                 else
@@ -738,6 +777,10 @@ namespace Belle {
                     t1 -> column("rmvis", rm);
                     t1 -> column("mvis", Mvis);
                     t1 -> column("rmvis_nopi0", rmNopi0);
+                    
+                    t1 -> column("philclam",dphi_lc_lam);
+                    t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
+                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
                     t1->dumpData();
                 }
                 

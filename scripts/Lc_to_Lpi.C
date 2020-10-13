@@ -24,7 +24,7 @@
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("mlc > %lf && mlc < %lf",lend,rend);
-    TCut commonLcLpiCut = "lcch==1 && abs(ml-1.11568)<0.003 && ((tag==3 && ((dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+    TCut commonLcLpiCut = "lcch==1 && abs(ml-1.11568)<0.003 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
     TCut rmxlsbCut = "rmx-2.29 < -0.15 && rmx-2.29 > -0.25";
     TCut rmxrsbCut = "rmx-2.29 > 0.15 && rmx-2.29 < 0.25";
     Ntot +=  ch1dat -> Draw("mlc>>+hdat","abs(rmx-2.29)<0.1"+commonLcLpiCut+Mwindow,"goff");
@@ -96,10 +96,10 @@
     hlsb -> Draw("same");
     
     
-    //fbkg -> SetLineStyle(2);
-    //fbkg -> SetLineColor(12);
-    //fbkg -> SetLineWidth(4);
-    //fbkg -> DrawCopy("same");
+    fbkg -> SetLineStyle(2);
+    fbkg -> SetLineColor(12);
+    fbkg -> SetLineWidth(4);
+    fbkg -> DrawCopy("same");
     
     
     //fsig -> SetLineColor(4);
