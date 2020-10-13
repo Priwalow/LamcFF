@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlc philclam" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -398,7 +398,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, 
-                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_lamcs=-1, dphi_lc_lam = -1000;
+                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000;
         
                 if (tag==1)
                 {
@@ -512,7 +512,7 @@ namespace Belle {
                     //Lam_c 2nd daughter's momentum
                     HepLorentzVector P_2d_from_LamC=LamC.child(1).p();
                     p_2d_from_lamc_cms=pStar(P_2d_from_LamC,elec,posi).vect().mag(); 
-                    p_2d_from_lamc_lamcs=boostT(P_2d_from_LamC, p_lamc).vect().mag();
+                    p_2d_from_lamc_labs=P_2d_from_LamC.vect().mag();
                     
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
@@ -543,7 +543,7 @@ namespace Belle {
                     
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
-                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
+                    t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
                     t1->dumpData();
                 }
                 else
@@ -577,7 +577,7 @@ namespace Belle {
                     
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
-                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
+                    t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
                     t1->dumpData();
                 }
             }
@@ -599,7 +599,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, coshl = -10, coshlc = -10, cosW = -10, angchi = -10, 
-                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_lamcs=-1, dphi_lc_lam = -1000;
+                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000;
         
                 if (tag==1)
                 {
@@ -715,7 +715,7 @@ namespace Belle {
                     //Lam_c 2nd daughter's momentum
                     HepLorentzVector P_2d_from_LamC=LamC.child(1).p();
                     p_2d_from_lamc_cms=pStar(P_2d_from_LamC,elec,posi).vect().mag(); 
-                    p_2d_from_lamc_lamcs=boostT(P_2d_from_LamC, p_lamc).vect().mag();
+                    p_2d_from_lamc_labs=P_2d_from_LamC.vect().mag();
                     
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
@@ -746,7 +746,7 @@ namespace Belle {
                     
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
-                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
+                    t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
                     t1->dumpData();
                 }
                 else
@@ -780,7 +780,7 @@ namespace Belle {
                     
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
-                    t1 -> column("lcp2dlc",p_2d_from_lamc_lamcs);
+                    t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
                     t1->dumpData();
                 }
                 
