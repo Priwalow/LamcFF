@@ -480,7 +480,7 @@ namespace Belle {
                         norm_lam = norm_lam*(1./norm_lam.mag());
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
                         
-                        if(boostT(p_proton_from_lam, p_lamc).vect().y() < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
+                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -684,7 +684,7 @@ namespace Belle {
                         norm_lam = norm_lam*(1./norm_lam.mag());
                         
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
-                        if(boostT(p_proton_from_lam, p_lamc).vect().y() < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
+                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
