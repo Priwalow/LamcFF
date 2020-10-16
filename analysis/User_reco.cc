@@ -474,11 +474,10 @@ namespace Belle {
                         anghl  = heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()); //-cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()))
                         
                         Hep3Vector norm_lam_c, norm_lam;
-                        norm_lam_c = (boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
-                        norm_lam_c = norm_lam_c*(1./norm_lam_c.mag());
-                        norm_lam = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                        norm_lam = norm_lam*(1./norm_lam.mag());
+                        norm_lam_c = ((boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect())).Unit();
+                        norm_lam = ((boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect())).Unit();
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
+                        if(boostT(p_proton_from_lam, p_lamc).vect().y() < 0) dphi_lc_lam = 2*TMath::Pi()-dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -501,10 +500,8 @@ namespace Belle {
             
                         Hep3Vector norm_lambda, norm_W;
                     
-                        norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                        norm_lambda = norm_lambda*(1./norm_lambda.mag());
-                        norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                        norm_W = norm_W*(1./norm_W.mag());
+                        norm_lambda = ((boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect())).Unit();
+                        norm_W = ((boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect())).Unit(); 
             
                         angchi = norm_lambda.angle(norm_W);
                     }
@@ -676,11 +673,10 @@ namespace Belle {
                         anghl  = heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()); //-cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()))
                         
                         Hep3Vector norm_lam_c, norm_lam;
-                        norm_lam_c = (boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
-                        norm_lam_c = norm_lam_c*(1./norm_lam_c.mag());
-                        norm_lam = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                        norm_lam = norm_lam*(1./norm_lam.mag());
+                        norm_lam_c = ((boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect())).Unit();
+                        norm_lam = ((boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect())).Unit();
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
+                        if(boostT(p_proton_from_lam, p_lamc).vect().y() < 0) dphi_lc_lam = 2*TMath::Pi()-dphi_lc_lam;
 
                     }
             
@@ -704,10 +700,8 @@ namespace Belle {
             
                         Hep3Vector norm_lambda, norm_W;
                     
-                        norm_lambda = (boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect());
-                        norm_lambda = norm_lambda*(1./norm_lambda.mag());
-                        norm_W = (boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect()); 
-                        norm_W = norm_W*(1./norm_W.mag());
+                        norm_lambda = ((boostT(p_proton_from_lam, p_lamc).vect()).cross(boostT(p_pi_from_lam, p_lamc).vect())).Unit();
+                        norm_W = ((boostT(p_nu, p_lamc).vect()).cross(boostT(p_l, p_lamc).vect())).Unit(); 
             
                         angchi = norm_lambda.angle(norm_W);
                     }
