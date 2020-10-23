@@ -70,7 +70,7 @@
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.0f MeV ",binw*1000));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.9);
+    hdat -> GetYaxis()-> SetTitleOffset(1);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
@@ -108,18 +108,26 @@
     leg -> AddEntry("fbkg","background","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
-    leg -> Draw("same");
+   // leg -> Draw("same");
     
     TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
-    tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
+   // tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
-    tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
+   // tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
+  //  tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
-   
+       
+    double top = hdat->GetMaximum();
+    tstatfit -> DrawLatex(0.67, 0.65, "D^{+} #rightarrow K^{-}#pi^{+}#pi^{+}"); 
+    TLine* line2 = new TLine(MDp-0.015,0,MDp-0.015,top*0.95);
+    TLine* line3 = new TLine(MDp+0.015,0,MDp+0.015,top*0.95);
+    line2 -> SetLineWidth(4);
+    line3 -> SetLineWidth(4);
+    line2 -> Draw("same");
+    line3 -> Draw("same");
     
 } 

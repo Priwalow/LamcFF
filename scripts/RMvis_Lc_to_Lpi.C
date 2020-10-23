@@ -94,7 +94,7 @@
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
-    fbkg -> DrawCopy("same");
+   // fbkg -> DrawCopy("same");
     
     
     //fsig -> SetLineColor(4);
@@ -104,14 +104,14 @@
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(4);
-    fdat-> DrawCopy("same");
+    //fdat-> DrawCopy("same");
     
     
     TLegend* leg = new TLegend(0.77,0.75,0.89,0.95);
     leg -> AddEntry("hdat","data","e p");
    // leg->AddEntry("fsig","Signal","l");
-    leg -> AddEntry("fdat","fit","l");
-    leg -> AddEntry("fbkg","background","l");
+   // leg -> AddEntry("fdat","fit","l");
+   // leg -> AddEntry("fbkg","background","l");
     leg -> AddEntry("hsb","M(#Lambda#pi^{+}) sideband","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
@@ -122,10 +122,10 @@
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
-    tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
+   // tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
-    tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
+   // tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
+   // tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
    
     

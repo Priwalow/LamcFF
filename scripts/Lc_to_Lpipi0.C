@@ -13,8 +13,8 @@
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=2.24, rend=2.33, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=18;
+    double lend=2.21, rend=2.36, MLambdac=2.28646; //lend=2.21, rend=2.36
+    int Nbins=25;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}#pi^{0}",Nbins,lend,rend);
     TH1D* hrsb = new TH1D("hrsb","right sb",Nbins,lend,rend);
@@ -38,7 +38,7 @@
     
 
     fdat -> SetParameters(20,MLambdac,0.01,10,-300); //100,MLambdac,0.01,40,-300
-    fdat -> SetParLimits(1,MLambdac-0.1,MLambdac+0.1);
+    fdat -> SetParLimits(1,MLambdac-0.005,MLambdac+0.005);
     fdat -> SetParLimits(0,0,1e5);
 
     TFitResultPtr fitResult;

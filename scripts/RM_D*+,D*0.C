@@ -101,7 +101,7 @@ void RM()
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M_{recoil}(pD^{*+}#pi^{-}) [GeV]");
+    hdat -> GetXaxis()-> SetTitle("M_{recoil}(pD^{*0})||M_{recoil}(pD^{*+}#pi^{-}) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events / %.2f GeV",binw));
@@ -149,13 +149,34 @@ void RM()
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
     tstatfit -> DrawLatex(0.67, 0.45, Form("S = %0.lf #pm %0.lf",Nsig, dNsig)); //
-    tstatfit -> DrawLatex(0.67, 0.39, Form("B(3#sigma) = %0.lf #pm %0.lf",Nbkg3s, dNbkg3s));
-    tstatfit -> DrawLatex(0.67, 0.33, Form("S/B(3#sigma) = %0.3lf #pm %0.3lf",Nsig/Nbkg3s, fracsigm(Nsig,dNsig,Nbkg3s,dNbkg3s)));
+   // tstatfit -> DrawLatex(0.67, 0.39, Form("B(3#sigma) = %0.lf #pm %0.lf",Nbkg3s, dNbkg3s));
+  //  tstatfit -> DrawLatex(0.67, 0.33, Form("S/B(3#sigma) = %0.3lf #pm %0.3lf",Nsig/Nbkg3s, fracsigm(Nsig,dNsig,Nbkg3s,dNbkg3s)));
     
     // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
    // tstatfit -> DrawLatex(0.67, 0.39, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
    // tstatfit -> DrawLatex(0.67, 0.33, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
    
+    double top = hdat->GetMaximum();
+    TLine* line1 = new TLine(2.29-0.1,0,2.29-0.1,top*1.);
+    TLine* line2 = new TLine(2.29+0.1,0,2.29+0.1,top*1.);
+    line1 -> SetLineWidth(4);
+    line2 -> SetLineWidth(4);
     
+    TLine* line3 = new TLine(2.29-0.25,0,2.29-0.25,top*1.);
+    TLine* line4 = new TLine(2.29-0.15,0,2.29-0.15,top*1.);
+    line3 -> SetLineWidth(4);
+    line4 -> SetLineWidth(4);
+    
+    TLine* line5 = new TLine(2.29+0.15,0,2.29+0.15,top*1.);
+    TLine* line6 = new TLine(2.29+0.25,0,2.29+0.25,top*1.);
+    line5 -> SetLineWidth(4);
+    line6 -> SetLineWidth(4);
+    
+    line1 -> Draw("same");
+    line2 -> Draw("same");
+    line3 -> Draw("same");
+    line4 -> Draw("same");
+    line5 -> Draw("same");
+    line6 -> Draw("same");
 }  

@@ -91,10 +91,10 @@ namespace Belle {
         withdRdZcut(pi_m,runIp.z());
         
         
-        withKaonId(k_p,0.1,3,1,5,3,4);
-        withKaonId(k_p,0.1,3,1,5,3,2);
-        withKaonId(k_m,0.1,3,1,5,3,4);
-        withKaonId(k_m,0.1,3,1,5,3,2);
+        withKaonId(k_p,0.6,3,1,5,3,4);
+        withKaonId(k_p,0.6,3,1,5,3,2);
+        withKaonId(k_m,0.6,3,1,5,3,4);
+        withKaonId(k_m,0.6,3,1,5,3,2);
         
         
         
