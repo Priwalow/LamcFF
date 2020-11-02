@@ -42,8 +42,9 @@ void RM()
     ch1dat -> Add(datapath+"*.root");
     
     double lend=1.6, rend=2.6, MLambdac=2.28646, 
-        MDst_p=2.01026, RightFitLimit = 2.5, LeftFitLimit=lend; //lend=2., rend=2.6
-    int Nbins=100;
+        MDst_p=2.01026; //lend=2., rend=2.6
+    int Nbins=50;
+    TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1024,768);
     TH1D* hdat = new TH1D("hdat","RM(D^{*0})|| RM(D^{*+})",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
@@ -52,7 +53,7 @@ void RM()
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot +=  ch1dat -> Draw("rmx>>+hdat","(tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))","goff");
+    Ntot +=  ch1dat -> Draw("rmx>>+hdat","lcp2dlab>1 && lcch==4 && abs(ml-1.11568)<0.003 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))","goff");
 
     // D*+ and D*0 (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))
     
@@ -61,18 +62,18 @@ void RM()
     //Only D*+ tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))
     
     
-    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),lend,RightFitLimit);
-    TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,RightFitLimit);
-    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2",lend,RightFitLimit);    
+    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-2.287)+[5]*(x-2.287)^2",binw),1.9,2.5);
+    TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),1.9,2.5);
+    TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-2.287)+[2]*(x-2.287)^2",1.9,2.5);    
     
 
-    fdat -> SetParameters(4000,MLambdac,0.05,5250,5350,2200);
+    fdat -> SetParameters(300,MLambdac,0.05,100,100,100);
     fdat -> SetParLimits(1,MLambdac-0.05,MLambdac+0.05);
     fdat -> SetParLimits(0,0,1e5);
     fdat -> SetParLimits(2,0.01,0.3);
 
     TFitResultPtr fitResult;
-    fitResult = hdat -> Fit("fdat","L S M N","goff",lend,RightFitLimit); //L S M N Q
+    fitResult = hdat -> Fit("fdat","L S M N","goff",1.9,2.5); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
     TMatrixDSym covSignal, covBackground;
     covFit.GetSub(0,2,covSignal);
@@ -94,23 +95,19 @@ void RM()
     cout << "N background: " << (int) Nbkg3s << " +- " << (int) dNbkg3s << endl;
  
     double chisq = fdat->GetChisquare(); 
-    int ndf = (RightFitLimit-lend)/binw - fdat ->GetNumberFreeParameters(); // nbins - npar
+    int ndf = (2.5-lend)/binw - fdat ->GetNumberFreeParameters(); // nbins - npar
     cout << "ChiSquare / ndf: " << chisq << " / " << ndf << " = " << chisq/ndf << endl;
     
-    TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
-    TPad *pad1 = new TPad("pad1","This is pad1",0,0.3,1,1);
-    TPad *pad2 = new TPad("pad2","This is pad2",0,0,1,0.3);
-    pad1->Draw();
-    pad2->Draw();
+  
     
-    pad1->cd();
+  
     hdat -> GetXaxis()-> SetTitle("M_{recoil}(X) [GeV]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitle(Form("Events / %.2f GeV",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.7);
+    hdat -> GetYaxis()-> SetTitleOffset(0.8);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
@@ -125,11 +122,11 @@ void RM()
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
-    fbkg -> DrawCopy("same");    
+    //fbkg -> DrawCopy("same");    
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(4);
-    fdat-> DrawCopy("same");   
+    //fdat-> DrawCopy("same");   
     
     /*
     fsig -> SetLineColor(4);
@@ -144,72 +141,20 @@ void RM()
     leg->AddEntry("fbkg","background","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
-    leg->Draw("same"); 
+   // leg->Draw("same"); 
     
     TLatex *tstatfit = new TLatex();
     tstatfit -> SetNDC();
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
-    tstatfit -> DrawLatex(0.67, 0.45, Form("S = %0.lf #pm %0.lf",Nsig, dNsig)); //
-    tstatfit -> DrawLatex(0.67, 0.33, Form("#frac{#chi^{2}}{ndf} = %.2lf",chisq/ndf));
-    // tstatfit -> DrawLatex(0.67, 0.39, Form("B(3#sigma) = %0.lf #pm %0.lf",Nbkg3s, dNbkg3s));
+    tstatfit -> DrawLatex(0.67, 0.45, "#Lambda_{c}^{+}#rightarrow #Lambda#mu^{+}#nu_{#mu}"); //
+        // tstatfit -> DrawLatex(0.67, 0.45, Form("S = %0.lf #pm %0.lf",Nsig, dNsig)); //
+   // tstatfit -> DrawLatex(0.67, 0.39, Form("B(3#sigma) = %0.lf #pm %0.lf",Nbkg3s, dNbkg3s));
   //  tstatfit -> DrawLatex(0.67, 0.33, Form("S/B(3#sigma) = %0.3lf #pm %0.3lf",Nsig/Nbkg3s, fracsigm(Nsig,dNsig,Nbkg3s,dNbkg3s)));
     
     // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
    // tstatfit -> DrawLatex(0.67, 0.39, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
    // tstatfit -> DrawLatex(0.67, 0.33, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
-   
-    double top = hdat->GetMaximum();
-    TLine* line1 = new TLine(2.29-0.1,0,2.29-0.1,top*1.);
-    TLine* line2 = new TLine(2.29+0.1,0,2.29+0.1,top*1.);
-    line1 -> SetLineWidth(4);
-    line2 -> SetLineWidth(4);
-    
-    TLine* line3 = new TLine(2.29-0.25,0,2.29-0.25,top*1.);
-    TLine* line4 = new TLine(2.29-0.15,0,2.29-0.15,top*1.);
-    line3 -> SetLineWidth(4);
-    line4 -> SetLineWidth(4);
-    
-    TLine* line5 = new TLine(2.29+0.15,0,2.29+0.15,top*1.);
-    TLine* line6 = new TLine(2.29+0.25,0,2.29+0.25,top*1.);
-    line5 -> SetLineWidth(4);
-    line6 -> SetLineWidth(4);
-    
-    line1 -> Draw("same");
-    line2 -> Draw("same");
-    line3 -> Draw("same");
-    line4 -> Draw("same");
-    line5 -> Draw("same");
-    line6 -> Draw("same");
-    
-    pad2->cd();
-    TH1D* hdiff = new TH1D("hdiff","difference",Nbins,lend,rend);
-    hdiff->SetName("hdiff");         
-    hdat -> Sumw2();
-    double firstbin = 1+(LeftFitLimit-lend)/binw, lastbin = (RightFitLimit-LeftFitLimit)/binw;
-    for ( int i = firstbin; i <= 1+lastbin; i++ ) { hdiff->SetBinContent(i,(hdat->GetBinContent(i)-fdat->Eval(hdat->GetBinCenter(i)))/(hdat->GetBinError(i)));
-    } 
-    
-    hdiff -> GetXaxis()-> SetLabelSize(0.1);
-    hdiff -> GetYaxis()-> SetTitle("Pull");
-    hdiff -> GetYaxis()-> SetTitleSize(0.1);
-    hdiff -> GetYaxis()-> SetLabelSize(0.1);
-    hdiff -> GetYaxis()-> SetTitleOffset(0.2);
-    //hdat -> GetYaxis()->CenterTitle(true);
-    hdiff -> GetXaxis()->SetTickSize(0.04);
-    hdiff -> SetMarkerStyle(20);
-    hdiff -> SetMarkerSize(1.5);
-    hdiff -> SetMarkerColor(1);
-    hdiff -> SetLineColor(1);
-    hdiff -> SetLineWidth(2);
-    hdiff -> SetMaximum(+3);
-    hdiff -> SetMinimum(-3);
-    hdiff -> Draw("p");
-    
-    TF1* fzero = new TF1("fzero","0",lend,RightFitLimit);
-    fzero -> SetLineColor(2);
-    fzero -> SetLineWidth(4);
-    fzero-> DrawCopy("same");  
 }  

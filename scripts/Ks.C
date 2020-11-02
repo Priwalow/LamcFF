@@ -26,31 +26,33 @@
     Ntot = ch1dat -> Draw("mks>>hdat",Mwindow,"goff"); //"lcch == 1 &&  abs(rmx-2.29)<0.04379*3
     ch1dat -> Draw("mks>>hsb",Mwindow,"goff"); //abs(rmx-2.2969)>0.0468*3 && abs(rmx-2.2969)<0.0468*5
     
-    TF1* fdat = new TF1("fdat",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)+[3]+[4]*(x-0.497611)",binw),lend,rend);
-    TF1* fsig = new TF1("fsig",Form("%lf*[0]*TMath::Gaus(x,[1],[2],true)",binw),lend,rend);
+    TF1* fdat = new TF1("fdat",Form("%lf*([0]*TMath::Gaus(x,[1],[2],true)+[3]*TMath::Gaus(x,[4],[5],true))+[6]+[7]*(x-0.497611)",binw),lend,rend);
+    TF1* fsig = new TF1("fsig",Form("%lf*([0]*TMath::Gaus(x,[1],[2],true)+[3]*TMath::Gaus(x,[4],[5],true))",binw),lend,rend);
     TF1* fbkg = new TF1("fbkg","[0]+[1]*(x-0.497611)",lend,rend);    
     
 
-    fdat -> SetParameters(4000000,MKS,0.0025,10000,0); //100,,0.01,40,-300
+    fdat -> SetParameters(2000000,MKS,0.0025,2000000,MKS,0.0025,10000,0); //100,,0.01,40,-300
     fdat -> SetParLimits(1,MKS-0.01,MKS+0.01);
+    fdat -> SetParLimits(4,MKS-0.01,MKS+0.01);
 
+    
     TFitResultPtr fitResult;
     fitResult = hdat -> Fit("fdat","L S M N","goff"); //L S M N Q
     TMatrixDSym covFit = fitResult->GetCovarianceMatrix();
     TMatrixDSym covSignal, covBackground;
-    covFit.GetSub(0,2,covSignal);
-    covFit.GetSub(3,4,covBackground);
+    covFit.GetSub(0,5,covSignal);
+    covFit.GetSub(6,7,covBackground);
     double * par;
     par = fdat -> GetParameters();
   
    
     fsig -> SetParameters(par);
-    fbkg -> SetParameters(par+3);
+    fbkg -> SetParameters(par+6);
     
     Nsig = fdat -> GetParameter(0);//fsig -> Integral(lend,rend)/binw; 
     dNsig = fdat -> GetParError(0);// -> IntegralError(lend,rend,par,covSignal.GetMatrixArray())/binw;
     Nbkg = fbkg -> Integral(lend,rend)/binw; 
-    dNbkg = fbkg -> IntegralError(lend,rend,par+3,covBackground.GetMatrixArray())/binw;
+    dNbkg = fbkg -> IntegralError(lend,rend,par+6,covBackground.GetMatrixArray())/binw;
     
     cout << "Total number of events: " << Ntot << endl;
     cout << "N D0: " << (int) Nsig <<" +- " << (int) dNsig << endl;

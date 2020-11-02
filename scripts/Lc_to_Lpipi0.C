@@ -14,7 +14,7 @@
     ch1dat -> Add(datapath+"*.root");
     
     double lend=2.21, rend=2.36, MLambdac=2.28646; //lend=2.21, rend=2.36
-    int Nbins=25;
+    int Nbins=30;
     TCanvas *c1 = new TCanvas("c1","Lambda_c invariant mass",1600,900);
     TH1D* hdat = new TH1D("hdat","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}#pi^{0}",Nbins,lend,rend);
     TH1D* hrsb = new TH1D("hrsb","right sb",Nbins,lend,rend);
@@ -76,7 +76,7 @@
     hdat -> GetYaxis()-> SetTitle(Form("Events /  %.0f MeV ",binw*1000));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitleOffset(0.8);
+    hdat -> GetYaxis()-> SetTitleOffset(0.7);
     //hdat -> GetYaxis()->CenterTitle(true);
     hdat -> GetXaxis()->SetTickSize(0.04);
     hdat -> SetMarkerStyle(20);
@@ -130,10 +130,17 @@
     tstatfit -> SetTextAngle(0);
     tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
-    tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
+    //tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
+   // tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
    
-    
+    double top = hdat->GetMaximum();
+    tstatfit -> DrawLatex(0.67, 0.65, "#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}#pi^{0}"); 
+    TLine* line2 = new TLine(MLambdac-0.035,0,MLambdac-0.035,top*0.95);
+    TLine* line3 = new TLine(MLambdac+0.035,0,MLambdac+0.035,top*0.95);
+    line2 -> SetLineWidth(4);
+    line3 -> SetLineWidth(4);
+    line2 -> Draw("same");
+    line3 -> Draw("same");
 } 
  

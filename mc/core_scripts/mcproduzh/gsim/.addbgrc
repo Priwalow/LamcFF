@@ -1,0 +1,200 @@
+# afarm2
+#export ADDBG_TOP /bwgpc/p00data/addbg
+# new B comp
+#export ADDBG_TOP /bhsm/h081/addbg
+#export ADDBG_TOP /bwf/afs23/addbg
+#export ADDBG_TOP /afs/afs23/addbg
+
+# kekcc computers
+export ADDBG_TOP=/group/belle/addbg
+
+if [[ $ADDBG_EXP == 7 || ${ADDBG_EXP#0} == 07 ]]
+then
+	addbgbl="b20020405_1039"
+	PREF="${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}"
+	list=(${PREF}r000310-r000315_bbg.bbs ${PREF}r000701-r000706_bbg.bbs ${PREF}r001112-r001116_bbg.bbs ${PREF}r001308-r001311_bbg.bbs ${PREF}r001503-r001507_bbg.bbs ${PREF}r001708-r001713_bbg.bbs ${PREF}r001913-r001916_bbg.bbs ${PREF}r002103-r002105_bbg.bbs ${PREF}r002506-r002509_bbg.bbs ${PREF}r002701-r002714_bbg.bbs )
+elif [[ $ADDBG_EXP == 9 || ${ADDBG_EXP#0} == 09 ]]
+then
+	addbgbl="b20020405_1039"
+	PREF="${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}"
+	list=( ${PREF}r000248-r000254_bbg.bbs ${PREF}r000346-r000352_bbg.bbs ${PREF}r000445-r000449_bbg.bbs ${PREF}r000551-r000560_bbg.bbs ${PREF}r000640-r000646_bbg.bbs ${PREF}r000739-r000744_bbg.bbs ${PREF}r000945-r000951_bbg.bbs ${PREF}r001034-r001042_bbg.bbs ${PREF}r001117-r001121_bbg.bbs ${PREF}r001176-r001180_bbg.bbs )
+elif [[ $ADDBG_EXP == 11 ]]
+then
+	addbgbl="b20020405_1039"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000135-r000141_bbg.bbs ${PREF}r000358-r000365_bbg.bbs ${PREF}r000451-r000455_bbg.bbs ${PREF}r000551-r000554_bbg.bbs ${PREF}r000659-r000662_bbg.bbs ${PREF}r000759-r000762_bbg.bbs ${PREF}r000844-r000847_bbg.bbs ${PREF}r000952-r000955_bbg.bbs ${PREF}r001053-r001057_bbg.bbs ${PREF}r001136-r001141_bbg.bbs 
+{PREF}r001244-r001248_bbg.bbs ${PREF}r001344-r001348_bbg.bbs )
+elif [[ $ADDBG_EXP == 13 ]]
+then
+	addbgbl="b20020405_1039"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000130-r000136_bbg.bbs ${PREF}r000245-r000251_bbg.bbs ${PREF}r000347-r000351_bbg.bbs ${PREF}r000639-r000644_bbg.bbs ${PREF}r000877-r000884_bbg.bbs ${PREF}r000948-r000954_bbg.bbs ${PREF}r001150-r001157_bbg.bbs ${PREF}r001252-r001261_bbg.bbs ${PREF}r001334-r001343_bbg.bbs ${PREF}r001453-r001463_bbg.bbs )
+elif [[ $ADDBG_EXP == 15 ]]
+then
+	addbgbl="b20020405_1039"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000315-r000322_bbg.bbs ${PREF}r000428-r000434_bbg.bbs ${PREF}r000533-r000539_bbg.bbs ${PREF}r000652-r000657_bbg.bbs ${PREF}r000803-r000808_bbg.bbs ${PREF}r000925-r000930_bbg.bbs ${PREF}r001056-r001060_bbg.bbs ${PREF}r001133-r001138_bbg.bbs ${PREF}r001241-r001246_bbg.bbs ${PREF}r001365-r001375_bbg.bbs )
+elif [[ $ADDBG_EXP == 17 ]]
+then
+	addbgbl="b20020405_1039"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000085-r000090_bbg.bbs ${PREF}r000185-r000190_bbg.bbs ${PREF}r000284-r000290_bbg.bbs ${PREF}r000369-r000375_bbg.bbs ${PREF}r000456-r000462_bbg.bbs ${PREF}r000557-r000562_bbg.bbs ${PREF}r000641-r000646_bbg.bbs ${PREF}r000730-r000735_bbg.bbs ${PREF}r000805-r000810_bbg.bbs ${PREF}r000881-r000889_bbg.bbs )
+elif [[ $ADDBG_EXP == 19a ]]
+then
+	addbgbl="b20020405_1039"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000095-r000099_bbg.bbs ${PREF}r000191-r000196_bbg.bbs ${PREF}r000303-r000308_bbg.bbs ${PREF}r000401-r000406_bbg.bbs ${PREF}r000470-r000475_bbg.bbs ${PREF}r000547-r000553_bbg.bbs ${PREF}r000645-r000650_bbg.bbs ${PREF}r000787-r000792_bbg.bbs ${PREF}r000885-r000890_bbg.bbs ${PREF}r000985-r000990_bbg.bbs )
+elif [[ $ADDBG_EXP == 19b ]]
+then
+	addbgbl="b20020405_1039"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r001031-r001036_bbg.bbs ${PREF}r001090-r001096_bbg.bbs ${PREF}r001140-r001145_bbg.bbs ${PREF}r001207-r001214_bbg.bbs ${PREF}r001250-r001256_bbg.bbs ${PREF}r001343-r001347_bbg.bbs ${PREF}r001442-r001446_bbg.bbs ${PREF}r001498-r001502_bbg.bbs ${PREF}r001560-r001564_bbg.bbs ${PREF}r001620-r001624_bbg.bbs )
+elif [[ $ADDBG_EXP == 21 ]]
+then
+	addbgbl="b20021205_1443"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000045-r000052_bbg.bbs ${PREF}r000075-r000081_bbg.bbs ${PREF}r000111-r000122_bbg.bbs ${PREF}r000140-r000145_bbg.bbs ${PREF}r000160-r000167_bbg.bbs ${PREF}r000180-r000186_bbg.bbs ${PREF}r000203-r000213_bbg.bbs ${PREF}r000227-r000233_bbg.bbs ${PREF}r000255-r000272_bbg.bbs ${PREF}r000301-r000315_bbg.bbs )
+elif [[ $ADDBG_EXP == 23 ]]
+then
+	addbgbl="b20021205_1443"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000047-r000057_bbg.bbs ${PREF}r000086-r000097_bbg.bbs ${PREF}r000131-r000140_bbg.bbs ${PREF}r000175-r000184_bbg.bbs ${PREF}r000215-r000230_bbg.bbs ${PREF}r000380-r000400_bbg.bbs ${PREF}r000425-r000452_bbg.bbs ${PREF}r000494-r000503_bbg.bbs ${PREF}r000530-r000548_bbg.bbs ${PREF}r000579-r000591_bbg.bbs )
+elif [[ $ADDBG_EXP == 25 ]]
+then
+	addbgbl="b20021205_1443"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000203-r000215_bbg.bbs ${PREF}r000402-r000415_bbg.bbs ${PREF}r000610-r000618_bbg.bbs ${PREF}r000804-r000816_bbg.bbs ${PREF}r001007-r001013_bbg.bbs ${PREF}r001193-r001204_bbg.bbs ${PREF}r001401-r001420_bbg.bbs ${PREF}r001693-r001700_bbg.bbs ${PREF}r001882-r001889_bbg.bbs ${PREF}r002038-r002045_bbg.bbs )
+elif [[ $ADDBG_EXP == 27 ]]
+then
+	addbgbl="b20021205_1443"
+	PREF=${ADDBG_TOP}/${addbgbl}/exp${ADDBG_EXP}/L0sim-e${ADDBG_EXP6}
+	list=( ${PREF}r000136-r000146_bbg.bbs ${PREF}r000387-r000397_bbg.bbs ${PREF}r000535-r000540_bbg.bbs ${PREF}r000644-r000654_bbg.bbs ${PREF}r000771-r000777_bbg.bbs ${PREF}r000894-r000900_bbg.bbs ${PREF}r001003-r001024_bbg.bbs ${PREF}r001313-r001319_bbg.bbs ${PREF}r001462-r001469_bbg.bbs ${PREF}r001590-r001595_bbg.bbs )
+elif [[ $ADDBG_EXP == 31 ]]
+then
+	addbgbl="b20040429_2253"
+	PREF=${ADDBG_TOP}/${addbgbl}/e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}25_0_bbg.bbs  ${PREF}25_1_bbg.bbs  ${PREF}25_2_bbg.bbs  ${PREF}25_3_bbg.bbs  ${PREF}25_4_bbg.bbs  ${PREF}25_5_bbg.bbs  ${PREF}25_6_bbg.bbs  ${PREF}25_7_bbg.bbs  ${PREF}25_8_bbg.bbs  ${PREF}25_9_bbg.bbs  ${PREF}25_10_bbg.bbs ${PREF}25_11_bbg.bbs ${PREF}25_12_bbg.bbs ${PREF}25_13_bbg.bbs ${PREF}25_14_bbg.bbs ${PREF}25_15_bbg.bbs ${PREF}25_16_bbg.bbs ${PREF}25_17_bbg.bbs ${PREF}25_18_bbg.bbs ${PREF}25_19_bbg.bbs )
+elif [[ $ADDBG_EXP == 33 ]]
+then
+	addbgbl="b20040429_2253"
+	PREF=${ADDBG_TOP}/${addbgbl}/e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}25_0_bbg.bbs  ${PREF}25_1_bbg.bbs  ${PREF}25_2_bbg.bbs  ${PREF}25_3_bbg.bbs  ${PREF}25_4_bbg.bbs  ${PREF}25_5_bbg.bbs  ${PREF}25_6_bbg.bbs  ${PREF}25_7_bbg.bbs  ${PREF}25_8_bbg.bbs  ${PREF}25_9_bbg.bbs  ${PREF}25_10_bbg.bbs ${PREF}25_11_bbg.bbs ${PREF}25_12_bbg.bbs ${PREF}25_13_bbg.bbs ${PREF}25_14_bbg.bbs ${PREF}25_15_bbg.bbs ${PREF}25_16_bbg.bbs ${PREF}25_17_bbg.bbs ${PREF}25_18_bbg.bbs ${PREF}25_19_bbg.bbs )
+elif [[ $ADDBG_EXP == 35 ]]
+then
+	addbgbl="b20040429_2253"
+	PREF=${ADDBG_TOP}/${addbgbl}/e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}15_0_bbg.bbs  ${PREF}15_1_bbg.bbs  ${PREF}15_2_bbg.bbs  ${PREF}15_3_bbg.bbs  ${PREF}15_4_bbg.bbs  ${PREF}15_5_bbg.bbs  ${PREF}15_6_bbg.bbs  ${PREF}15_7_bbg.bbs  ${PREF}15_8_bbg.bbs  ${PREF}15_9_bbg.bbs  ${PREF}15_10_bbg.bbs ${PREF}15_11_bbg.bbs ${PREF}15_12_bbg.bbs ${PREF}15_13_bbg.bbs ${PREF}15_14_bbg.bbs )
+elif [[ $ADDBG_EXP == 37a ]]
+then
+	addbgbl="b20060529_2127"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}a_upto_r0996_on_resonance_scf
+	list=( ${PREF}43_0_bbg.bbs  ${PREF}43_1_bbg.bbs  ${PREF}43_2_bbg.bbs  ${PREF}43_3_bbg.bbs  ${PREF}43_4_bbg.bbs  ${PREF}43_5_bbg.bbs  ${PREF}43_6_bbg.bbs  ${PREF}43_7_bbg.bbs  ${PREF}43_8_bbg.bbs  ${PREF}43_9_bbg.bbs  )
+elif [[ $ADDBG_EXP == 37b ]]
+then
+	addbgbl="b20060529_2127"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}b_from_r0997_on_resonance_scf
+	list=( ${PREF}38_0_bbg.bbs  ${PREF}38_1_bbg.bbs  ${PREF}38_2_bbg.bbs  ${PREF}38_3_bbg.bbs  ${PREF}38_4_bbg.bbs  ${PREF}38_5_bbg.bbs  ${PREF}38_6_bbg.bbs  ${PREF}38_7_bbg.bbs  ${PREF}38_8_bbg.bbs  ${PREF}38_9_bbg.bbs  )
+elif [[ $ADDBG_EXP == 39 ]]
+then
+	addbgbl="b20050311_0738"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}70_0_bbg.bbs  ${PREF}70_1_bbg.bbs  ${PREF}70_2_bbg.bbs  ${PREF}70_3_bbg.bbs  ${PREF}70_4_bbg.bbs  ${PREF}70_5_bbg.bbs  ${PREF}70_6_bbg.bbs  ${PREF}70_7_bbg.bbs  ${PREF}70_8_bbg.bbs  ${PREF}70_9_bbg.bbs  ${PREF}70_10_bbg.bbs ${PREF}70_11_bbg.bbs ${PREF}70_12_bbg.bbs ${PREF}70_13_bbg.bbs ${PREF}70_14_bbg.bbs ${PREF}70_15_bbg.bbs ${PREF}70_16_bbg.bbs ${PREF}70_17_bbg.bbs ${PREF}70_18_bbg.bbs ${PREF}70_19_bbg.bbs )
+elif [[ $ADDBG_EXP == 41a ]]
+then
+	addbgbl="b20050311_0738"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_upto_r0832_on_resonance_scf
+	list=( ${PREF}40_0_bbg.bbs  ${PREF}40_1_bbg.bbs  ${PREF}40_2_bbg.bbs  ${PREF}40_3_bbg.bbs  ${PREF}40_4_bbg.bbs  ${PREF}40_5_bbg.bbs  ${PREF}40_6_bbg.bbs  ${PREF}40_7_bbg.bbs  ${PREF}40_8_bbg.bbs  ${PREF}40_9_bbg.bbs  ${PREF}40_10_bbg.bbs ${PREF}40_11_bbg.bbs ${PREF}40_12_bbg.bbs ${PREF}40_13_bbg.bbs ${PREF}40_14_bbg.bbs ${PREF}40_15_bbg.bbs ${PREF}40_16_bbg.bbs ${PREF}40_17_bbg.bbs ${PREF}40_18_bbg.bbs ${PREF}40_19_bbg.bbs )
+elif [[ $ADDBG_EXP == 41b ]]
+then
+	addbgbl="b20050311_0738"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_from_r0833_on_resonance_scf
+	list=( ${PREF}30_0_bbg.bbs  ${PREF}30_1_bbg.bbs  ${PREF}30_2_bbg.bbs  ${PREF}30_3_bbg.bbs  ${PREF}30_4_bbg.bbs  ${PREF}30_5_bbg.bbs  ${PREF}30_6_bbg.bbs  ${PREF}30_7_bbg.bbs  ${PREF}30_8_bbg.bbs  ${PREF}30_9_bbg.bbs  )
+elif [[ $ADDBG_EXP == 43 ]]
+then
+	addbgbl="b20050311_0738"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}110_0_bbg.bbs   ${PREF}110_1_bbg.bbs   ${PREF}110_2_bbg.bbs   ${PREF}110_3_bbg.bbs   ${PREF}110_4_bbg.bbs   ${PREF}110_5_bbg.bbs   ${PREF}110_6_bbg.bbs   ${PREF}110_7_bbg.bbs   ${PREF}110_8_bbg.bbs   ${PREF}110_9_bbg.bbs   ${PREF}110_10_bbg.bbs  ${PREF}110_11_bbg.bbs  ${PREF}110_12_bbg.bbs  ${PREF}110_13_bbg.bbs  ${PREF}110_14_bbg.bbs  ${PREF}110_15_bbg.bbs  ${PREF}110_16_bbg.bbs  ${PREF}110_17_bbg.bbs  ${PREF}110_18_bbg.bbs  ${PREF}110_19_bbg.bbs  ${PREF}110_20_bbg.bbs  ${PREF}110_21_bbg.bbs  ${PREF}110_22_bbg.bbs  ${PREF}110_23_bbg.bbs  ${PREF}110_24_bbg.bbs  ${PREF}110_25_bbg.bbs  ${PREF}110_26_bbg.bbs  ${PREF}110_27_bbg.bbs  ${PREF}110_28_bbg.bbs  ${PREF}110_29_bbg.bbs  ${PREF}110_30_bbg.bbs  ${PREF}110_31_bbg.bbs  ${PREF}110_32_bbg.bbs  ${PREF}110_33_bbg.bbs  ${PREF}110_34_bbg.bbs  ${PREF}110_35_bbg.bbs  ${PREF}110_36_bbg.bbs  ${PREF}110_37_bbg.bbs  ${PREF}110_38_bbg.bbs  ${PREF}110_39_bbg.bbs  ${PREF}110_40_bbg.bbs  ${PREF}110_41_bbg.bbs  ${PREF}110_42_bbg.bbs  ${PREF}110_43_bbg.bbs  ${PREF}110_44_bbg.bbs  ${PREF}110_45_bbg.bbs  ${PREF}110_46_bbg.bbs  ${PREF}110_47_bbg.bbs  ${PREF}110_48_bbg.bbs  ${PREF}110_49_bbg.bbs  ${PREF}110_50_bbg.bbs  ${PREF}110_51_bbg.bbs  ${PREF}110_52_bbg.bbs  ${PREF}110_53_bbg.bbs  ${PREF}110_54_bbg.bbs  ${PREF}110_55_bbg.bbs  ${PREF}110_56_bbg.bbs  ${PREF}110_57_bbg.bbs  ${PREF}110_58_bbg.bbs  ${PREF}110_59_bbg.bbs  ${PREF}110_60_bbg.bbs  ${PREF}110_61_bbg.bbs  ${PREF}110_62_bbg.bbs  ${PREF}110_63_bbg.bbs  ${PREF}110_64_bbg.bbs  ${PREF}110_65_bbg.bbs  ${PREF}110_66_bbg.bbs  ${PREF}110_67_bbg.bbs  ${PREF}110_68_bbg.bbs  ${PREF}110_69_bbg.bbs  ${PREF}110_70_bbg.bbs  ${PREF}110_71_bbg.bbs  ${PREF}110_72_bbg.bbs  ${PREF}110_73_bbg.bbs  ${PREF}110_74_bbg.bbs  ${PREF}110_75_bbg.bbs  ${PREF}110_76_bbg.bbs  ${PREF}110_77_bbg.bbs  ${PREF}110_78_bbg.bbs  ${PREF}110_79_bbg.bbs  ${PREF}110_80_bbg.bbs  ${PREF}110_81_bbg.bbs  ${PREF}110_82_bbg.bbs  ${PREF}110_83_bbg.bbs  ${PREF}110_84_bbg.bbs  ${PREF}110_85_bbg.bbs  ${PREF}110_86_bbg.bbs  ${PREF}110_87_bbg.bbs  ${PREF}110_88_bbg.bbs  ${PREF}110_89_bbg.bbs  ${PREF}110_90_bbg.bbs  ${PREF}110_91_bbg.bbs  ${PREF}110_92_bbg.bbs  ${PREF}110_93_bbg.bbs  ${PREF}110_94_bbg.bbs  ${PREF}110_95_bbg.bbs  ${PREF}110_96_bbg.bbs  ${PREF}110_97_bbg.bbs  ${PREF}110_98_bbg.bbs  ${PREF}110_99_bbg.bbs  ${PREF}110_100_bbg.bbs ${PREF}110_101_bbg.bbs ${PREF}110_102_bbg.bbs ${PREF}110_103_bbg.bbs ${PREF}110_104_bbg.bbs ${PREF}110_105_bbg.bbs ${PREF}110_106_bbg.bbs ${PREF}110_107_bbg.bbs ${PREF}110_108_bbg.bbs ${PREF}110_109_bbg.bbs )
+elif [[ $ADDBG_EXP == 45a ]]
+then
+	addbgbl="b20060403_1014"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_upto_r0220_on_resonance_scf
+	list=( ${PREF}3_0_bbg.bbs ${PREF}3_1_bbg.bbs ${PREF}3_2_bbg.bbs )
+elif [[ $ADDBG_EXP == 45b ]]
+then
+	addbgbl="b20060403_1014"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_from_r0221_on_resonance_scf
+	list=( ${PREF}5_0_bbg.bbs ${PREF}5_1_bbg.bbs ${PREF}5_2_bbg.bbs ${PREF}5_3_bbg.bbs ${PREF}5_4_bbg.bbs )
+elif [[ $ADDBG_EXP == 47 ]]
+then
+	#addbgbl="b20060403_1014"
+	addbgbl="b20060529_2127"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}18_0_bbg.bbs  ${PREF}18_1_bbg.bbs  ${PREF}18_2_bbg.bbs  ${PREF}18_3_bbg.bbs  ${PREF}18_4_bbg.bbs  ${PREF}18_5_bbg.bbs  ${PREF}18_6_bbg.bbs  ${PREF}18_7_bbg.bbs  ${PREF}18_8_bbg.bbs  ${PREF}18_9_bbg.bbs  ${PREF}18_10_bbg.bbs ${PREF}18_11_bbg.bbs ${PREF}18_12_bbg.bbs ${PREF}18_13_bbg.bbs ${PREF}18_14_bbg.bbs ${PREF}18_15_bbg.bbs ${PREF}18_16_bbg.bbs ${PREF}18_17_bbg.bbs )
+elif [[ $ADDBG_EXP == 49 ]]
+then
+	#addbgbl="b20060403_1014"
+	addbgbl="b20060529_2127"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}13_0_bbg.bbs  ${PREF}13_1_bbg.bbs  ${PREF}13_2_bbg.bbs  ${PREF}13_3_bbg.bbs  ${PREF}13_4_bbg.bbs  ${PREF}13_5_bbg.bbs  ${PREF}13_6_bbg.bbs  ${PREF}13_7_bbg.bbs  ${PREF}13_8_bbg.bbs  ${PREF}13_9_bbg.bbs  ${PREF}13_10_bbg.bbs ${PREF}13_11_bbg.bbs ${PREF}13_12_bbg.bbs )
+elif [[ $ADDBG_EXP == 51 ]]
+then
+	addbgbl="b20061020_1235"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}13_0_bbg.bbs  ${PREF}13_1_bbg.bbs  ${PREF}13_2_bbg.bbs  ${PREF}13_3_bbg.bbs  ${PREF}13_4_bbg.bbs  ${PREF}13_5_bbg.bbs  ${PREF}13_6_bbg.bbs  ${PREF}13_7_bbg.bbs  ${PREF}13_8_bbg.bbs  ${PREF}13_9_bbg.bbs  ${PREF}13_10_bbg.bbs ${PREF}13_11_bbg.bbs ${PREF}13_12_bbg.bbs )
+elif [[ $ADDBG_EXP == 53 ]]
+then
+	addbgbl="b20061020_1235"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_Y5S_on_resonance_scf10_
+	list=( ${PREF}0_bbg.bbs ${PREF}1_bbg.bbs ${PREF}2_bbg.bbs ${PREF}3_bbg.bbs ${PREF}4_bbg.bbs ${PREF}5_bbg.bbs ${PREF}6_bbg.bbs ${PREF}7_bbg.bbs ${PREF}8_bbg.bbs ${PREF}9_bbg.bbs )
+elif [[ $ADDBG_EXP == 55 ]]
+then
+	addbgbl="b20070402_1209"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}25_0_bbg.bbs  ${PREF}25_10_bbg.bbs ${PREF}25_11_bbg.bbs ${PREF}25_12_bbg.bbs ${PREF}25_13_bbg.bbs ${PREF}25_14_bbg.bbs ${PREF}25_15_bbg.bbs ${PREF}25_16_bbg.bbs ${PREF}25_17_bbg.bbs ${PREF}25_18_bbg.bbs ${PREF}25_19_bbg.bbs ${PREF}25_1_bbg.bbs  ${PREF}25_20_bbg.bbs ${PREF}25_21_bbg.bbs ${PREF}25_22_bbg.bbs ${PREF}25_23_bbg.bbs ${PREF}25_24_bbg.bbs ${PREF}25_2_bbg.bbs  ${PREF}25_3_bbg.bbs  ${PREF}25_4_bbg.bbs  ${PREF}25_5_bbg.bbs  ${PREF}25_6_bbg.bbs  ${PREF}25_7_bbg.bbs  ${PREF}25_8_bbg.bbs  ${PREF}25_9_bbg.bbs  )
+elif [[ $ADDBG_EXP == 61 ]]
+then
+	addbgbl="b20080331_1823"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}30_0_bbg.bbs  ${PREF}30_1_bbg.bbs  ${PREF}30_2_bbg.bbs  ${PREF}30_3_bbg.bbs  ${PREF}30_4_bbg.bbs  ${PREF}30_5_bbg.bbs  ${PREF}30_6_bbg.bbs  ${PREF}30_7_bbg.bbs  ${PREF}30_8_bbg.bbs  ${PREF}30_9_bbg.bbs  ${PREF}30_10_bbg.bbs ${PREF}30_11_bbg.bbs ${PREF}30_12_bbg.bbs ${PREF}30_13_bbg.bbs ${PREF}30_14_bbg.bbs ${PREF}30_15_bbg.bbs ${PREF}30_16_bbg.bbs ${PREF}30_17_bbg.bbs ${PREF}30_18_bbg.bbs ${PREF}30_19_bbg.bbs ${PREF}30_20_bbg.bbs ${PREF}30_21_bbg.bbs ${PREF}30_22_bbg.bbs ${PREF}30_23_bbg.bbs ${PREF}30_24_bbg.bbs ${PREF}30_25_bbg.bbs ${PREF}30_26_bbg.bbs ${PREF}30_27_bbg.bbs ${PREF}30_28_bbg.bbs ${PREF}30_29_bbg.bbs )
+elif [[ $ADDBG_EXP == 63 ]]
+then
+	addbgbl="b20080525_1934"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}53_0_bbg.bbs  ${PREF}53_1_bbg.bbs  ${PREF}53_2_bbg.bbs  ${PREF}53_3_bbg.bbs  ${PREF}53_4_bbg.bbs  ${PREF}53_5_bbg.bbs  ${PREF}53_6_bbg.bbs  ${PREF}53_7_bbg.bbs  ${PREF}53_8_bbg.bbs  ${PREF}53_9_bbg.bbs  ${PREF}53_10_bbg.bbs ${PREF}53_11_bbg.bbs ${PREF}53_12_bbg.bbs ${PREF}53_13_bbg.bbs ${PREF}53_14_bbg.bbs ${PREF}53_15_bbg.bbs ${PREF}53_16_bbg.bbs ${PREF}53_17_bbg.bbs ${PREF}53_18_bbg.bbs ${PREF}53_19_bbg.bbs ${PREF}53_20_bbg.bbs ${PREF}53_21_bbg.bbs ${PREF}53_22_bbg.bbs ${PREF}53_23_bbg.bbs ${PREF}53_24_bbg.bbs ${PREF}53_25_bbg.bbs ${PREF}53_26_bbg.bbs ${PREF}53_27_bbg.bbs ${PREF}53_28_bbg.bbs ${PREF}53_29_bbg.bbs )
+elif [[ $ADDBG_EXP == 65 ]]
+then
+	addbgbl="b20081107_1418"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_on_resonance_scf
+	list=( ${PREF}70_0_bbg.bbs  ${PREF}70_1_bbg.bbs  ${PREF}70_2_bbg.bbs  ${PREF}70_3_bbg.bbs  ${PREF}70_4_bbg.bbs  ${PREF}70_5_bbg.bbs  ${PREF}70_6_bbg.bbs  ${PREF}70_7_bbg.bbs  ${PREF}70_8_bbg.bbs  ${PREF}70_9_bbg.bbs  ${PREF}70_10_bbg.bbs ${PREF}70_11_bbg.bbs ${PREF}70_12_bbg.bbs ${PREF}70_13_bbg.bbs ${PREF}70_14_bbg.bbs ${PREF}70_15_bbg.bbs ${PREF}70_16_bbg.bbs ${PREF}70_17_bbg.bbs ${PREF}70_18_bbg.bbs ${PREF}70_19_bbg.bbs ${PREF}70_20_bbg.bbs )
+elif [[ $ADDBG_EXP == 67 ]]
+then
+	addbgbl="b20090127_0910"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_Y5S_scf51_
+	list=( ${PREF}0_bbg.bbs ${PREF}1_bbg.bbs ${PREF}2_bbg.bbs ${PREF}3_bbg.bbs ${PREF}4_bbg.bbs ${PREF}5_bbg.bbs ${PREF}6_bbg.bbs ${PREF}7_bbg.bbs ${PREF}8_bbg.bbs ${PREF}9_bbg.bbs ${PREF}10_bbg.bbs ${PREF}11_bbg.bbs ${PREF}12_bbg.bbs ${PREF}13_bbg.bbs ${PREF}14_bbg.bbs ${PREF}15_bbg.bbs ${PREF}16_bbg.bbs ${PREF}17_bbg.bbs ${PREF}18_bbg.bbs ${PREF}19_bbg.bbs ${PREF}20_bbg.bbs ${PREF}21_bbg.bbs ${PREF}22_bbg.bbs ${PREF}23_bbg.bbs ${PREF}24_bbg.bbs ${PREF}25_bbg.bbs ${PREF}26_bbg.bbs ${PREF}27_bbg.bbs ${PREF}28_bbg.bbs ${PREF}29_bbg.bbs ${PREF}30_bbg.bbs ${PREF}31_bbg.bbs ${PREF}32_bbg.bbs ${PREF}33_bbg.bbs ${PREF}34_bbg.bbs ${PREF}35_bbg.bbs ${PREF}36_bbg.bbs ${PREF}37_bbg.bbs ${PREF}38_bbg.bbs ${PREF}39_bbg.bbs ${PREF}40_bbg.bbs ${PREF}41_bbg.bbs ${PREF}42_bbg.bbs ${PREF}43_bbg.bbs ${PREF}44_bbg.bbs ${PREF}45_bbg.bbs ${PREF}46_bbg.bbs ${PREF}47_bbg.bbs ${PREF}48_bbg.bbs ${PREF}49_bbg.bbs ${PREF}50_bbg.bbs )
+elif [[ $ADDBG_EXP == 69 ]]
+then
+	addbgbl="b20090127_0910"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_Y5S_scf20_
+	list=( ${PREF}0_bbg.bbs ${PREF}1_bbg.bbs ${PREF}2_bbg.bbs ${PREF}3_bbg.bbs ${PREF}4_bbg.bbs ${PREF}5_bbg.bbs ${PREF}6_bbg.bbs ${PREF}7_bbg.bbs ${PREF}8_bbg.bbs ${PREF}9_bbg.bbs ${PREF}10_bbg.bbs ${PREF}11_bbg.bbs ${PREF}12_bbg.bbs ${PREF}13_bbg.bbs ${PREF}14_bbg.bbs ${PREF}15_bbg.bbs ${PREF}16_bbg.bbs ${PREF}17_bbg.bbs ${PREF}18_bbg.bbs ${PREF}19_bbg.bbs )
+elif [[ $ADDBG_EXP == 71 ]]
+then
+	addbgbl="b20090127_0910"
+	PREF=${ADDBG_TOP}/${addbgbl}/Background-e${ADDBG_EXP6}_
+	list=( ${PREF}R0001+0221_scf17_0_bbg.bbs ${PREF}R0001+0221_scf17_1_bbg.bbs ${PREF}R0001+0221_scf17_2_bbg.bbs ${PREF}R0001+0221_scf17_3_bbg.bbs ${PREF}R0001+0221_scf17_4_bbg.bbs ${PREF}R0001+0221_scf17_5_bbg.bbs ${PREF}R0001+0221_scf17_6_bbg.bbs ${PREF}R0001+0221_scf17_7_bbg.bbs ${PREF}R0001+0221_scf17_8_bbg.bbs ${PREF}R0001+0221_scf17_9_bbg.bbs ${PREF}R0001+0221_scf17_10_bbg.bbs ${PREF}R0001+0221_scf17_11_bbg.bbs ${PREF}R0001+0221_scf17_12_bbg.bbs ${PREF}R0001+0221_scf17_13_bbg.bbs ${PREF}R0001+0221_scf17_14_bbg.bbs ${PREF}R0001+0221_scf17_15_bbg.bbs ${PREF}R0001+0221_scf17_16_bbg.bbs ${PREF}R2001+2244_scf25_0_bbg.bbs ${PREF}R2001+2244_scf25_1_bbg.bbs ${PREF}R2001+2244_scf25_2_bbg.bbs ${PREF}R2001+2244_scf25_3_bbg.bbs ${PREF}R2001+2244_scf25_4_bbg.bbs ${PREF}R2001+2244_scf25_5_bbg.bbs ${PREF}R2001+2244_scf25_6_bbg.bbs ${PREF}R2001+2244_scf25_7_bbg.bbs ${PREF}R2001+2244_scf25_8_bbg.bbs ${PREF}R2001+2244_scf25_9_bbg.bbs ${PREF}R2001+2244_scf25_10_bbg.bbs ${PREF}R2001+2244_scf25_11_bbg.bbs ${PREF}R2001+2244_scf25_12_bbg.bbs ${PREF}R2001+2244_scf25_13_bbg.bbs ${PREF}R2001+2244_scf25_14_bbg.bbs ${PREF}R2001+2244_scf25_15_bbg.bbs ${PREF}R2001+2244_scf25_16_bbg.bbs ${PREF}R2001+2244_scf25_17_bbg.bbs ${PREF}R2001+2244_scf25_18_bbg.bbs ${PREF}R2001+2244_scf25_19_bbg.bbs ${PREF}R2001+2244_scf25_20_bbg.bbs ${PREF}R2001+2244_scf25_21_bbg.bbs ${PREF}R2001+2244_scf25_22_bbg.bbs ${PREF}R2001+2244_scf25_23_bbg.bbs ${PREF}R2001+2244_scf25_24_bbg.bbs )
+else
+  echo "Exp $ADDBG_EXP not implemented in .addbgrc yet"
+  exit
+fi
+
+
+i=$[$[${ADDBG_RUN}%${#list[*]}]+1]
+
+#echo ${ADDBG_RUN} $i
+
+if [ -e ${list[${i}]} ]
+then
+  export ADDBG_DAT=${list[${i}]}
+else
+  echo "ADDBG FILE (${list[${i}]}) not exist"
+  exit
+fi
