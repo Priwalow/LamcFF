@@ -3,13 +3,15 @@
 #               |->p pi-
 #   + charge conj
 #
+Alias      myLambda0            Lambda0
 Alias      myLambda_c+          Lambda_c+
-Alias      my-anti-Lambda_c-    anti-Lambda_c-
-ChargeConj myLambda_c+          my-anti-Lambda_c- 
 #
-Decay  myLambda_c+
-1.000         Lambda0         pi+          PHOTOS PHSP;
+Decay myLambda0
+1.000    p+  pi-                 PHOTOS PHSP;
 Enddecay
 #
-CDecay my-anti-Lambda_c-
+Decay  myLambda_c+
+1.000   myLambda0     pi+          PHOTOS PHSP;
+Enddecay
+#
 End 
