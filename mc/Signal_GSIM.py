@@ -161,9 +161,9 @@ for m in mdst:
 			if(options.interactive):
                 		print './GSIM_test.sh '+BL+' '+exp+' '+basf+' '+exp_6+' '+run+' '+join(evtgenpath,m)+' '+join(GSIMout,path.splitext(m)[0])
 			else:
-				print 'bsub -q b_a ./GSIM_test.sh '+BL+' '+exp+' '+basf+' '+exp_6+' '+run+' '+join(evtgenpath,m)+' '+join(GSIMout,path.splitext(m)[0])
+				print 'bsub -q l ./GSIM_test.sh '+BL+' '+exp+' '+basf+' '+exp_6+' '+run+' '+join(evtgenpath,m)+' '+join(GSIMout,path.splitext(m)[0])
 		else:
 			if(options.interactive):
 				os.system('./GSIM.sh '+BL+' '+exp+' '+basf+' '+exp_6+' '+run+' '+join(evtgenpath,m)+' '+join(GSIMout,path.splitext(m)[0]))
 			else:
-				os.system('bsub -q b_a ./GSIM.sh '+BL+' '+exp+' '+basf+' '+exp_6+' '+run+' '+join(evtgenpath,m)+' '+join(GSIMout,path.splitext(m)[0]))
+				os.system('bsub -q l ./GSIM.sh '+BL+' '+exp+' '+basf+' '+exp_6+' '+run+' '+join(evtgenpath,m)+' '+join(GSIMout,path.splitext(m)[0]))
