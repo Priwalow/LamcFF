@@ -10,7 +10,7 @@
     
     
     TString datapath = "../analysis/hmerge/";    
-    TChain* ch1dat = new TChain("h1"); //without pi0
+    TChain* ch1dat = new TChain("h1");
     ch1dat -> Add(datapath+"*.root");
     
     double lend=-1, rend=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; //lend=2.21, rend=2.36
@@ -35,7 +35,7 @@
 
     
     TF3* fmain = new TF3("fmain",Form("[0]*(1+%lf*y+[1]*(z*(%lf+%lf*y)-sqrt((1-y*y)*(1-z*z))*%lf*cos([2]+x)))",
-                                    alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)),0,TMath::Pi(),lend,rend,lend,rend);
+                                    alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)),0,2*TMath::Pi(),lend,rend,lend,rend);
     fmain -> SetParameters(1.5,0.1,TMath::Pi());
     fmain -> SetParLimits(2,-0.005,2*TMath::Pi()+0.005);
     
