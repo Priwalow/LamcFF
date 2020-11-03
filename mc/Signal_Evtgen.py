@@ -172,12 +172,12 @@ for l in Lum:
                                 if (options.interactive):
                                         print './core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(job_num)+' '+Output
                                 else:
-                                        print 'bsub -q b_a ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(job_num)+' '+Output
+                                        print 'bsub -q l ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(job_num)+' '+Output
                         else:
                                 if (options.interactive):
                                         os.system('./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(job_num)+' '+Output)
                                 else:
-                                        os.system('bsub -q b_a ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(job_num)+' '+Output)	
+                                        os.system('bsub -q l ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(job_num)+' '+Output)	
 			#Iterate submitted jobs and events
 			startedEvts = startedEvts+job_num
 			job = str(int(job)+1)
@@ -194,12 +194,12 @@ for l in Lum:
 				if (options.interactive):
 					print './core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(remEvts)+' '+Output
 				else:
-					print 'bsub -q b_a ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(remEvts)+' '+Output
+					print 'bsub -q l ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(remEvts)+' '+Output
                         else:
 				if (options.interactive):
                                         os.system('./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(remEvts)+' '+Output)
                                 else:
-                                        os.system('bsub -q b_a ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(remEvts)+' '+Output)
+                                        os.system('bsub -q l ./core_scripts/mcproduzh/evtgen/EvtgenBASFScript.sh '+MC+' '+dec+' '+str(remEvts)+' '+Output)
 		#wait for 2 seconds between exp submits (needed?)
 		#time.sleep(1)
 	
