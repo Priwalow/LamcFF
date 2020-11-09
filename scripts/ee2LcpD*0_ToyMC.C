@@ -9,7 +9,7 @@
 #include <TRandom.h>
 
 TLorentzVector boostT( TLorentzVector p, TLorentzVector p_boost);
-
+double heli (  TLorentzVector   P4A, TLorentzVector  P4B, TLorentzVector P4system);
 //three body decay
 
 double M_L = 1.11568, M_Lc = 2.28646, //GeV 
@@ -25,13 +25,14 @@ ctau_Dp = 0.0312;
 
 void PhaseSpace() 
 {
-    double dphi, scalprod, ppi;
-    TFile *f = new TFile("ToyLc3bDecay.root", "recreate");
-    TTree *tree = new TTree("h1", "Toy MC ROOT tree");
+    double dphi, scalprod, ppi, hlc, hl;
+    TFile *f = new TFile("ToyLc3bDecay.root", "UPDATE");
+    TTree *tree = new TTree("h2", "Phase space");
     tree->Branch("dphi", &dphi, "dphi/D");
     tree->Branch("scalprod", &scalprod, "scalprod/D");
     tree->Branch("ppi", &ppi, "ppi/D");
-    
+    tree->Branch("hlc", &hlc, "hlc/D");
+    tree->Branch("hl", &hl, "hl/D");
     
     TRandom r; 
     r.SetSeed(0);
@@ -48,7 +49,7 @@ void PhaseSpace()
     TGenPhaseSpace ee2XLcEvent, LcDecEvent, LDecEvent;
     TLorentzVector P_Lc, P_L, P_p, P_pi;
     
-    for (Int_t n=0;n<1e6;n++) 
+    for (Int_t n=0;n<1e7;n++) 
     {
         ee2XLcEvent.SetDecay(pUPS, 3, InitMasses);
         ee2XLcEvent.Generate();
@@ -74,6 +75,10 @@ void PhaseSpace()
         if(scalprod < 0) dphi = 2*TMath::Pi()-dphi;
         
         ppi = P_pi.Vect().Mag();
+        
+        
+        hlc = -cos(heli(P_L, pUPS,  P_Lc));
+        hl = -cos(heli(P_p, P_Lc,  P_L));
         
         tree -> Fill();
     }
@@ -103,7 +108,7 @@ void AngDist()
     fmain.SetParameters(alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c));
     
     
-    for (Int_t n=0;n<1e6;n++) 
+    for (Int_t n=0;n<1e7;n++) 
     {
 
         fmain.GetRandom3(dphi,hl,hlc);
@@ -140,4 +145,10 @@ TLorentzVector boostT( TLorentzVector p, TLorentzVector p_boost)
     TLorentzVector tmp = p;
     tmp.Boost(-p_boost.BoostVector());
     return tmp;
+}
+
+
+double heli (  TLorentzVector   P4A, TLorentzVector  P4B, TLorentzVector P4system) // return angle btw P4A and P4B in P4system rest frame
+{
+        return (boostT(P4A, P4system).Vect()).Angle(boostT(P4B, P4system).Vect());
 }

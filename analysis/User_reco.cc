@@ -397,7 +397,7 @@ namespace Belle {
                 //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, anghl = -10, anghlc = -10, cosW = -10, angchi = -10, 
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
                 pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000;
         
                 if (tag==1)
@@ -453,7 +453,7 @@ namespace Belle {
                     HepLorentzVector p_lamc;
                     if (lcch==1 || lcch==2 || lcch==5) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
-                    anghlc = heli(LamC.child(0).p(),pUPS,p_lamc); //-cos(heli(LamC.child(0).p(),pUPS,p_lamc))
+                    hlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc)); 
                     
                     
                     //lam heli
@@ -471,7 +471,7 @@ namespace Belle {
                             p_proton_from_lam=LamC.child(0).child(1).p();
                             p_pi_from_lam=LamC.child(0).child(0).p();
                         }
-                        anghl  = heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()); //-cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()))
+                        hl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p())); 
                         
                         Hep3Vector norm_lam_c, norm_lam;
                         norm_lam_c = (boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
@@ -509,6 +509,7 @@ namespace Belle {
                         norm_W = norm_W*(1./norm_W.mag());
             
                         angchi = norm_lambda.angle(norm_W);
+                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = 2*3.14159265359-angchi;
                     }
                     
                     //Lam_c 2nd daughter's momentum
@@ -531,8 +532,8 @@ namespace Belle {
                     t1 -> column("lcch",lcch);
                     t1 -> column("ml", mL);
                     t1 -> column("mlc", mLc);
-                    t1->column("hl", anghl);
-                    t1 -> column("hlc", anghlc);
+                    t1->column("hl", hl);
+                    t1 -> column("hlc", hlc);
                 
                     t1 -> column("q", qW);
                     t1->column("hw",cosW);
@@ -565,8 +566,8 @@ namespace Belle {
                     t1 -> column("lcch",lcch);
                     t1 -> column("ml", mL);
                     t1 -> column("mlc", mLc);
-                    t1->column("hl", anghl);
-                    t1 -> column("hlc", anghlc);
+                    t1->column("hl", hl);
+                    t1 -> column("hlc", hlc);
                 
                     t1 -> column("q", qW);
                     t1->column("hw",cosW);
@@ -600,7 +601,7 @@ namespace Belle {
             {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
-                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, anghl = -10, anghlc = -10, cosW = -10, angchi = -10, 
+                double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
                        pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000;
         
                 if (tag==1)
@@ -657,7 +658,7 @@ namespace Belle {
                     HepLorentzVector p_lamc;
                     if (lcch==1 || lcch==2 || lcch==5) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
-                    anghlc = heli(LamC.child(0).p(),pUPS,p_lamc); //-cos(heli(LamC.child(0).p(),pUPS,p_lamc))
+                    hlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc)); 
                     
                     
                     //lam heli and dphi_lamc_lam
@@ -675,7 +676,7 @@ namespace Belle {
                             p_proton_from_lam=LamC.child(0).child(1).p();
                             p_pi_from_lam=LamC.child(0).child(0).p();
                         }
-                        anghl  = heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()); //-cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()))
+                        hl  = -cos(heli(p_proton_from_lam, p_lamc,  LamC.child(0).p()));
                         
                         Hep3Vector norm_lam_c, norm_lam;
                         norm_lam_c = (boostT(LamC.child(0).p(), p_lamc).vect()).cross(boostT(pUPS, p_lamc).vect());
@@ -713,6 +714,7 @@ namespace Belle {
                         norm_W = norm_W*(1./norm_W.mag());
             
                         angchi = norm_lambda.angle(norm_W);
+                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = 2*3.14159265359-angchi;
                     }
                     
                     //Lam_c 2nd daughter's momentum
@@ -735,8 +737,8 @@ namespace Belle {
                     t1 -> column("lcch",lcch);
                     t1 -> column("ml", mL);
                     t1 -> column("mlc", mLc);
-                    t1->column("hl", anghl);
-                    t1 -> column("hlc", anghlc);
+                    t1->column("hl", hl);
+                    t1 -> column("hlc", hlc);
                 
                     t1 -> column("q", qW);
                     t1->column("hw",cosW);
@@ -769,8 +771,8 @@ namespace Belle {
                     t1 -> column("lcch",lcch);
                     t1 -> column("ml", mL);
                     t1 -> column("mlc", mLc);
-                    t1->column("hl", anghl);
-                    t1 -> column("hlc", anghlc);
+                    t1->column("hl", hl);
+                    t1 -> column("hlc", hlc);
                 
                     t1 -> column("q", qW);
                     t1->column("hw",cosW);
