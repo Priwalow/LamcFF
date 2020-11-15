@@ -5,3 +5,7 @@ run=$2
 run1=$3                                                                                                                                                                                               
 
 check_process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=Any&dt=Any&bl=caseB&dv=zfserv" > mc_mdst_files.txt
+for line in ./mc_mdst_files.txt
+do 
+    echo line
+done
