@@ -48,10 +48,11 @@ void PhaseSpace()
     
     TGenPhaseSpace ee2XLcEvent, LcDecEvent, LDecEvent;
     TLorentzVector P_Lc, P_L, P_p, P_pi;
+    ee2XLcEvent.SetDecay(pUPS, 3, InitMasses);
     
-    for (Int_t n=0;n<1e7;n++) 
+    for (Int_t n=0;n<1e8;n++) 
     {
-        ee2XLcEvent.SetDecay(pUPS, 3, InitMasses);
+        
         ee2XLcEvent.Generate();
         
         P_Lc = *ee2XLcEvent.GetDecay(0);
@@ -108,7 +109,7 @@ void AngDist()
     fmain.SetParameters(alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c));
     
     
-    for (Int_t n=0;n<1e7;n++) 
+    for (Int_t n=0;n<1e8;n++) 
     {
 
         fmain.GetRandom3(dphi,hl,hlc);
@@ -120,7 +121,7 @@ void AngDist()
     f->Close();
     
     
-    TChain* ch1dat = new TChain("h1");
+    /*TChain* ch1dat = new TChain("h1");
     ch1dat -> Add("ToyLc3bDecay.root");
     
     double lend=-1, rend=1; //lend=2.21, rend=2.36
@@ -136,7 +137,7 @@ void AngDist()
     fitResult = hmain -> Fit("fdat","L S M N","goff");
     double chisq = fdat->GetChisquare(), ndf = fdat->GetNDF(); 
     cout << "ChiSquare / ndf: " << chisq << " / " << ndf << " = " << chisq/ndf << "; Prob = " << fdat -> GetProb()<<  endl;
-    
+    */
 }
 
 

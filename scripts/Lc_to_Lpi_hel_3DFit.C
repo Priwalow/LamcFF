@@ -22,16 +22,16 @@
     
     double Ntot, Nsig, dNsig, Nbkg, dNbkg;
     TCut totCUT = "lcch==1 && abs(mlc-2.28646)<0.02 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
-    Ntot = ch1dat -> Draw("-cos(hlc):-cos(hl):philclam>>hmain",totCUT,"goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && pvis<0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)<0.05 && abs(rmvis)<0.1
+    Ntot = ch1dat -> Draw("hlc:hl:philclam>>hmain",totCUT,"goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && pvis<0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)<0.05 && abs(rmvis)<0.1
     
     
     TH2D* hlcl = new TH2D("hlcl","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend,Nbins,lend,rend);
     TH2D* hlcphi = new TH2D("hlcphi","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend);
     TH2D* hlphi = new TH2D("hlphi","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend);
   
-    ch1dat -> Draw("-cos(hlc):-cos(hl)>>hlcl",totCUT,"goff");
-    ch1dat -> Draw("-cos(hlc):philclam>>hlcphi",totCUT,"goff");
-    ch1dat -> Draw("-cos(hl):philclam>>hlphi",totCUT,"goff");
+    ch1dat -> Draw("hlc:hl>>hlcl",totCUT,"goff");
+    ch1dat -> Draw("hlc:philclam>>hlcphi",totCUT,"goff");
+    ch1dat -> Draw("hl:philclam>>hlphi",totCUT,"goff");
 
     
     TF3* fmain = new TF3("fmain",Form("[0]*(1+%lf*y+[1]*(z*(%lf+%lf*y)-sqrt((1-y*y)*(1-z*z))*%lf*cos([2]+x)))",
