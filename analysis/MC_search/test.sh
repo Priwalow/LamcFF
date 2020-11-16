@@ -8,5 +8,5 @@ check_process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${
 
 while read i
 do 
-    echo `expr match "$i" '\</*.mdst\>'`
+    echo `expr "$i" : '\(.......\)'`
 done < mc_files.txt
