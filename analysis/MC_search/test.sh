@@ -10,5 +10,5 @@ while read i
 do
     
     eval fn=$(echo "$i" | cut -d ' ' -f 2)
-    bbsview $fn 
+    echo $fn 
 done < mc_files.txt
