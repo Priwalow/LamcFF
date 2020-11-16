@@ -1,0 +1,215 @@
+LIST
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Debug flags
+C
+C DEBU IDEMIN IDEMAX ITEST
+C DEBU     -1  99999     1 (gx)
+DEBU 0 0 0 (main)
+C
+C SWITCH: see ../doc/SWITCHES. 8=1 when gx
+C ISWITCH(3) for debugging. turned off (10/1/98)
+SWIT 1 3 0 0 0 0 1 0
+C
+OPTI 2
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Number of events to be simulated
+C
+TRIGGER 2
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Cut off values used in GEANT.
+C    CUTGAM CUTELE CUTNEU  CUTHAD  CUTMUO   BCUTE   BCUTM
+CUTS 0.0001 0.0001   0.01   0.001   0.001  0.0001  0.0001
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Vertex smearing according to the gaussian distribution for IKINE=0, 1.
+C
+C     Vx_mean Vy_mean Vz_mean   Sigma_Vx  Sigma_Vy  Sigma_Vz  (unit: cm)
+C VRTX  0.0     0.0     0.0      110.0E-04  15.0E-04   0.6
+VRTX  0.0     0.0     0.0      100.0E-04   5.0E-04   0.37
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Selection of event generator.
+C
+C Format: KINE (IKINE) (PKINE(1)) ..... (PKINE(10))
+C
+KINE 3
+C KINE 0
+C
+C IKINE =   0 ... LUND
+C       =   1 ... Particle generation according to PKINE
+C       =   3 ... External data file (separate generator)
+C       =  10 ... LUND or external data file + Beam background (BELLE note 90)
+C ----------------------------------
+C IKINE = 1
+C       PKINE( 1) = PID (HEPEVT particle code)
+C       PKINE( 2) = Selection flag for generation of Pt (=1) or P (=2)
+C       PKINE( 3) = Pt_min (PKINE(2)=1) or P_min (PKINE(2)=2)  (unit: GeV/c)
+C       PKINE( 4) = Pt_max (PKINE(2)=1) or P_max (PKINE(2)=2)  (unit: GeV/c)
+C       PKINE( 5) = Theta_min (unit: degree)
+C       PKINE( 6) = Theta_max (unit: degree)
+C       PKINE( 7) = Phi_min (unit: degree)
+C       PKINE( 8) = Phi_max (unit: degree)
+C       PKINE( 9) = Number of particles
+C       PKINE(10) = P_max (unit: GeV/c) ... valid only when PKINE(2)=1
+C
+C  Momentum and phi are distributed uniformely in specified range.
+C  Theta is distributed uniformely in cos(theta_min)-cos(theta_max) range.
+C
+C       HEPEVT particle code (antiparticle = -particle: e.g. positron = -11)
+C         11 = electron     211 = pi +         
+C         13 = mu -         130 = K 0 long
+C         22 = gamma        321 = K +
+C        111 = pi 0         310 = K 0 short
+C       2212 = proton 
+C          .....              .....
+C
+C
+C Example: Single pi+ with  0 < Pt < 100 MeV/c (Pmax=1.0 GeV/c),
+C                          17 < theta < 150 degree,
+C                           0 < phi < 360 degree
+C KINE 1  211. 1. 0. 0.1 17. 150. 0. 360. 1. 1.
+C
+C ----------------------------------
+C IKINE = 10
+C    Beam background generator is used together with another event generator.
+C       PKINE(1) = IKINE of another generator (only =3 is acceptable now; =1
+C                   is not acceptable).
+C                   < 0: beam background generator only.
+C       PKINE(2) = dummy
+C       PKINE(3) = Weight of positron Bremsstrahlung background rate.
+C       PKINE(4) = Weight of positron Comptonscattering backgound rate.
+C       PKINE(5) = Weight of electron Bremsstrahlung background rate.
+C       PKINE(6) = Weight of electron Comptonscattering backgound rate.
+C       PKINE(7) = Weight of positron Plain beam (10 particles per 1 ms)
+C       PKINE(8) = Weight of electron Plain beam (10 particles per 1 ms)
+C       PKINR(9) = Min. of time window (unit usec)
+C       PKINR(10)= Max. of time window (unit usec) 
+C
+C       Unit of PKINE(3-6) = nominal rate.
+C
+C At least -20 to 2.5usec wide time window is needed for SVD sim.
+C At least -11 to 1.0usec wide time window is needed for CDC sim. 
+C
+C Example: External file + LER Bremsstralung      (x10)
+C                        + HER Coulomb scattering (x 0)
+C                        + HER Bremsstralung      (x 1)
+C                        + HER Coulomb scattering (x 1)
+C                        (Time window = -20 to 2.5 micro-sec)
+C KINE 10 3. 0. 10. 0. 1. 1. 0. 0. -20. 2.5 
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C
+C Hadronic interaction package
+C HADR 4 is Fluka
+C HADR 1 is probably Gheisha (Was the default)
+C HADR 0 is none
+C
+HADR 4
+C
+C Detector configuration.
+C   0 ... turn off
+C   1 ... turn on
+C
+SVD 1 (geometry) 1 (Hit record)
+CDC 1 (geometry) 1 (Hit record)
+ECL 1 (geometry) 1 (Hit record)
+EFC 1 (geometry) 1 (Hit record)
+ACC 1 (geometry) 1 (Hit record)
+TOF 1 (geometry) 1 (Hit record)
+KLM 1 (geometry) 1 (Hit record)
+C
+BP  1 (Beam pipe)
+CRY 1 (Cryostat)
+MAG 1 (Coil)
+TRG 0 (Trigger Hit record)
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Magnetic field id in tracking volume (mag_field_id). The B-field in KLM is 
+C defined separately except for mag_field_id=0 case.
+C = 0: no B-field in entire Belle;
+C = 1: (Bx,By,Bz)=(0, 0, 1.50T) in tracking volume;
+C = 2: (Bx,By,Bz)=(0, 0, 1.45T);
+C = 3: (Bx,By,Bz)=(0, 0, 1.40T);
+C = 4: (Bx,By,Bz)=(0, 0, 1.30T);
+C = 5: (Bx,By,Bz)=(0, 0, 1.25T);
+C = 6: (Bx,By,Bz)=(0, 0, 1.20T);
+C = 7: (Bx,By,Bz)=(0, 0, 1.10T);
+C = 8: (Bx,By,Bz)=(0, 0, 1.00T);
+C = 9: (Bx,By,Bz)=(0, 0, 1.55T);
+C
+C =20: non-uniform B-field.
+C      Solenoid Bz=1.5T; w/Q-magnets on, w/anti-solenoids on;
+C      phi-component is not included.
+C =21: non-uniform B-field. 
+C      Solenoid Bz=1.5T; w/Q-magnets on, w/anti-solenoids on;
+C      phi-component is included.
+C =29: non-uniform B-field.
+C      Solenoid Bz=1.5T; w/Q-magnets off, w/anti-solenoids off.
+C
+C BFLD  1
+C BFLD 20
+BFLD 21
+C
+C Option for Experimental number
+C For SVD
+C  EXPN <= 3  : for SVD1.0
+C  EXPN = 5,7 : for SVD1.2
+C  EXPN >= 9   : for SVD1.4
+C For CDC
+C  EXPN <= 5 : "RSCL", "TANL" is not valid
+C       >= 7 : "RSCL" and "TANL" is valid
+EXPN 21
+C
+C Set run number (format "RUNG IDRUN IDEV")
+C   Run#  = 0 : for run-independence MC
+C   Run# != 0 : for run-dependent MC    
+RUNG 0 1
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Options for GSIM-CDC.
+C Suppress inward-going tracks (default off: CSTP=0)
+C CSTP 1
+C
+C # max hits/particle allowed in CDC (default: MXHT=1000)
+C MXHT 1000
+C
+C Output in raw data format (default off: RCDC=0)
+C RCDC 1
+C
+C Simulate effect of sense-wire sag (default on: WSAG=1)
+WSAG 1
+C
+C X-T function (=2:non-linear; otherwise: linear)
+XTFN 2
+C
+C CDC Spatial Resolution (0:constant 130 microns, 1:d.d dependent)
+C
+CRES 1
+C
+C Resolution Scaling Factor.
+C
+RSC2 1.0
+C
+C tan(lambda) dependence of CDC resol. (=1:on; =0:off)
+C
+TANL 1
+C
+C TOF between IP and wire(0:off, 1:on). Note: valid if RCDC=1
+C
+C CTOF 1
+C
+C Prop. delay (0:off, 1:on).  Note: valid if RCDC =1
+C
+C PDLY 1
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C Random number seeds.
+C
+RNDM  9876  54321
+C
+C =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+C
+TIME 20000 0 0       (TIME LEFT FOR UGLAST)
+END

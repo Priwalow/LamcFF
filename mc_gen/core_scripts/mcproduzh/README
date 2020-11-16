@@ -1,0 +1,17 @@
+
+
+This is a package for run-independent MC production.
+
+For Upsilon(4S), the exp-dependent values of beam energies are used in EvtGen,
+and corresponding exp-dependent simulations can be done.
+
+For Upsilon(5S), a fixed value of beam energy is used in EvtGen,
+and exp-dependent simulation can be done by adding files and lines
+in gsim/basf, gsim/gsim, and gsim/.addbgrc.
+
+Please go to evtgen directory first, and see README file.
+After the event generations, go to gsim directory and see README file.
+
+The base is made by Y. Ushiroda and A. Zupanc.
+
+Y. Horii (Tohoku Univ.)

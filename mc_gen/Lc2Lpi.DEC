@@ -1,0 +1,17 @@
+#   Lambda_c+->Lambda pi+
+#               |   
+#               |->p pi-
+#   + charge conj
+#
+Alias      myLambda0            Lambda0
+Alias      myLambda_c+          Lambda_c+
+#
+Decay  myLambda_c+
+1.000   myLambda0     pi+          PHOTOS PHSP;
+Enddecay
+#
+Decay myLambda0
+1.000    p+  pi-                 PHOTOS PHSP;
+Enddecay
+#
+End 

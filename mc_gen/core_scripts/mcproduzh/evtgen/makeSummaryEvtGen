@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# the original author of this script is Jacek Stypula
+
+# modified by A. Zupanc
+
+##########################################################
+#                                                        #
+#                       GNU ecount                       #
+#                                                        #
+#           author: dex <dex@belle2.ifj.edu.pl>          #
+#                                                        #
+##########################################################
+
+ver=1.2
+num=5
+
+title="event counter $ver"
+pname="ecount"
+
+
+#--- DIRs
+scripthome='/bwf/g73home/stypula/script'
+place=`dirname $0`
+
+. ${scripthome}/updates
+
+if [ $# -eq 0 ]; then
+cat << EOF
+_______________________________________________________________
+ $title 
+
+ usage: ecount [-MC] logfile1 logfile2 ...
+
+ examples:  ecount mix*.log
+            ecount -MC b0_fkst*.log
+
+ use -MC option to count output events from user MC production
+
+EOF
+exit
+fi
+
+echo "--------------------------------------------------------"
+echo ""
+echo "         *** Summary of EvtGen MC production ***"
+echo ""
+echo "           FILE (job)           | No. of INPUT events   "
+echo "--------------------------------------------------------"
+event=0
+while [ $# -gt 0 ]
+	do
+		exp=$(echo $1 | awk -F '_' '{print $3}')
+		grep -A 15 "BASF Execution Statistics" $1 > ecount.temp
+		ile=$(grep -c "BASF Execution Statistics" ecount.temp)
+		if [ $ile -eq 0 ]; then
+			echo
+			echo WARNING: There is NO BASF Execution Statistics table in $1!
+		else
+			abc=$(grep "evtgen.*[|].*[|]" ecount.temp | awk '{print $6}' | tail -1)
+			xyz=$(echo $abc)
+			event=$[event+xyz]
+			echo $1" " $xyz | awk '{print $1"\t| "$2}'
+		fi
+		shift
+	rm ecount.temp
+done
+echo "--------------------------------------------------------"
+echo "Sum "$event | awk '{print ""$1 "\t\t\t\t| " $2}'
+echo "--------------------------------------------------------"

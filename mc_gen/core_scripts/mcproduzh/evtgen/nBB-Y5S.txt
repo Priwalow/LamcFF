@@ -1,0 +1,6 @@
+# you can use # to comment individual input lines
+#43 1.857
+53 21.513
+67 27.222
+69 47.83
+71 22.938

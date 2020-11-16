@@ -1,0 +1,9 @@
+#!/bin/bash
+scp mdst/evtgen_exp_19a_B0_D0pi0-0.mdst seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_19b_B0_D0pi0-0.mdst seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_21_B0_D0pi0-0.mdst seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_23_B0_D0pi0-0.mdst seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_25_B0_D0pi0-0.mdst seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_25_B0_D0pi0-0.mdst-1 seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_27_B0_D0pi0-0.mdst seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0
+scp mdst/evtgen_exp_27_B0_D0pi0-0.md seviorpc.ph.unimelb.edu.au:belle/B0_d0pi0st-1

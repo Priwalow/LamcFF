@@ -1,0 +1,50 @@
+path add_module main ProcessHeader
+path add_module main cdctable genunpak
+path add_module main bpsmear gsim acc_mc calsvd addbg
+path add_module main tof_datT0TS tsimtof calcdc l4 evtime l0svd tsimsvd
+path add_module main reccdc recsvd
+path add_module main trasan TOFt0 trak trkmgr AnadEdx ext
+path add_module main rectof rececl_cf rececl_match rececl_gamma rececl_pi0
+path add_module main rec_acc muid_set muid_dec klid efcclust
+path add_module main v0finder rec2mdst evtvtx evtcls
+
+# QAMs
+#path add_module main table_list
+#path add_module main l0chk4mdst sakura
+#path add_module main qam qam_svd2 qam_cdc qam_ecl qam_tof qam_acc qam_klm
+#path add_module main AnadEdx_data_mon kid_mon eid_mon mumu_mon svd2_me_mon acc_center_mon
+#path add_module main QEDMon HadronMon hodaka
+
+module put_parameter gsim GSIM_INPUT\./gsim/gsim.55.dat
+
+#<-- lum. dependent addbg
+module put_parameter addbg LUMDEP\1
+#<-- the below 2 lines are for random read mode (both should be set)
+module put_parameter addbg SEQRD\0
+module put_parameter addbg RANRD\1
+
+module put_parameter bpsmear ip_nominal_x\0.047777 
+module put_parameter bpsmear ip_nominal_y\0.007255 
+module put_parameter bpsmear ip_nominal_z\-0.005117 
+
+module put_parameter bpsmear sigma_ip_x\0.007138 
+module put_parameter bpsmear sigma_ip_y\0.0004813 
+module put_parameter bpsmear sigma_ip_z\0.3189  
+
+module put_parameter evtcls classification_level\0
+module put_parameter l4 debug\0
+
+initialize
+
+# you can save other tables as you want
+table save mdst_all
+table save evtcls_all
+table save evtvtx_all
+table save gsim_rand
+table save hepevt_all
+table save mctype
+table save level4_all
+
+table save bgtbl_info
+table save dattof_trgl0
+table save reccdc_timing
