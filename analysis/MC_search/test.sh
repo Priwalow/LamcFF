@@ -7,4 +7,4 @@ run1=$3
 while read line;
 do 
     echo line
-done < (check_process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=Any&dt=Any&bl=caseB&dv=zfserv")
+done < $(check_process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=Any&dt=Any&bl=caseB&dv=zfserv")
