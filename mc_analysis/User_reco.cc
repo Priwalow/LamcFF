@@ -82,7 +82,7 @@ namespace Belle {
             if (abs (id)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
                 /// lam_c is found!
-                cout << "Lambda_c+ is founf is GEN_HEPEVT!!!"<< endl;
+                cout << "Lambda_c+ is found in GEN_HEPEVT!!!"<< endl;
                 break;                                                                          
             }
         }
