@@ -57,7 +57,7 @@ path add_condition main <:0:KILL
 initialize
 
 
-histogram define  ./hbk/${exp}.${run}.${run1}.h
+histogram define hbk/${exp}.${run}.${run1}.h
 
 process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-charm&dt=Any&bl=caseB&dv=zfserv"
 
@@ -70,4 +70,4 @@ EOF
 echo terminate
 
 ) |basf >  ./log/${exp}.${run}.${run1} 2>&1
-
+#gzip -9 hbk/${exp}.${run}.${run1}.h

@@ -70,7 +70,27 @@ namespace Belle {
         }
         std::cout << "INITIALIZING!" << std::endl;
         
+        //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
+        Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();                    
+
+        for (evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
+        {              
+
+            int id=evt->idhep();                                                   
+
+            if (abs (id)==4122) // Lamc=4122   anti-Lamc=-4122  
+            {
+                /// lam_c is found!
+                cout << "Lambda_c+ is founf is GEN_HEPEVT!!!"<< endl;
+                break;                                                                          
+            }
+        }
+        
+        
+        
+        //------------------------EXPERIMENTAL DATA ANALYSIS-----------------------------
+        //--------------------------------------------------------------------------------
         //------------------------MAKE PARTICLE LISTINGS----------------------------------
         //protons
         std::vector<Particle> p_p, p_m; 
