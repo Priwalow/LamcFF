@@ -74,7 +74,7 @@ namespace Belle {
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();                    
 
-        for (evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
+        for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
 
             int id=evt->idhep();                                                   
