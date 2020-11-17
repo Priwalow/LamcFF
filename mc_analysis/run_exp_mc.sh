@@ -24,8 +24,8 @@ for ((j=0; j<10; j++)) do
 
 if [ `./check_MC.sh  $exp $i $j` -ne "0" ] 
 then
-echo bsub -q $qtype ./run_mdst_mc.sh $exp ${i} ${j}
-#bsub -q $qtype ./data.sh $exp ${i} ${j}
+#echo bsub -q $qtype ./run_mdst_mc.sh $exp ${i} ${j}
+bsub -q $qtype ./run_mdst_mc $exp ${i} ${j}
 fi
 done
 done
