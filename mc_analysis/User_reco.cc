@@ -79,14 +79,34 @@ namespace Belle {
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
-            int id=evt->idhep();                                                   
+            int idHEP = evt->idhep(), id = evt -> id(), daid1=-1, daid2=-1, daid3=-1;
             
-            if (abs (id)==4122) // Lamc=4122   anti-Lamc=-4122  
+            if (abs(idHEP)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
                 /// lam_c is found!
                 mc_LamC = Particle(*evt);
-                cout << "1st daughter: " << mc_LamC.child(0).mass() << "2nd daughter: " << mc_LamC.child(0).mass() << endl;
                 lam_c_gen++; 
+                daid1 = evt -> da(0);
+                daid2 = evt -> da(1);
+                daid3 = evt -> da(2);
+            }
+            
+            if(id == daid1) //Lam = 3122, anti-Lam = -3122
+            {
+                mc_lam = Particle(*evt);
+                cout << mc_lam.mass() << endl;
+            }
+            
+            if(id == daid2) //Lam = 3122, anti-Lam = -3122
+            {
+                mc_lam = Particle(*evt);
+                cout << mc_lam.mass() << endl;
+            }
+            
+            if(id == daid3) //Lam = 3122, anti-Lam = -3122
+            {
+                mc_lam = Particle(*evt);
+                cout << mc_lam.mass() << endl;
             }
         }
         if (lam_c_gen==0) return;
