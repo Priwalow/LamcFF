@@ -72,7 +72,7 @@ namespace Belle {
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
-        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, lamc_daid1=-1, nlamc_daughters=-1, lam_daid2=-1, mc_lcch = -1;
+        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, nlamc_daughters=-1, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
         
         Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
@@ -143,7 +143,7 @@ namespace Belle {
         if(pinlam && piinlam && lam_daid2-lam_daid1+1==2) lamhere =1;
         
         if(lamhere && ((pihere && !pi0here && !muhere && !numuhere && !ehere && !nuehere && nlamc_daughters==2) 
-            || (pihere && pi0here && !muhere && !numuhere && !ehere && !nuehere && nlamc_daughters==3) ||
+            || (pihere && pi0here && !muhere && !numuhere && !ehere && !nuehere && nlamc_daughters==3)
             || (!pi0here && !pihere && muhere && numuhere && !ehere && !nuehere && nlamc_daughters==3) 
             || (!pi0here && !pihere && ehere && nuehere && !muhere && !numuhere && nlamc_daughters==3)))
         {
