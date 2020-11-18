@@ -85,7 +85,7 @@ namespace Belle {
             {
                 /// lam_c is found!
                 mc_LamC = Particle(*evt);
-                cout << "1st daughter: " << mc_LamC.child(0).lund() << "2nd daughter: " << mc_LamC.child(0).lund() << endl;
+                cout << "1st daughter: " << mc_LamC.child(0).mass() << "2nd daughter: " << mc_LamC.child(0).mass() << endl;
                 lam_c_gen++; 
             }
         }
