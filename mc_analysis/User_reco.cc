@@ -72,7 +72,7 @@ namespace Belle {
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
-        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
+        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, lamc_daid1=-1, nlamc_daughters=-1, lam_daid2=-1, mc_lcch = -1;
         
         Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
@@ -82,16 +82,13 @@ namespace Belle {
         {              
             idHEP = evt->idhep();
             
-            if (abs(idHEP)==4122) // Lamc=4122   anti-Lamc=-4122  
+            if (abs(idHEP)==4122 && lam_c_gen==0) // Lamc=4122   anti-Lamc=-4122  
             {
                 /// lam_c is found! 
-                if(lam_c_gen==0) 
-                {
-                    idlamc = id;
-                    mc_LamC = Particle(*evt);
-                }
-                lam_c_gen++; 
-                
+                lam_c_gen++;
+                idlamc = id;
+                mc_LamC = Particle(*evt);
+                nlamc_daughters = evt -> da(1) - evt -> da(0)+1;
             }
             
             if(evt->mo(0) == idlamc)
@@ -143,30 +140,32 @@ namespace Belle {
         }
         if (lam_c_gen==0) return;
         
-        if(pinlam && piinlam) lamhere =1;
+        if(pinlam && piinlam && lam_daid2-lam_daid1+1==2) lamhere =1;
         
-        if(lamhere && ((pihere && !muhere && !numuhere && !ehere && !nuehere) ||  (!pi0here && !pihere && muhere && numuhere && !ehere && !nuehere) 
-            || (!pi0here && !pihere && ehere && nuehere && !muhere && !numuhere)))
+        if(lamhere && ((pihere && !pi0here && !muhere && !numuhere && !ehere && !nuehere && nlamc_daughters==2) 
+            || (pihere && pi0here && !muhere && !numuhere && !ehere && !nuehere && nlamc_daughters==3) ||
+            || (!pi0here && !pihere && muhere && numuhere && !ehere && !nuehere && nlamc_daughters==3) 
+            || (!pi0here && !pihere && ehere && nuehere && !muhere && !numuhere && nlamc_daughters==3)))
         {
-            if(pihere && !muhere && !numuhere && !ehere && !nuehere && !pi0here) 
+            if(pihere && !muhere && !numuhere && !ehere && !nuehere && !pi0here && nlamc_daughters==2) 
             {   
                 mc_lcch=1; 
                 cout << "Lambda pi mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()).mag() << endl;
             }
-            if(pihere && !muhere && !numuhere && !ehere && !nuehere && pi0here) 
+            if(pihere && !muhere && !numuhere && !ehere && !nuehere && pi0here && nlamc_daughters==3) 
             {
                 mc_lcch=2; 
                 cout << "Lambda pi pi0 mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; m_pi0 = "<< mc_pi0.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()+mc_pi0.p()).mag() << endl;
             }
-            if(!pihere && !pi0here && ehere && nuehere && !muhere && !numuhere) 
+            if(!pihere && !pi0here && ehere && nuehere && !muhere && !numuhere && nlamc_daughters==3) 
             {
                 mc_lcch=3;
                 cout << "Lambda e nu_e mode: m_Lambda = " << mc_lam.mass() << "; m_e = " << mc_e.mass() << "; m_nue = "<< mc_nue.mass() << "; Minv = " << (mc_lam.p()+mc_e.p()+mc_nue.p()).mag() << endl;
             }
-            if(!pihere && !pi0here && muhere && numuhere && !ehere && !nuehere) 
+            if(!pihere && !pi0here && muhere && numuhere && !ehere && !nuehere && nlamc_daughters==3) 
             {
                 mc_lcch=4;
-                cout << "Lambda e nu_e mode: m_Lambda = " << mc_lam.mass() << "; m_mu = " << mc_mu.mass() << "; m_numu = "<< mc_numu.mass() << "; Minv = " << (mc_lam.p()+mc_mu.p()+mc_numu.p()).mag() << endl;
+                cout << "Lambda mu nu_mu mode: m_Lambda = " << mc_lam.mass() << "; m_mu = " << mc_mu.mass() << "; m_numu = "<< mc_numu.mass() << "; Minv = " << (mc_lam.p()+mc_mu.p()+mc_numu.p()).mag() << endl;
             }
         }
         else return;
