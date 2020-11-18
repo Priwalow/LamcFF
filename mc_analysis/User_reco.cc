@@ -68,7 +68,7 @@ namespace Belle {
             fox = (*iti).R2();
             //       ntrk = (*iti).Ntrk();
         }
-        std::cout << "INITIALIZING!" << std::endl;
+        //std::cout << "INITIALIZING!" << std::endl;
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
@@ -90,7 +90,7 @@ namespace Belle {
         
         nlamc_gen+=lam_c_gen;
         
-        if(!(nevent%1000)) cout << "total Lambda_c generated: " << nlamc_gen << "; total Lambda_c reconstructed (including semileptonic mode)" << nlamc_rec << endl;
+        if(!(nevent%1000)) cout << "total Lambda_c generated: " << nlamc_gen << "; total Lambda_c reconstructed (including semileptonic mode): " << nlamc_rec << endl;
         
         
         
