@@ -37,7 +37,7 @@ namespace Belle {
     
     void User_reco::event ( BelleEvent* evptr, int* status )
     {
-        static int nevent=0,skimmed=0,skimmedPi0=0, skimmed2=0, skimmed3=0, skimmed4=0;
+        static int nevent=0, nlamc_gen=0, nlamc_rec=0;
         nevent++;
         
         
@@ -74,22 +74,23 @@ namespace Belle {
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();                    
 
+        int lam_c_gen = 0, lam_c_rec=0;
+        
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
-
             int id=evt->idhep();                                                   
-            int did1 = evt -> da(0), did2 = evt -> da(1), did3 = evt -> da(2);
             
             if (abs (id)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
                 /// lam_c is found!
-                cout << "Lambda_c+ is found in GEN_HEPEVT!!!"<< endl;
-                cout << "Daughters: " << did1 << "  " << did2 << "  " << did3 << endl;
-                break;                                                                          
+                lam_c_gen++; 
             }
         }
+        if (lam_c_gen==0) return;
         
+        nlamc_gen+=lam_c_gen;
         
+        cout << "Number of lambda_c generated: " << lam_c_gen << endl;
         
         //------------------------EXPERIMENTAL DATA ANALYSIS-----------------------------
         //--------------------------------------------------------------------------------
@@ -457,8 +458,12 @@ namespace Belle {
 
                 if (Lcb.size()>0) for(std::vector<Particle>::iterator l=Lcb.begin(); l!=Lcb.end();++l)
                 {
+                    
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
+                    
+                    lam_c_rec++;
+                    
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     Mvis = (momentum+LamC.p()).mag();
@@ -670,6 +675,8 @@ namespace Belle {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
                     
+                    lam_c_rec++;
+                    
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     Mvis = (momentum+LamC.p()).mag();
                     
@@ -825,6 +832,10 @@ namespace Belle {
             }
         }
         
+        
+        nlamc_rec+=lam_c_rec;
+        
+         if(!(nevent%1000)) cout << "total Lambda_c generated: " << nlamc_gen << "; total Lambda_c reconstructed (including semileptonic mode)" << nlamc_rec << endl;
     }
     
     void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
