@@ -72,10 +72,11 @@ namespace Belle {
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
-        Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();                    
-
         int lam_c_gen = 0, lam_c_rec=0;
         
+        Particle mc_LamC, mc_lam, mc_pi, mc_l, mc_nu;
+        
+        Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
             int id=evt->idhep();                                                   
@@ -83,9 +84,9 @@ namespace Belle {
             if (abs (id)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
                 /// lam_c is found!
+                mc_LamC = Particle(*evt);
+                cout << "1st daughter: " << mc_Lamc.child(0).idhep() << "2nd daughter: " << mc_Lamc.child(0).idhep() << endl;
                 lam_c_gen++; 
-                Particle mc_LamC=Particle(*evt);
-                cout << mc_LamC.mass() << endl; 
             }
         }
         if (lam_c_gen==0) return;
