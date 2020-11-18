@@ -72,54 +72,108 @@ namespace Belle {
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
-        int lam_c_gen = 0, lam_c_rec=0, id=1,  daid1=-1, daid2=-1, daid3=-1;
+        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
         
-        Particle mc_LamC, mc_lam, mc_pi, mc_l, mc_nu;
-        
+        Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
+        bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
-            int idHEP = evt->idhep();
+            idHEP = evt->idhep();
             
             if (abs(idHEP)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
-                /// lam_c is found!
-                mc_LamC = Particle(*evt);
+                /// lam_c is found! 
+                if(lam_c_gen==0) 
+                {
+                    idlamc = id;
+                    mc_LamC = Particle(*evt);
+                }
                 lam_c_gen++; 
-                daid1 = evt -> da(0);
-                daid2 = evt -> da(1);
-                daid3 = evt -> da(2);
+                
             }
             
-            if(id == daid1) //Lam = 3122, anti-Lam = -3122
+            if(evt->mo(0) == idlamc)
             {
-                cout << "1st Daugher! ";
-                mc_lam = Particle(*evt);
-                cout << mc_lam.mass() << "  " << idHEP << " " << evt->mo(0) << endl;
+                switch(abs(idHEP)):
+                {
+                    case 11:
+                        mc_e = Particle(*evt);
+                        ehere = 1;
+                        break;
+                    case 12:
+                        mc_nue = Particle(*evt);
+                        nuehere = 1;
+                        break;
+                    case 13:
+                        mc_mu = Particle(*evt);
+                        muhere = 1;
+                        break;
+                    case 14:
+                        mc_numu = Particle(*evt);
+                        numuhere = 1;
+                        break;
+                    case 111:
+                        mc_pi0 = Particle(*evt);
+                        pi0here = 1;
+                        break;
+                    case 211:
+                        mc_pi = Particle(*evt);
+                        pihere = 1;
+                        break;
+                    case 3122:
+                        mc_lam = Particle(*evt);
+                        lam_daid1 = evt->da(0);
+                        lam_daid2 = evt->da(1);
+                        break;
+                    default:
+                        return;
+                }
             }
             
-            if(id == daid2) //Lam = 3122, anti-Lam = -3122
+            if(id == lam_daid1 || id == lam_daid2)
             {
-                cout << "2nd Daugher! ";
-                mc_lam = Particle(*evt);
-                cout << mc_lam.mass() << "  " << idHEP << " " << evt->mo(0) << endl;
+                if(abs(idHEP) == 2212) {pinlam = 1; mc_pfromlam = Particle(*evt);}
+                    else if(abs(idHEP) == 211) {piinlam = 1;  mc_pifromlam = Particle(*evt);}
+                            else return;
             }
-            
-            if(id == daid3) //Lam = 3122, anti-Lam = -3122
-            {
-                cout << "3rd Daugher! ";
-                mc_lam = Particle(*evt);
-                cout << mc_lam.mass() << "  " << idHEP << " " << evt->mo(0) << endl;
-            }
-            
+    
             id++;
         }
         if (lam_c_gen==0) return;
         
+        if(pinlam && piinlam) lamhere =1;
+        
+        if(lamhere && ((pihere && !muhere && !numuhere && !ehere && !nuehere) ||  (!pi0here && !pihere && muhere && numuhere && !ehere && !nuehere) 
+            || (!pi0here && !pihere && ehere && nuehere && !muhere && !numuhere)))
+        {
+            if(pihere && !muhere && !numuhere && !ehere && !nuehere && !pi0here) 
+            {   
+                mc_lcch=1; 
+                cout << "Lambda pi mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()).mag() << endl;
+            }
+            if(pihere && !muhere && !numuhere && !ehere && !nuehere && pi0here) 
+            {
+                mc_lcch=2; 
+                cout << "Lambda pi pi0 mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; m_pi0 = "<< mc_pi0.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()+mc_pi0.p()).mag() << endl;
+            }
+            if(!pihere && !pi0here && ehere && nuehere && !muhere && !numuhere) 
+            {
+                mc_lcch=3;
+                cout << "Lambda e nu_e mode: m_Lambda = " << mc_lam.mass() << "; m_e = " << mc_e.mass() << "; m_nue = "<< mc_nue.mass() << "; Minv = " << (mc_lam.p()+mc_e.p()+mc_nue.p()).mag() << endl;
+            }
+            if(!pihere && !pi0here && muhere && numuhere && !ehere && !nuehere) 
+            {
+                mc_lcch=4;
+                cout << "Lambda e nu_e mode: m_Lambda = " << mc_lam.mass() << "; m_mu = " << mc_mu.mass() << "; m_numu = "<< mc_numu.mass() << "; Minv = " << (mc_lam.p()+mc_mu.p()+mc_numu.p()).mag() << endl;
+            }
+        }
+        else return;
+        
         nlamc_gen+=lam_c_gen;
         
-        if(!(nevent%1000)) cout << "total Lambda_c generated: " << nlamc_gen << "; total Lambda_c reconstructed (including semileptonic mode): " << nlamc_rec << endl;
+        if(!(nevent%1000)) cout << "total Lambda_c generated in studied modes (1,2,3,4): " << nlamc_gen << "; total Lambda_c reconstructed: " << nlamc_rec << endl;
         
         
         
