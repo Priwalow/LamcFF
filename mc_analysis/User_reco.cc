@@ -79,7 +79,7 @@ namespace Belle {
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
-            int idHEP = evt->idhep(), id = evt -> id(), daid1=-1, daid2=-1, daid3=-1;
+            int idHEP = evt->idhep(), id = evt -> ID(), daid1=-1, daid2=-1, daid3=-1;
             
             if (abs(idHEP)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
