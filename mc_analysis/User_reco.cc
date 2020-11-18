@@ -93,18 +93,21 @@ namespace Belle {
             
             if(id == daid1) //Lam = 3122, anti-Lam = -3122
             {
+                cout << "1st Daugher! ";
                 mc_lam = Particle(*evt);
                 cout << mc_lam.mass() << endl;
             }
             
             if(id == daid2) //Lam = 3122, anti-Lam = -3122
             {
+                cout << "2nd Daugher! ";
                 mc_lam = Particle(*evt);
                 cout << mc_lam.mass() << endl;
             }
             
             if(id == daid3) //Lam = 3122, anti-Lam = -3122
             {
+                cout << "3rd Daugher! ";
                 mc_lam = Particle(*evt);
                 cout << mc_lam.mass() << endl;
             }
