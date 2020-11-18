@@ -96,7 +96,7 @@ namespace Belle {
             
             if(evt->mo(0) == idlamc)
             {
-                switch(abs(idHEP)):
+                switch(abs(idHEP))
                 {
                     case 11:
                         mc_e = Particle(*evt);
