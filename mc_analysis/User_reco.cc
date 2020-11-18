@@ -84,6 +84,8 @@ namespace Belle {
             {
                 /// lam_c is found!
                 lam_c_gen++; 
+                Particle mc_LamC=Particle(*evt);
+                cout << mc_LamC.mass() << endl; 
             }
         }
         if (lam_c_gen==0) return;
