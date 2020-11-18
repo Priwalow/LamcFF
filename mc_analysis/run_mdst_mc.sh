@@ -59,11 +59,11 @@ initialize
 
 histogram define hbk/${exp}.${run}.${run1}.h
 
-process_event "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-charm&dt=Any&bl=caseB&dv=zfserv"
+process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-charm&dt=Any&bl=caseB&dv=zfserv"
 
-process_event "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-charged&dt=Any&bl=caseB&dv=zfserv"
+process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-charged&dt=Any&bl=caseB&dv=zfserv"
 
-process_event "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-mixed&dt=Any&bl=caseB&dv=zfserv"
+process_url "http://bweb3/montecarlo.php?ex=${exp}&rs=${run}${run1}0&re=${run}${run1}9&ty=evtgen-mixed&dt=Any&bl=caseB&dv=zfserv"
 
 EOF
 

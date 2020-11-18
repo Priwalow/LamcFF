@@ -78,11 +78,13 @@ namespace Belle {
         {              
 
             int id=evt->idhep();                                                   
-
+            int did1 = evt -> da(0), did2 = evt -> da(1), did3 = evt -> da(2);
+            
             if (abs (id)==4122) // Lamc=4122   anti-Lamc=-4122  
             {
                 /// lam_c is found!
                 cout << "Lambda_c+ is found in GEN_HEPEVT!!!"<< endl;
+                cout << "Daughters: " << did1 << "  " << did2 << "  " << did3 << endl;
                 break;                                                                          
             }
         }
