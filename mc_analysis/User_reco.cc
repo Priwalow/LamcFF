@@ -90,7 +90,9 @@ namespace Belle {
         
         nlamc_gen+=lam_c_gen;
         
-        cout << "Number of lambda_c generated: " << lam_c_gen << endl;
+        if(!(nevent%1000)) cout << "total Lambda_c generated: " << nlamc_gen << "; total Lambda_c reconstructed (including semileptonic mode)" << nlamc_rec << endl;
+        
+        
         
         //------------------------EXPERIMENTAL DATA ANALYSIS-----------------------------
         //--------------------------------------------------------------------------------
@@ -831,11 +833,7 @@ namespace Belle {
                 
             }
         }
-        
-        
         nlamc_rec+=lam_c_rec;
-        
-         if(!(nevent%1000)) cout << "total Lambda_c generated: " << nlamc_gen << "; total Lambda_c reconstructed (including semileptonic mode)" << nlamc_rec << endl;
     }
     
     void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
