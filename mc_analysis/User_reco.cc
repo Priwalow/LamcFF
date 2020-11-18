@@ -89,6 +89,8 @@ namespace Belle {
                 daid1 = evt -> da(0);
                 daid2 = evt -> da(1);
                 daid3 = evt -> da(2);
+                
+                cout << evt -> da(0) << "   " << evt -> da(1) << "  " << evt -> da(2) << endl;  
             }
             
             if(id == daid1) //Lam = 3122, anti-Lam = -3122
