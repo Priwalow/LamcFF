@@ -215,7 +215,7 @@ namespace Belle {
             mc_norm_W = mc_norm_W*(1./mc_norm_W.mag());
             
             mc_angchi = mc_norm_lam.angle(mc_norm_W);
-            if(boostT(p_nu, p_lamc).vect().dot(mc_norm_lam) < 0) mc_angchi = 2*3.14159265359-mc_angchi;
+            if(boostT(mc_p_nu, mc_LamC.p()).vect().dot(mc_norm_lam) < 0) mc_angchi = 2*3.14159265359-mc_angchi;
         }
                     
         //Lam_c 2nd daughter's momentum
@@ -237,9 +237,6 @@ namespace Belle {
             default:
                 return;
         }
-        
-        mc_p_2d_from_lamc_cms=pStar(mc_P_2d_from_LamC,elec,posi).vect().mag(); 
-        mc_p_2d_from_lamc_labs=mc_P_2d_from_LamC.vect().mag();
                     
                     
         //Lam momentum in Lam_c system
@@ -260,8 +257,8 @@ namespace Belle {
         t2 -> column("plslc",boostT(mc_lam.p(), mc_LamC.p()).vect().mag());
                 
         t2 -> column("philclam",mc_dphi_lc_lam);
-        t2 -> column("lcp2dcm",mc_p_2d_from_lamc_cms);
-        t2 -> column("lcp2dlab",mc_p_2d_from_lamc_labs);
+        t2 -> column("lcp2dcm",pStar(mc_P_2d_from_LamC,elec,posi).vect().mag());
+        t2 -> column("lcp2dlab",mc_P_2d_from_LamC.vect().mag());
         
         t2 -> column("plamclab",mc_LamC.p().vect().mag());
         t2 -> column("plamccms",pStar(mc_LamC.p(),elec,posi).vect().mag() );
