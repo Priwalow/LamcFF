@@ -11,7 +11,7 @@ namespace Belle {
         
         extern BelleTupleManager* BASF_Histogram;
         t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamc" ); // ALL momenta in CMS! 
+        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
     //***********************************************************************
