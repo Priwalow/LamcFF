@@ -163,7 +163,7 @@ void MergeExp(TString DataINPUT, TString DataOUTPUT)
             TString fn = Form("%d",i);
             if(i<10) fn = "0"+fn;
             chdat.Add(DataINPUT+"/"+fn+"*.root");
-            chdat.Merge(DataOUTPUT+"/"+fn+".root");
+            chdat.Merge(DataOUTPUT+"/"+fn+".root","UPDATE");
         }
     }
 }
