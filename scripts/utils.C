@@ -157,9 +157,9 @@ void MergeExp(TString DataINPUT, TString DataOUTPUT)
     for(int j =1; j<=2; j++);
     {
         TString trn = Form("h%d",j);
-        TChain chdat(trn);
         for(int i = 7; i<=73; i+=2)
         {   
+            TChain chdat(trn);
             TString fn = Form("%d",i);
             if(i<10) fn = "0"+fn;
             chdat.Add(DataINPUT+"/"+fn+"*.root");
