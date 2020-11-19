@@ -156,7 +156,7 @@ void MergeExp(TString DataINPUT, TString DataOUTPUT)
     
     for(int j =1; j<=5; j++);
     {
-        TString trn = Form("h%d",j)
+        TString trn = Form("h%d",j);
         for(int i = 7; i<=73; i+=2)
         {   
         
