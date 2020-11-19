@@ -154,13 +154,12 @@ void LctoLpi()
 void MergeExp(TString DataINPUT, TString DataOUTPUT)
 {
     
-    for(int j =1; j<=5; j++);
+    for(int j =1; j<=2; j++);
     {
         TString trn = Form("h%d",j);
+        TChain chdat(trn);
         for(int i = 7; i<=73; i+=2)
         {   
-        
-            if(!(TChain chdat(trn))) break; 
             TString fn = Form("%d",i);
             if(i<10) fn = "0"+fn;
             chdat.Add(DataINPUT+"/"+fn+"*.root");
