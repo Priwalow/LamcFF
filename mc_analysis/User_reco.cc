@@ -261,7 +261,7 @@ namespace Belle {
         
         t2 -> column("plamclab",mc_LamC.p().vect().mag());
         t2 -> column("plamccms",pStar(mc_LamC.p(),elec,posi).vect().mag() );
-        t2->dumpData();
+        t2 -> dumpData();
         
         //***************************************************
         
