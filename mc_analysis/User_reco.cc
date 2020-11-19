@@ -10,8 +10,8 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
+        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamc" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
     //***********************************************************************
@@ -150,27 +150,124 @@ namespace Belle {
             if(pihere && !muhere && !numuhere && !ehere && !nuehere && !pi0here && nlamc_daughters==2) 
             {   
                 mc_lcch=1; 
-                cout << "Lambda pi mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()).mag() << endl;
+               // cout << "Lambda pi mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()).mag() << endl;
             }
             if(pihere && !muhere && !numuhere && !ehere && !nuehere && pi0here && nlamc_daughters==3) 
             {
                 mc_lcch=2; 
-                cout << "Lambda pi pi0 mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; m_pi0 = "<< mc_pi0.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()+mc_pi0.p()).mag() << endl;
+               // cout << "Lambda pi pi0 mode: m_Lambda = " << mc_lam.mass() << "; m_pi = " << mc_pi.mass() << "; m_pi0 = "<< mc_pi0.mass() << "; Minv = " << (mc_lam.p()+mc_pi.p()+mc_pi0.p()).mag() << endl;
             }
             if(!pihere && !pi0here && ehere && nuehere && !muhere && !numuhere && nlamc_daughters==3) 
             {
                 mc_lcch=3;
-                cout << "Lambda e nu_e mode: m_Lambda = " << mc_lam.mass() << "; m_e = " << mc_e.mass() << "; m_nue = "<< mc_nue.mass() << "; Minv = " << (mc_lam.p()+mc_e.p()+mc_nue.p()).mag() << endl;
+               // cout << "Lambda e nu_e mode: m_Lambda = " << mc_lam.mass() << "; m_e = " << mc_e.mass() << "; m_nue = "<< mc_nue.mass() << "; Minv = " << (mc_lam.p()+mc_e.p()+mc_nue.p()).mag() << endl;
             }
             if(!pihere && !pi0here && muhere && numuhere && !ehere && !nuehere && nlamc_daughters==3) 
             {
                 mc_lcch=4;
-                cout << "Lambda mu nu_mu mode: m_Lambda = " << mc_lam.mass() << "; m_mu = " << mc_mu.mass() << "; m_numu = "<< mc_numu.mass() << "; Minv = " << (mc_lam.p()+mc_mu.p()+mc_numu.p()).mag() << endl;
+               // cout << "Lambda mu nu_mu mode: m_Lambda = " << mc_lam.mass() << "; m_mu = " << mc_mu.mass() << "; m_numu = "<< mc_numu.mass() << "; Minv = " << (mc_lam.p()+mc_mu.p()+mc_numu.p()).mag() << endl;
             }
         }
         else return;
         
         nlamc_gen+=lam_c_gen;
+        
+        //*****************FILLING GEN MC TREE**********************
+         
+                    
+                    
+        //lam heli
+
+        Hep3Vector mc_norm_lam_c, mc_norm_lam;
+        
+        mc_norm_lam_c = (boostT(mc_lam.p(), mc_LamC.p()).vect()).cross(boostT(pUPS, mc_LamC.p()).vect());
+        mc_norm_lam_c = mc_norm_lam_c*(1./mc_norm_lam_c.mag());
+        
+        mc_norm_lam = (boostT(mc_pfromlam.p(), mc_LamC.p()).vect()).cross(boostT(mc_pifromlam.p(), mc_LamC.p()).vect());
+        mc_norm_lam = mc_norm_lam*(1./mc_norm_lam.mag());
+        
+        int mc_dphi_lc_lam=mc_norm_lam_c.angle(mc_norm_lam);
+        if(boostT(mc_pfromlam.p(), mc_LamC.p()).vect().dot(mc_norm_lam_c) < 0) mc_dphi_lc_lam = 2*3.14159265359-mc_dphi_lc_lam;
+                    
+        //W heli and angle chi
+        double mc_cosW = -10, mc_angchi=-10;
+        
+        if (mc_lcch==3 || mc_lcch==4)
+        {
+            HepLorentzVector mc_p_l, mc_p_nu;
+            
+            if(mc_lcch==3)
+            {
+                mc_p_l = mc_e.p();
+                mc_p_nu = mc_nue.p();
+            }
+            else
+            {
+                mc_p_l = mc_mu.p();
+                mc_p_nu = mc_numu.p();
+            }
+            mc_cosW = -cos(heli(mc_p_l,mc_LamC.p(),mc_LamC.p()-mc_lam.p()));
+            
+            
+            Hep3Vector mc_norm_W;
+                    
+            mc_norm_W = (boostT(mc_p_nu, mc_LamC.p()).vect()).cross(boostT(mc_p_l, mc_LamC.p()).vect()); 
+            mc_norm_W = mc_norm_W*(1./mc_norm_W.mag());
+            
+            mc_angchi = mc_norm_lam.angle(mc_norm_W);
+            if(boostT(p_nu, p_lamc).vect().dot(mc_norm_lam) < 0) mc_angchi = 2*3.14159265359-mc_angchi;
+        }
+                    
+        //Lam_c 2nd daughter's momentum
+        HepLorentzVector mc_P_2d_from_LamC;
+        switch(mc_lcch)
+        {
+            case 1:
+                mc_P_2d_from_LamC = mc_pi.p();
+                break;
+            case 2:
+                mc_P_2d_from_LamC = mc_pi.p();
+                break;
+            case 3:
+                mc_P_2d_from_LamC = mc_e.p();
+                break;
+            case 4:
+                mc_P_2d_from_LamC = mc_mu.p();
+                break;
+            default:
+                return;
+        }
+        
+        mc_p_2d_from_lamc_cms=pStar(mc_P_2d_from_LamC,elec,posi).vect().mag(); 
+        mc_p_2d_from_lamc_labs=mc_P_2d_from_LamC.vect().mag();
+                    
+                    
+        //Lam momentum in Lam_c system
+        //plamlcs = ;
+                    
+        t2 -> column("fox", fox);  
+        t2 -> column("ecms",pUPS.mag());
+        t2 -> column("ch_lamc", mc_LamC.charge());
+                
+        t2 -> column("lcch",mc_lcch);
+        t2 -> column("mlc", mc_LamC.mass());
+        t2 -> column("hl", -cos(heli(mc_pfromlam.p(), mc_LamC.p(),  mc_lam.p())));
+        t2 -> column("hlc", -cos(heli(mc_lam.p(),pUPS,mc_LamC.p())) );
+                
+        t2 -> column("q", (mc_LamC.p()-mc_lam.p()).mag());
+        t2 -> column("hw",mc_cosW);
+        t2 -> column("chi",mc_angchi);
+        t2 -> column("plslc",boostT(mc_lam.p(), mc_LamC.p()).vect().mag());
+                
+        t2 -> column("philclam",mc_dphi_lc_lam);
+        t2 -> column("lcp2dcm",mc_p_2d_from_lamc_cms);
+        t2 -> column("lcp2dlab",mc_p_2d_from_lamc_labs);
+        
+        t2 -> column("plamclab",mc_LamC.p().vect().mag());
+        t2 -> column("plamccms",pStar(mc_LamC.p(),elec,posi).vect().mag() );
+        t2->dumpData();
+        
+        //***************************************************
         
         if(!(nevent%1000)) cout << "total Lambda_c generated in studied modes (1,2,3,4): " << nlamc_gen << "; total Lambda_c reconstructed: " << nlamc_rec << endl;
         
@@ -505,7 +602,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
-                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10;
+                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10;
         
                 if (tag==1)
                 {
@@ -564,8 +661,8 @@ namespace Belle {
                     HepLorentzVector p_lamc;
                     if (lcch==1 || lcch==2 || lcch==5) p_lamc=LamC.p();
                     else p_lamc = pUPS-momentum;
-                    hlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc)); 
                     
+                    hlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc)); 
                     
                     //lam heli
                     HepLorentzVector p_proton_from_lam, p_pi_from_lam; 
@@ -632,6 +729,10 @@ namespace Belle {
                     //Lam momentum in Lam_c system
                     plamlcs = boostT(LamC.child(0).p(), p_lamc).vect().mag();
                     
+                    //lamc visible momentum
+                    plamclab = p_lamc.vect().mag();
+                    plamccms = pStar(p_lamc,elec,posi).vect().mag();
+                    
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
                     t1 -> column("dstch", dstch);
@@ -663,6 +764,10 @@ namespace Belle {
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
                     t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
+                    
+                    t1 -> column("plamclab",plamclab);
+                    t1 -> column("plamccms",plamccms);
+                    t1 -> column("mc_lcch", mc_lcch);
                     t1->dumpData();
                 }
                 else
@@ -698,6 +803,10 @@ namespace Belle {
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
                     t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
+                    
+                    t1 -> column("plamclab",plamclab);
+                    t1 -> column("plamccms",plamccms);
+                    t1 -> column("mc_lcch", mc_lcch);
                     t1->dumpData();
                 }
             }
@@ -719,7 +828,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
-                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10;
+                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10;
         
                 if (tag==1)
                 {
@@ -844,6 +953,10 @@ namespace Belle {
                     //Lam momentum in Lam_c system
                     plamlcs = boostT(LamC.child(0).p(), p_lamc).vect().mag();
                     
+                    //lamc visible momentum
+                    plamclab = p_lamc.vect().mag();
+                    plamccms = pStar(p_lamc,elec,posi).vect().mag();
+                    
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
                     t1 -> column("dstch", dstch);
@@ -875,6 +988,10 @@ namespace Belle {
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
                     t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
+                    
+                    t1 -> column("plamclab",plamclab);
+                    t1 -> column("plamccms",plamccms);
+                    t1 -> column("mc_lcch", mc_lcch);
                     t1->dumpData();
                 }
                 else
@@ -910,6 +1027,10 @@ namespace Belle {
                     t1 -> column("philclam",dphi_lc_lam);
                     t1 -> column("lcp2dcm",p_2d_from_lamc_cms);
                     t1 -> column("lcp2dlab",p_2d_from_lamc_labs);
+                    
+                    t1 -> column("plamclab",plamclab);
+                    t1 -> column("plamccms",plamccms);
+                    t1 -> column("mc_lcch", mc_lcch);
                     t1->dumpData();
                 }
                 
