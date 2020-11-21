@@ -151,7 +151,7 @@ void LctoLpi()
 
 } 
 
-void MergeExp(TString DataINPUT, TString DataOUTPUT)
+void MergeExp(TString DataINPUT, TString DataOUTPUT) //INPUT AND OUTPUT DIRECTORIES SHOULD BE DIFFERENT!
 {
     
     for(int j =1; j<=2; j++)
@@ -159,11 +159,20 @@ void MergeExp(TString DataINPUT, TString DataOUTPUT)
         TString trn = Form("h%d",j);
         for(int i = 7; i<=73; i+=2)
         {   
-            TChain chdat(trn);
             TString fn = Form("%d",i);
             if(i<10) fn = "0"+fn;
-            chdat.Add(DataINPUT+"/"+fn+"*.root");
-            chdat.Merge(DataOUTPUT+"/"+fn+".root","UPDATE");
+            
+            TFile * file = new TFile(DataOUTPUT+"/"+fn+".root","UPDATE");
+            TChain chdat(trn);
+            
+            if (chdat.Add(DataINPUT+"/"+fn+"*.root")==0) 
+                {file -> Close(); delete file; continue;}
+            
+            chdat.CloneTree(-1,"fast");
+            
+            file -> Write();
+            file -> Close();
+            delete file;
         }
     }
 }
