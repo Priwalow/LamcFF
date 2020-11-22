@@ -11,7 +11,7 @@ namespace Belle {
         
         extern BelleTupleManager* BASF_Histogram;
         t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
+        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
     void doMassVertexFit(class vector<Particle> &p_list, double mass=-1);
@@ -185,7 +185,7 @@ namespace Belle {
         mc_norm_lam = (boostT(mc_pfromlam.p(), mc_LamC.p()).vect()).cross(boostT(mc_pifromlam.p(), mc_LamC.p()).vect());
         mc_norm_lam = mc_norm_lam*(1./mc_norm_lam.mag());
         
-        int mc_dphi_lc_lam=mc_norm_lam_c.angle(mc_norm_lam);
+        double mc_dphi_lc_lam=mc_norm_lam_c.angle(mc_norm_lam);
         if(boostT(mc_pfromlam.p(), mc_LamC.p()).vect().dot(mc_norm_lam_c) < 0) mc_dphi_lc_lam = 2*3.14159265359-mc_dphi_lc_lam;
                     
         //W heli and angle chi
