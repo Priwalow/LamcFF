@@ -162,12 +162,10 @@ void MergeExp(TString DataINPUT, TString DataOUTPUT) //INPUT AND OUTPUT DIRECTOR
             TString fn = Form("%d",i);
             if(i<10) fn = "0"+fn;
             
-            TFile * file = new TFile(DataOUTPUT+"/"+fn+".root","UPDATE");
             TChain chdat(trn);
+            if (chdat.Add(DataINPUT+"/"+fn+"*.root")==0) continue;
             
-            if (chdat.Add(DataINPUT+"/"+fn+"*.root")==0) 
-                {file -> Close(); delete file; continue;}
-            
+            TFile * file = new TFile(DataOUTPUT+"/"+fn+".root","UPDATE");
             chdat.CloneTree(-1,"fast");
             
             file -> Write();
