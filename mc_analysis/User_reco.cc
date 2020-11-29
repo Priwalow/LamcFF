@@ -770,9 +770,9 @@ namespace Belle {
                     t1 -> column("plamccms",plamccms);
                     
                     t1 -> column("mc_lcch", mc_lcch);
-                    t1 -> column("mc_pnu", pStar(mc_p_nu.p(),elec,posi).vect().mag());
+                    t1 -> column("mc_pnu", pStar(mc_p_nu,elec,posi).vect().mag());
                     t1 -> column("mc_plamc", pStar(mc_LamC.p(),elec,posi).vect().mag());
-                    t1 -> column("mc_angnv", pStar(mc_p_nu.p(),elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
+                    t1 -> column("mc_angnv", pStar(mc_p_nu,elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
                     t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));  
                     t1->dumpData();
                 }
@@ -1003,9 +1003,9 @@ namespace Belle {
                     t1 -> column("plamccms",plamccms);
                     
                     t1 -> column("mc_lcch", mc_lcch);
-                    t1 -> column("mc_pnu", pStar(mc_p_nu.p(),elec,posi).vect().mag());
+                    t1 -> column("mc_pnu", pStar(mc_p_nu,elec,posi).vect().mag());
                     t1 -> column("mc_plamc", pStar(mc_LamC.p(),elec,posi).vect().mag());
-                    t1 -> column("mc_angnv", pStar(mc_p_nu.p(),elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
+                    t1 -> column("mc_angnv", pStar(mc_p_nu,elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
                     t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));  
                     t1->dumpData();
                 }
