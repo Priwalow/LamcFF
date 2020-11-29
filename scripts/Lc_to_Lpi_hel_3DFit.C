@@ -1,4 +1,49 @@
+
+TCut totCUT = "lcch==1 && abs(mlc-2.28646)<0.02 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+
+double lend=-1, rend=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; 
+int Nbins=3;
+
+TString datapath = "../analysis/hmerge/";    
+TString mcpath = "../mc_analysis/hmerge/";
+
+
+TH3D* hmceff = new TH3D("hmceff","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+TH3D* hmcgen = new TH3D("hmcgen","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+TH3D* hmcsel = new TH3D("hmcsel","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+
+double Ntot, Nmcgen, Nmcsel;
+
+void histeffgen() 
 {
+    TChain* ch1mc = new TChain("h1");
+    ch1mc -> Add(mcpath+"*.root");
+    
+    TChain* ch2mc = new TChain("h2");
+    ch2mc -> Add(mcpath+"*.root");
+    
+    Nmcsel = ch1mc -> Draw("hlc:hl:philclam>>hmcsel",totCUT,"goff");
+    Nmcgen = ch2mc -> Draw("hlc:hl:philclam>>hmcgen","lcch==1","goff");
+    
+    hmcsel->Sumw2();
+    hmcgen->Sumw2();
+    *hmceff = *hmcsel/(*hmcgen);
+}
+
+Double_t myfdat(Double_t* x, Double_t *par)
+{
+   double xx = x[0], yy = x[1], zz=x[2];
+   int binx = hmceff->GetXaxis()->FindBin(xx), biny = hmceff->GetYaxis()->FindBin(yy), binz = hmceff->GetZaxis()->FindBin(zz);
+   double eff = hmceff->GetBinContent(binx,biny,binz);
+   return eff*par[0]*(1+alphaLam*alphaLam_c*yy+par[1]*(zz*(alphaLam_c+alphaLam*yy)-sqrt((1-yy*yy)*(1-zz*zz))*alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*cos(par[2]+xx)));
+}
+
+
+
+
+void Lc2Lpi3Dfit()
+{
+    histeffgen();
     gStyle->SetOptStat(0);
     gStyle->SetLineWidth(2);
     gStyle->SetPadRightMargin(0.05);
@@ -6,59 +51,90 @@
     gStyle->SetErrorX(0);
     double axisFontSize = 0.05;
     
-    
-    
-    
-    TString datapath = "../analysis/hmerge/";    
-    TString mcpath = "../mc_analysis/hmerge/";
-    
+
     TChain* ch1dat = new TChain("h1");
     ch1dat -> Add(datapath+"*.root");
     
-    TChain* ch1mc = new TChain("h1");
-    ch1mc -> Add(mcpath+"*.root");
-    
-    TChain* ch2mc = new TChain("h2");
-    ch2mc -> Add(mcpath+"*.root");
-    
-    
-    double lend=-1, rend=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; //lend=2.21, rend=2.36
-    int Nbins=4;
+
     TH3D* hmain = new TH3D("hmain","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
-    TH3D* hmcgen = new TH3D("hmcgen","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
-    TH3D* hmcsel = new TH3D("hmcsel","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
-    
-    
-    
+
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
     
-    double Ntot, Nmcgen, Nmcsel;
-    TCut totCUT = "lcch==1 && abs(mlc-2.28646)<0.02 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+    
+
     Ntot = ch1dat -> Draw("hlc:hl:philclam>>hmain",totCUT,"goff"); //"((tag!=11 && tag!=12) || abs(ml1-1.11568)<0.003) && pvis<0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)<0.05 && abs(rmvis)<0.1
+    hmain -> Sumw2();
     
-    
-    Nmcsel = ch1mc -> Draw("hlc:hl:philclam>>hmcsel",totCUT,"goff");
-    Nmcgen = ch2mc -> Draw("hlc:hl:philclam>>hmcgen","lcch==1","goff");
-    
-    TEfficiency * pEff = new TEfficiency(*hmcsel,*hmcgen);
-    
-    
-    
-    
-    
-    TH2D* hlcl = new TH2D("hlcl","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend,Nbins,lend,rend);
-    TH2D* hlcphi = new TH2D("hlcphi","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend);
-    TH2D* hlphi = new TH2D("hlphi","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend);
-  
-    ch1dat -> Draw("hlc:hl>>hlcl",totCUT,"goff");
-    ch1dat -> Draw("hlc:philclam>>hlcphi",totCUT,"goff");
-    ch1dat -> Draw("hl:philclam>>hlphi",totCUT,"goff");
 
     
-    TF3* fmain = new TF3("fmain",Form("[0]*(1+%lf*y+[1]*(z*(%lf+%lf*y)-sqrt((1-y*y)*(1-z*z))*%lf*cos([2]+x)))",
-                                    alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)),0,2*TMath::Pi(),lend,rend,lend,rend);
-    fmain -> SetParameters(1.5,0.1,TMath::Pi());
+    cout << hmcsel->GetBinContent(1,1,1)<< " +- " << hmcsel->GetBinError(1,1,1) << " / " << hmcgen->GetBinContent(1,1,1)<< " +- " << hmcgen->GetBinError(1,1,1) << " = " << hmceff->GetBinContent(1,1,1)<< " +- " << hmceff->GetBinError(1,1,1) << endl;
+    
+    cout << hmain->GetBinContent(1,1,1)<< " +- " << hmain->GetBinError(1,1,1) << " / " << hmceff->GetBinContent(1,1,1)<< " +- " << hmceff->GetBinError(1,1,1) << " = ";
+    //*hmain = *hmain/(*hmceff);
+    cout << hmain->GetBinContent(1,1,1)<< " +- " << hmain->GetBinError(1,1,1) << endl;
+    
+    /*TEfficiency * pEff = new TEfficiency(*hmcsel,*hmcgen);
+    int effbin;
+    for(int i =0; i < Nbins; i++)
+    {
+        for(int j =0; j < Nbins; j++)
+        {
+            for(int k=0; k< Nbins; k++)
+            {
+                effbin = pEff -> GetGlobalBin(i+1,j+1,k+1);
+                eff[i*Nbins*Nbins+j*Nbins+k] = pEff -> GetEfficiency(effbin);
+                effUerr[i*Nbins*Nbins+j*Nbins+k] = pEff -> GetEfficiencyErrorUp(effbin);
+                effLerr[i*Nbins*Nbins+j*Nbins+k] = pEff -> GetEfficiencyErrorLow(effbin);
+                effconst+=pEff -> GetEfficiency(effbin);
+                effBins[i*Nbins*Nbins+j*Nbins+k] = i*Nbins*Nbins+j*Nbins+k+1;
+            }
+        }
+    }
+    effconst=effconst/(Nbins*Nbins*Nbins);
+    for(int i=0;i<Nbins*Nbins*Nbins;i++)
+    {
+        //eff[i]=eff[i]/effconst;
+        cout << eff[i] << " " << effUerr[i] << " " <<effLerr[i] << endl;
+    }
+    
+    TCanvas *c4 = new TCanvas("c4","efficiency",1600,900);
+    TGraphAsymmErrors * gr = new TGraphAsymmErrors(Nbins*Nbins*Nbins,effBins,eff,0,0,effLerr,effUerr);
+    gr->SetName("gr");
+    gr->SetTitle("Efficiency");
+    gr->GetXaxis()->SetTitle("bin");
+    gr->GetYaxis()->SetTitle("#epsilon");
+    gr->SetMarkerStyle(8);
+    gr->SetMarkerColor(kBlue);
+    gr->SetLineColor(kBlue);
+    gr->SetMarkerSize(1.2);
+    gr->Draw("ap");
+    
+    TH3D* hmceff = new TH3D("hmceff","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+    for(int i =0; i < Nbins; i++)
+    {
+        for(int j =0; j < Nbins; j++)
+        {
+            for(int k=0; k< Nbins; k++)
+            {
+                effbin = hmceff -> GetBin(i+1,j+1,k+1)
+            }
+        }
+    }
+    */
+    
+    
+    TH1* hlcl = hmain -> Project3D("zy");//new TH2D("hlcl","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,lend,rend,Nbins,lend,rend);
+    TH1* hlcphi = hmain -> Project3D("zx"); //new TH2D("hlcphi","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend);
+    TH1* hlphi = hmain -> Project3D("yx");//new TH2D("hlphi","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend);
+  
+    //ch1dat -> Draw("hlc:hl>>hlcl",totCUT,"goff");
+    //ch1dat -> Draw("hlc:philclam>>hlcphi",totCUT,"goff");
+    //ch1dat -> Draw("hl:philclam>>hlphi",totCUT,"goff");
+
+    
+    TF3* fmain = new TF3("fmain",myfdat,0,2*TMath::Pi(),lend,rend,lend,rend,3);
+    fmain -> SetParameters(4,0.5,TMath::Pi());
     fmain -> SetParLimits(2,-0.005,2*TMath::Pi()+0.005);
     
     

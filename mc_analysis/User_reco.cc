@@ -10,8 +10,8 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
+        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms vphomass mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
     void doMassVertexFit(class vector<Particle> &p_list, double mass=-1);
@@ -73,13 +73,16 @@ namespace Belle {
         
         int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, nlamc_daughters=-1, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
         
-        Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
+        Particle mc_vpho, mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
             idHEP = evt->idhep();
+            
+            if(id==1) mc_vpho = Particle(*evt);
+            
             
             if (abs(idHEP)==4122 && lam_c_gen==0) // Lamc=4122   anti-Lamc=-4122  
             {
@@ -186,14 +189,15 @@ namespace Belle {
         mc_norm_lam = mc_norm_lam*(1./mc_norm_lam.mag());
         
         double mc_dphi_lc_lam=mc_norm_lam_c.angle(mc_norm_lam);
-        if(boostT(mc_pfromlam.p(), mc_LamC.p()).vect().dot(mc_norm_lam_c) < 0) mc_dphi_lc_lam = 2*3.14159265359-mc_dphi_lc_lam;
+        if(boostT(mc_pfromlam.p(), mc_LamC.p()).vect().dot(mc_norm_lam_c) < 0) mc_dphi_lc_lam = -mc_dphi_lc_lam;
                     
         //W heli and angle chi
         double mc_cosW = -10, mc_angchi=-10;
-        
+
+        HepLorentzVector mc_p_l, mc_p_nu;
         if (mc_lcch==3 || mc_lcch==4)
         {
-            HepLorentzVector mc_p_l, mc_p_nu;
+            
             
             if(mc_lcch==3)
             {
@@ -214,7 +218,7 @@ namespace Belle {
             mc_norm_W = mc_norm_W*(1./mc_norm_W.mag());
             
             mc_angchi = mc_norm_lam.angle(mc_norm_W);
-            if(boostT(mc_p_nu, mc_LamC.p()).vect().dot(mc_norm_lam) < 0) mc_angchi = 2*3.14159265359-mc_angchi;
+            if(boostT(mc_p_nu, mc_LamC.p()).vect().dot(mc_norm_lam) < 0) mc_angchi = -mc_angchi;
         }
                     
         //Lam_c 2nd daughter's momentum
@@ -243,6 +247,7 @@ namespace Belle {
                     
         t2 -> column("fox", fox);  
         t2 -> column("ecms",pUPS.mag());
+        t2 -> column("vphomass",mc_vpho.mass());
         t2 -> column("ch_lamc", mc_LamC.charge());
                 
         t2 -> column("lcch",mc_lcch);
@@ -684,7 +689,7 @@ namespace Belle {
                         norm_lam = norm_lam*(1./norm_lam.mag());
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
                         
-                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
+                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = -dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -713,7 +718,7 @@ namespace Belle {
                         norm_W = norm_W*(1./norm_W.mag());
             
                         angchi = norm_lambda.angle(norm_W);
-                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = 2*3.14159265359-angchi;
+                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = -angchi;
                     }
                     
                     //Lam_c 2nd daughter's momentum
@@ -763,7 +768,12 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    
                     t1 -> column("mc_lcch", mc_lcch);
+                    t1 -> column("mc_pnu", pStar(mc_p_nu.p(),elec,posi).vect().mag());
+                    t1 -> column("mc_plamc", pStar(mc_LamC.p(),elec,posi).vect().mag());
+                    t1 -> column("mc_angnv", pStar(mc_p_nu.p(),elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
+                    t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));  
                     t1->dumpData();
                 }
                 else
@@ -803,6 +813,10 @@ namespace Belle {
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
                     t1 -> column("mc_lcch", mc_lcch);
+                    t1 -> column("mc_pnu", -1);
+                    t1 -> column("mc_plamc", -1);
+                    t1 -> column("mc_angnv", -10);
+                    t1 -> column("mcanglcx", -10);
                     t1->dumpData();
                 }
             }
@@ -909,7 +923,7 @@ namespace Belle {
                         norm_lam = norm_lam*(1./norm_lam.mag());
                         
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
-                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
+                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = -dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -938,7 +952,7 @@ namespace Belle {
                         norm_W = norm_W*(1./norm_W.mag());
             
                         angchi = norm_lambda.angle(norm_W);
-                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = 2*3.14159265359-angchi;
+                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = -angchi;
                     }
                     
                     //Lam_c 2nd daughter's momentum
@@ -987,7 +1001,12 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    
                     t1 -> column("mc_lcch", mc_lcch);
+                    t1 -> column("mc_pnu", pStar(mc_p_nu.p(),elec,posi).vect().mag());
+                    t1 -> column("mc_plamc", pStar(mc_LamC.p(),elec,posi).vect().mag());
+                    t1 -> column("mc_angnv", pStar(mc_p_nu.p(),elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
+                    t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));  
                     t1->dumpData();
                 }
                 else
@@ -1026,7 +1045,12 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    
                     t1 -> column("mc_lcch", mc_lcch);
+                    t1 -> column("mc_pnu", -1);
+                    t1 -> column("mc_plamc", -1);
+                    t1 -> column("mc_angnv", -10);
+                    t1 -> column("mcanglcx", -10);
                     t1->dumpData();
                 }
                 
