@@ -75,14 +75,14 @@ namespace Belle {
         
         Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
-        double mc_vphomass
+        double mc_vphomass;
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
             idHEP = evt->idhep();
             
-            if(id==1) mc_vphomass = evt->p5();
+            if(id==1) mc_vphomass = evt->P(5);
             
             
             if (abs(idHEP)==4122 && lam_c_gen==0) // Lamc=4122   anti-Lamc=-4122  
