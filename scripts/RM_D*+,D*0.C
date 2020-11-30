@@ -37,7 +37,8 @@ void RM()
     
     
     
-    TString datapath = "../analysis/hmerge/";    
+    //TString datapath = "../analysis/hmerge/";    
+    TString datapath = "../mc_analysis/hmerge/";
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     

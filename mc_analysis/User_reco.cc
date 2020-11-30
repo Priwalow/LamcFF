@@ -11,7 +11,7 @@ namespace Belle {
         
         extern BelleTupleManager* BASF_Histogram;
         t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms vphomass mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
+        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
     void doMassVertexFit(class vector<Particle> &p_list, double mass=-1);
@@ -75,15 +75,15 @@ namespace Belle {
         
         Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
-        double mc_vphomass;
+        double mc_ecms=-100;
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
             idHEP = evt->idhep();
             
-            if(id==1) mc_vphomass = evt->P(5);
             
+            if (idHEP!=911 && evt->isthep()>0 && !(evt->mother())) mc_ecms = evt->M();
             
             if (abs(idHEP)==4122 && lam_c_gen==0) // Lamc=4122   anti-Lamc=-4122  
             {
@@ -248,7 +248,7 @@ namespace Belle {
                     
         t2 -> column("fox", fox);  
         t2 -> column("ecms",pUPS.mag());
-        t2 -> column("vphomass",mc_vphomass);
+        t2 -> column("mc_ecms",mc_ecms);
         t2 -> column("ch_lamc", mc_LamC.charge());
                 
         t2 -> column("lcch",mc_lcch);

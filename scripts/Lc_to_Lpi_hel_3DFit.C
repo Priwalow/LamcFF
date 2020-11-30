@@ -8,9 +8,9 @@ TString datapath = "../analysis/hmerge/";
 TString mcpath = "../mc_analysis/hmerge/";
 
 
-TH3D* hmceff = new TH3D("hmceff","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
-TH3D* hmcgen = new TH3D("hmcgen","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
-TH3D* hmcsel = new TH3D("hmcsel","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+TH3D* hmceff = new TH3D("hmceff","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,-TMath::Pi(),TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+TH3D* hmcgen = new TH3D("hmcgen","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,-TMath::Pi(),TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+TH3D* hmcsel = new TH3D("hmcsel","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,-TMath::Pi(),TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
 
 double Ntot, Nmcgen, Nmcsel;
 
@@ -38,7 +38,23 @@ Double_t myfdat(Double_t* x, Double_t *par)
    return eff*par[0]*(1+alphaLam*alphaLam_c*yy+par[1]*(zz*(alphaLam_c+alphaLam*yy)-sqrt((1-yy*yy)*(1-zz*zz))*alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*cos(par[2]+xx)));
 }
 
+Double_t myfdat1(Double_t* x, Double_t *par)
+{
+   double xx = x[0], yy = x[1];
+   return ;
+}
 
+Double_t myfdat2(Double_t* x, Double_t *par)
+{
+   double xx = x[0], yy = x[1];
+   return ;
+}
+
+Double_t myfdat3(Double_t* x, Double_t *par)
+{
+   double xx = x[0], yy = x[1];
+   return ;
+}
 
 
 void Lc2Lpi3Dfit()
@@ -56,7 +72,7 @@ void Lc2Lpi3Dfit()
     ch1dat -> Add(datapath+"*.root");
     
 
-    TH3D* hmain = new TH3D("hmain","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
+    TH3D* hmain = new TH3D("hmain","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,-TMath::Pi(),TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
 
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
@@ -133,9 +149,9 @@ void Lc2Lpi3Dfit()
     //ch1dat -> Draw("hl:philclam>>hlphi",totCUT,"goff");
 
     
-    TF3* fmain = new TF3("fmain",myfdat,0,2*TMath::Pi(),lend,rend,lend,rend,3);
-    fmain -> SetParameters(4,0.5,TMath::Pi());
-    fmain -> SetParLimits(2,-0.005,2*TMath::Pi()+0.005);
+    TF3* fmain = new TF3("fmain",myfdat,-TMath::Pi(),TMath::Pi(),lend,rend,lend,rend,3);
+    fmain -> SetParameters(4,0.5,0);
+    fmain -> SetParLimits(2,-TMath::Pi()-0.005,TMath::Pi()+0.005);
     
     
     TFitResultPtr fitResult;
@@ -148,9 +164,9 @@ void Lc2Lpi3Dfit()
     
     TF2* flcl = new TF2("flcl",Form("[0]*(1+%lf*x+[1]*y*(%lf+%lf*x))",alphaLam*alphaLam_c,alphaLam_c,alphaLam),lend,rend,lend,rend);
     TF2* flcphi = new TF2("flcphi",Form("[0]*(1+[1]*(%lf*y-%lf*cos([2]+x)*sqrt(1-y*y)))",
-                                        alphaLam_c,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*TMath::Pi()/4),0,2*TMath::Pi(),lend,rend);
+                                        alphaLam_c,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*TMath::Pi()/4),-TMath::Pi(),TMath::Pi(),lend,rend);
     TF2* flphi = new TF2("flphi",Form("[0]*(1+%lf*y-[1]*%lf*cos([2]+x)*sqrt(1-y*y))",
-                                      alphaLam_c*alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*TMath::Pi()/4),0,2*TMath::Pi(),lend,rend);
+                                      alphaLam_c*alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*TMath::Pi()/4),-TMath::Pi(),TMath::Pi(),lend,rend);
     
     flcl -> SetParameters(2*TMath::Pi()*par[0],par[1]);
     flcphi -> SetParameters(2*par[0],par[1],par[2]);
