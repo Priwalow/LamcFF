@@ -35,25 +35,25 @@ Double_t myfdat(Double_t* x, Double_t *par)
    double xx = x[0], yy = x[1], zz=x[2];
    int binx = hmceff->GetXaxis()->FindBin(xx), biny = hmceff->GetYaxis()->FindBin(yy), binz = hmceff->GetZaxis()->FindBin(zz);
    double eff = hmceff->GetBinContent(binx,biny,binz);
-   return eff*par[0]*(1+alphaLam*alphaLam_c*yy+par[1]*(zz*(alphaLam_c+alphaLam*yy)-sqrt((1-yy*yy)*(1-zz*zz))*alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*cos(par[2]+xx)));
+   return 1*par[0]*(1+alphaLam*alphaLam_c*yy+par[1]*(zz*(alphaLam_c+alphaLam*yy)-sqrt((1-yy*yy)*(1-zz*zz))*alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*cos(par[2]+xx)));
 }
 
 Double_t myfdat1(Double_t* x, Double_t *par)
 {
    double xx = x[0], yy = x[1];
-   return ;
+   return 0;
 }
 
 Double_t myfdat2(Double_t* x, Double_t *par)
 {
    double xx = x[0], yy = x[1];
-   return ;
+   return 0;
 }
 
 Double_t myfdat3(Double_t* x, Double_t *par)
 {
    double xx = x[0], yy = x[1];
-   return ;
+   return 0;
 }
 
 

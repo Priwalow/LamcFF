@@ -480,7 +480,7 @@ namespace Belle {
                         norm_lam = norm_lam*(1./norm_lam.mag());
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
                         
-                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
+                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = -dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -509,7 +509,7 @@ namespace Belle {
                         norm_W = norm_W*(1./norm_W.mag());
             
                         angchi = norm_lambda.angle(norm_W);
-                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = 2*3.14159265359-angchi;
+                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = -angchi;
                     }
                     
                     //Lam_c 2nd daughter's momentum
@@ -701,7 +701,7 @@ namespace Belle {
                         norm_lam = norm_lam*(1./norm_lam.mag());
                         
                         dphi_lc_lam=norm_lam_c.angle(norm_lam);
-                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = 2*3.14159265359-dphi_lc_lam;
+                        if(boostT(p_proton_from_lam, p_lamc).vect().dot(norm_lam_c) < 0) dphi_lc_lam = -dphi_lc_lam;
                     }
             
                     //q = sqrt((P_Lc - P_L)^2) OR sqrt((P_UPS-P_X-P_L)^2)
@@ -730,7 +730,7 @@ namespace Belle {
                         norm_W = norm_W*(1./norm_W.mag());
             
                         angchi = norm_lambda.angle(norm_W);
-                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = 2*3.14159265359-angchi;
+                        if(boostT(p_nu, p_lamc).vect().dot(norm_lambda) < 0) angchi = -angchi;
                     }
                     
                     //Lam_c 2nd daughter's momentum
