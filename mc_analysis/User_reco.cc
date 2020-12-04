@@ -84,7 +84,7 @@ namespace Belle {
         {              
             idHEP = evt->idhep();
             
-            if(evt->mo(0) == idMO) mc_pUPS+= Particle(*evt).p();
+            if(evt->mo(0) == idMO) mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
             
             
             if (idHEP!=911 && evt->isthep()>0 && !(evt->mother())) idMO = id; 
