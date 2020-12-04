@@ -1,8 +1,8 @@
 
-TCut totCUT = "lcch==1 && abs(mlc-2.28646)<0.02 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+TCut totCUT = "lcch==1 && abs(mlc-2.28646)<0.02 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
 
 double lend=-1, rend=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; 
-int Nbins=3;
+int Nbins=2;
 
 TString datapath = "../analysis/hmerge/";    
 TString mcpath = "../mc_analysis/hmerge/";
@@ -35,7 +35,7 @@ Double_t myfdat(Double_t* x, Double_t *par)
    double xx = x[0], yy = x[1], zz=x[2];
    int binx = hmceff->GetXaxis()->FindBin(xx), biny = hmceff->GetYaxis()->FindBin(yy), binz = hmceff->GetZaxis()->FindBin(zz);
    double eff = hmceff->GetBinContent(binx,biny,binz);
-   return 1*par[0]*(1+alphaLam*alphaLam_c*yy+par[1]*(zz*(alphaLam_c+alphaLam*yy)-sqrt((1-yy*yy)*(1-zz*zz))*alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*cos(par[2]+xx)));
+   return eff*par[0]*(1+alphaLam*alphaLam_c*yy+par[1]*(zz*(alphaLam_c+alphaLam*yy)-sqrt((1-yy*yy)*(1-zz*zz))*alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*cos(par[2]+xx)));
 }
 
 Double_t myfdat1(Double_t* x, Double_t *par)
@@ -84,11 +84,8 @@ void Lc2Lpi3Dfit()
     
 
     
-    cout << hmcsel->GetBinContent(1,1,1)<< " +- " << hmcsel->GetBinError(1,1,1) << " / " << hmcgen->GetBinContent(1,1,1)<< " +- " << hmcgen->GetBinError(1,1,1) << " = " << hmceff->GetBinContent(1,1,1)<< " +- " << hmceff->GetBinError(1,1,1) << endl;
+    for(int i=1; i<=Nbins; i++){for(int j=1; j<=Nbins; j++){for(int k=1; k<=Nbins; k++){cout << hmcsel->GetBinContent(i,j,k)<< " +- " << hmcsel->GetBinError(i,j,k) << " / " << hmcgen->GetBinContent(i,j,k)<< " +- " << hmcgen->GetBinError(i,j,k) << " = " << hmceff->GetBinContent(i,j,k)<< " +- " << hmceff->GetBinError(i,j,k) << endl;}}}
     
-    cout << hmain->GetBinContent(1,1,1)<< " +- " << hmain->GetBinError(1,1,1) << " / " << hmceff->GetBinContent(1,1,1)<< " +- " << hmceff->GetBinError(1,1,1) << " = ";
-    //*hmain = *hmain/(*hmceff);
-    cout << hmain->GetBinContent(1,1,1)<< " +- " << hmain->GetBinError(1,1,1) << endl;
     
     /*TEfficiency * pEff = new TEfficiency(*hmcsel,*hmcgen);
     int effbin;

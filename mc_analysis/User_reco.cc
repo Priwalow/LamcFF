@@ -71,19 +71,24 @@ namespace Belle {
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
-        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, nlamc_daughters=-1, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
+        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idMO=-10, idHEP, nlamc_daughters=-1, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
         
         Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
+        
+        HepLorentzVector mc_pUPS = HepLorentzVector(0., 0.,0.,0.);
+        
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
-        double mc_ecms=-100;
         
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
             idHEP = evt->idhep();
             
+            if(evt->mo(0) == idMO) mc_pUPS+= Particle(*evt).p();
             
-            if (idHEP!=911 && evt->isthep()>0 && !(evt->mother())) mc_ecms = evt->M();
+            
+            if (idHEP!=911 && evt->isthep()>0 && !(evt->mother())) idMO = id; 
+            
             
             if (abs(idHEP)==4122 && lam_c_gen==0) // Lamc=4122   anti-Lamc=-4122  
             {
@@ -248,7 +253,7 @@ namespace Belle {
                     
         t2 -> column("fox", fox);  
         t2 -> column("ecms",pUPS.mag());
-        t2 -> column("mc_ecms",mc_ecms);
+        t2 -> column("mc_ecms",mc_pUPS.mag());
         t2 -> column("ch_lamc", mc_LamC.charge());
                 
         t2 -> column("lcch",mc_lcch);
