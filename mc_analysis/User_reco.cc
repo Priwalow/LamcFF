@@ -1,6 +1,6 @@
 #include "User_reco.h"
 #include "userinfo.h"
-#include "BeamEnergy.h"
+#include "benergy/BeamEnergy.h"
 #include EVTCLS_H //R2 distribution
 
 //e+ e- -> x+Lc
