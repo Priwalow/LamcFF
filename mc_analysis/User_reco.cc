@@ -184,7 +184,7 @@ namespace Belle {
         
         nlamc_gen+=lam_c_gen;
         
-        if(!(nevent%1000)) cout << "mc_pUPS: " << mc_pUPS ";  pUPS: "<< pUPS << endl;
+        if(!(nevent%1000)) cout << "mc_pUPS: " << mc_pUPS <<  ";  pUPS: "<< pUPS << endl;
         
         //*****************FILLING GEN MC TREE**********************
          
