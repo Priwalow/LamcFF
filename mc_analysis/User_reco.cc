@@ -44,18 +44,18 @@ namespace Belle {
         *status=0;
         
         double elec=8.0, posi=3.5;
-       /*Belle_runhead_Manager& rhdmgr = Belle_runhead_Manager::get_manager();
+        Belle_runhead_Manager& rhdmgr = Belle_runhead_Manager::get_manager();
         Belle_runhead_Manager::const_iterator rhd = rhdmgr.begin();
 
         if(rhd!=rhdmgr.end() && rhd->EHER() > 5.){
             elec = rhd->EHER();
             posi = rhd->ELER();
         }
-        */
         
         
-        posi=BeamEnergy::E_LER();
-        elec=BeamEnergy::E_HER();
+        
+        /*posi=BeamEnergy::E_LER();
+        elec=BeamEnergy::E_HER();*/
         HepLorentzVector pUPS= HepLorentzVector (elec*sin(0.022), 0.,elec*cos(0.022)-posi, elec+posi);
 
        
