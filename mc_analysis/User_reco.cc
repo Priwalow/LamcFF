@@ -89,7 +89,8 @@ namespace Belle {
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {
-            if (!(evt->mother() && evt->mother()==1 && evt->mother().idhep()==10022))   continue; 
+            int evtmother = evt->mother().idhep();
+            if (!(evt->mother() && evt->mother()==1 && (evtmother==10022 || evtmother==553 || evtmother==100553 || evtmother==200553 || evtmother==300553 || evtmother == 9000553)))   continue; 
             if (abs(evt->idhep())>=22)  mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
         }
   
