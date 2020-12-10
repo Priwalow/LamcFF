@@ -75,7 +75,7 @@ namespace Belle {
         
         //------------------------MONTE CARLO DATA ANALYSIS----------------------------
         
-        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idMO=-10, idHEP, nlamc_daughters=-1, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
+        int lam_c_gen = 0, lam_c_rec=0, idlamc=-1, id=1, idHEP, nlamc_daughters=-1, lam_daid1=-1, lam_daid2=-1, mc_lcch = -1;
         
         Particle mc_LamC, mc_lam, mc_pi, mc_pi0, mc_mu, mc_numu, mc_e, mc_nue, mc_pfromlam, mc_pifromlam;
         
@@ -89,8 +89,7 @@ namespace Belle {
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {
-            int evtmother = evt->mother().idhep();
-            if (!(evt->mother() && evt->mother()==1 && (evtmother==10022 || evtmother==553 || evtmother==100553 || evtmother==200553 || evtmother==300553 || evtmother == 9000553)))   continue; 
+            if (!(evt->mother() && evt->mother()==1 && (evt->mother().idhep()==10022 || evt->mother().idhep()==553 || evt->mother().idhep()==100553 || evt->mother().idhep()==200553 || evt->mother().idhep()==300553 || evt->mother().idhep() == 9000553))) continue; 
             if (abs(evt->idhep())>=22)  mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
         }
   
