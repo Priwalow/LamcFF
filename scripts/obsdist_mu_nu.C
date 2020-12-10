@@ -8,20 +8,21 @@
     double axisFontSize = 0.065;
     
     TString datapath = "../analysis/hmerge/";    
+    //TString datapath = "../mc_analysis/hmerge/";
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
     
     double qsqmax = 1.370726;
-    TCut gencut = "lcch==4 && abs(rmvis)<0.3 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && pvis>0.05 && lcp2dlab > 1 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+    TCut gencut = "lcch==4  && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && q>0 && abs(rmvis)<0.5 && pvis>0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
     
     TCanvas *c0 = new TCanvas("c1","Lc -> Lmunu observables",740,600);
     c0 -> Divide(2,2);
     
-    TH1D* hqsq = new TH1D("hqsq","q^{2}/q^{2}_{max}",8,0,1);
-    TH1D* hcosw = new TH1D("hcosw","cos#theta_{W}",8,-1,1);
-    TH1D* hcosl = new TH1D("hcosl","cos#theta_{#Lambda}",8,-1,1);
-    TH1D* hcoschi = new TH1D("hcoschi","#chi",8,0,2*TMath::Pi());
+    TH1D* hqsq = new TH1D("hqsq","q^{2}/q^{2}_{max}",10,0,1);
+    TH1D* hcosw = new TH1D("hcosw","cos#theta_{W}",10,-1,1);
+    TH1D* hcosl = new TH1D("hcosl","cos#theta_{#Lambda}",10,-1,1);
+    TH1D* hcoschi = new TH1D("hcoschi","#chi",10,-TMath::Pi(),TMath::Pi());
     
     ch1dat -> Draw("q*fabs(q)/1.370726>>hqsq",gencut,"goff");
     ch1dat -> Draw("hw>>hcosw",gencut,"goff");

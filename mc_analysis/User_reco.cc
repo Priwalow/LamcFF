@@ -11,7 +11,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx mc_rmx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
@@ -83,16 +83,23 @@ namespace Belle {
         
         bool lamhere = 0, pihere = 0, pi0here = 0, numuhere = 0, muhere = 0, nuehere = 0, ehere = 0, lamBranch=0, pinlam=0, piinlam=0, lamchere=0;
         
+        
+        
+        
         Gen_hepevt_Manager &evt_manager = Gen_hepevt::get_manager();   
+        for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
+        {
+            if (!(evt->mother() && evt->mother()==1 && evt->mother().idhep()==10022))   continue; 
+            if (abs(evt->idhep())>=22)  mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
+        }
+  
+        //std::cout<<mc_pUPS.px()<<" "<<mc_pUPS.e()<<" "<<mc_pUPS.mag()<<std::endl;
+        
+        
+        
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
         {              
             idHEP = evt->idhep();
-            
-            if(evt->mo(0) == idMO) mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
-            
-            
-            if (idHEP!=911 && evt->isthep()>0 && !(evt->mother())) idMO = id; 
-            
             
             if (abs(idHEP)==4122 && lam_c_gen==0) // Lamc=4122   anti-Lamc=-4122  
             {
@@ -785,7 +792,8 @@ namespace Belle {
                     t1 -> column("mc_pnu", pStar(mc_p_nu,elec,posi).vect().mag());
                     t1 -> column("mc_plamc", pStar(mc_LamC.p(),elec,posi).vect().mag());
                     t1 -> column("mc_angnv", pStar(mc_p_nu,elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
-                    t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));  
+                    t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect())); 
+                    t1 -> column("mc_rmx",(mc_pUPS-momentum).mag());
                     t1->dumpData();
                 }
                 else
@@ -829,6 +837,7 @@ namespace Belle {
                     t1 -> column("mc_plamc", -1);
                     t1 -> column("mc_angnv", -10);
                     t1 -> column("mcanglcx", -10);
+                    t1 -> column("mc_rmx",-10);
                     t1->dumpData();
                 }
             }
@@ -1018,7 +1027,8 @@ namespace Belle {
                     t1 -> column("mc_pnu", pStar(mc_p_nu,elec,posi).vect().mag());
                     t1 -> column("mc_plamc", pStar(mc_LamC.p(),elec,posi).vect().mag());
                     t1 -> column("mc_angnv", pStar(mc_p_nu,elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
-                    t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));  
+                    t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));
+                    t1 -> column("mc_rmx",(mc_pUPS-momentum).mag());
                     t1->dumpData();
                 }
                 else
@@ -1063,6 +1073,7 @@ namespace Belle {
                     t1 -> column("mc_plamc", -1);
                     t1 -> column("mc_angnv", -10);
                     t1 -> column("mcanglcx", -10);
+                    t1 -> column("mc_rmx",-10);
                     t1->dumpData();
                 }
                 
