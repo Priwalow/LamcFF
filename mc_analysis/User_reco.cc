@@ -664,7 +664,7 @@ namespace Belle {
                     lam_c_rec++;
                     
                     
-                    int addpi=0, addpi0=0, totcharge=calcuCharge(*l)+calcuCharge(*a);
+                    int addpi=0, addpi0=0, totcharge=calcuCharge(l)+calcuCharge(a);
                     for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
                     {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) addpi0++;
@@ -920,7 +920,7 @@ namespace Belle {
                     Particle &LamC=*l;
                     lam_c_rec++;
                     
-                    int addpi=0, addpi0=0, totcharge=calcuCharge(*l)+calcuCharge(*a);
+                    int addpi=0, addpi0=0, totcharge=calcuCharge(l)+calcuCharge(a);
                     for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
                     {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) addpi0++;
