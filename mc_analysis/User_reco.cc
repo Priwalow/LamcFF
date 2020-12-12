@@ -11,7 +11,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx mc_rmx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox addpi addpi0 totcharg ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx mc_rmx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
@@ -192,6 +192,7 @@ namespace Belle {
         nlamc_gen+=lam_c_gen;
         
         if(!(nevent%1000)) cout << "mc_pUPS: " << mc_pUPS <<  ";  pUPS: "<< pUPS << endl;
+        pUPS = mc_pUPS; //temp
         
         //*****************FILLING GEN MC TREE**********************
          
@@ -304,29 +305,26 @@ namespace Belle {
         
         
         //kaons and pions
-        std::vector<Particle>  k_p, k_m, pi_p, pi_m;
+        std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
-        ntrk=k_p.size()+k_m.size();
         
-        withdRdZcut(k_p,runIp.z());
-        withdRdZcut(pi_p,runIp.z());
-        withdRdZcut(k_m,runIp.z());
-        withdRdZcut(pi_m,runIp.z());
-        
+        for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
+            pions.push_back(*l);
+        for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
+            pions.push_back(*l);
         
         withKaonId(k_p,0.6,3,1,5,3,4);
         withKaonId(k_p,0.6,3,1,5,3,2);
         withKaonId(k_m,0.6,3,1,5,3,4);
         withKaonId(k_m,0.6,3,1,5,3,2);
         
-        
-        
-        
-        /*for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
-            pions.push_back(*l);
-        for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
-            pions.push_back(*l);*/
+        ntrk=k_p.size()+k_m.size();
+
+        withdRdZcut(k_p,runIp.z());
+        withdRdZcut(pi_p,runIp.z());
+        withdRdZcut(k_m,runIp.z());
+        withdRdZcut(pi_m,runIp.z());
         
         //Ks mesons
         std::vector<Particle> k_s;
@@ -546,6 +544,7 @@ namespace Belle {
         setUserInfo(L_b, 3);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         setUserInfo(L_b, 4);
+
         
         //combination (L_,ptype_ALamc, p_p, D0);
         //setUserInfo(L_, 1);
@@ -662,8 +661,20 @@ namespace Belle {
                     
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
-                    
                     lam_c_rec++;
+                    
+                    
+                    int addpi=0, addpi0=0, totcharge=calcuCharge(*l)+calcuCharge(*a);
+                    for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
+                    {
+                        if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) addpi0++;
+                    }
+                    for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
+                    {
+                        if( !(checkSame(*l,*pi)||checkSame(*a,*pi)) ) addpi++;
+                        totcharge += pi->charge();
+                    }
+                    
                     
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
@@ -794,6 +805,11 @@ namespace Belle {
                     t1 -> column("mc_angnv", pStar(mc_p_nu,elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
                     t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect())); 
                     t1 -> column("mc_rmx",(mc_pUPS-momentum).mag());
+                    
+                    t1 -> column("addpi",addpi);
+                    t1 -> column("addpi0",addpi0);
+                    t1 -> column("totcharg",totcharge);
+                    
                     t1->dumpData();
                 }
                 else
@@ -837,7 +853,11 @@ namespace Belle {
                     t1 -> column("mc_plamc", -1);
                     t1 -> column("mc_angnv", -10);
                     t1 -> column("mcanglcx", -10);
-                    t1 -> column("mc_rmx",-10);
+                    t1 -> column("mc_rmx",(mc_pUPS-momentum).mag());
+                    
+                    t1 -> column("addpi",-1);
+                    t1 -> column("addpi0",-1);
+                    t1 -> column("totcharg",-100);
                     t1->dumpData();
                 }
             }
@@ -898,8 +918,18 @@ namespace Belle {
                 {
                     if ( checkSame(*a,*l) ) continue;
                     Particle &LamC=*l;
-                    
                     lam_c_rec++;
+                    
+                    int addpi=0, addpi0=0, totcharge=calcuCharge(*l)+calcuCharge(*a);
+                    for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
+                    {
+                        if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) addpi0++;
+                    }
+                    for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
+                    {
+                        if( !(checkSame(*l,*pi)||checkSame(*a,*pi)) ) addpi++;
+                        totcharge += pi->charge();
+                    }
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
                     Mvis = (momentum+LamC.p()).mag();
@@ -1029,6 +1059,10 @@ namespace Belle {
                     t1 -> column("mc_angnv", pStar(mc_p_nu,elec,posi).vect().angle(-pStar(momentum+LamC.p(),elec,posi).vect()));  
                     t1 -> column("mcanglcx", pStar(mc_LamC.p(),elec,posi).vect().angle(-pStar(momentum,elec,posi).vect()));
                     t1 -> column("mc_rmx",(mc_pUPS-momentum).mag());
+                    
+                    t1 -> column("addpi",addpi);
+                    t1 -> column("addpi0",addpi0);
+                    t1 -> column("totcharg",totcharge);
                     t1->dumpData();
                 }
                 else
@@ -1073,7 +1107,11 @@ namespace Belle {
                     t1 -> column("mc_plamc", -1);
                     t1 -> column("mc_angnv", -10);
                     t1 -> column("mcanglcx", -10);
-                    t1 -> column("mc_rmx",-10);
+                    t1 -> column("mc_rmx",(mc_pUPS-momentum).mag());
+                    
+                    t1 -> column("addpi",-1);
+                    t1 -> column("addpi0",-1);
+                    t1 -> column("totcharg",-100);
                     t1->dumpData();
                 }
                 
