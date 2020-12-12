@@ -149,7 +149,7 @@ void Lc2Lpi3Dfit()
     TF3* fmain = new TF3("fmain",myfdat,-TMath::Pi(),TMath::Pi(),lend,rend,lend,rend,3);
     fmain -> SetParameters(4,0.5,0);
     fmain -> SetParLimits(2,-TMath::Pi()-0.005,TMath::Pi()+0.005);
-    
+    //fmain -> FixParameter(2,TMath::Pi());
     
     TFitResultPtr fitResult;
     fitResult = hmain -> Fit("fmain","L S M N","goff"); //L S M N Q
