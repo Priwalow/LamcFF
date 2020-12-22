@@ -319,23 +319,47 @@ namespace Belle {
         
         
         std::vector <Particle> L_, L_b;
-        //combination (L_b,ptype_Lamc, p_m, D0_b);
-        //setUserInfo(L_b, 1);
-        //combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
-        //setUserInfo(L_b, 2);
+        combination (L_b,ptype_Lamc, p_m, D0_b);
+        setUserInfo(L_b, 1);
+        combination (L_b,ptype_Lamc, p_m, D0_b, pi_p, pi_m);
+        setUserInfo(L_b, 11);
+        combination (L_b,ptype_Lamc, p_m, D0_b, pi0);
+        setUserInfo(L_b, 12);
+        combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
+        setUserInfo(L_b, 2);
+        combination (L_b,ptype_Lamc, p_m, D_m, pi_p, pi0);
+        setUserInfo(L_b, 22);
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         setUserInfo(L_b, 3);
+        combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p, pi0);
+        setUserInfo(L_b, 32);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         setUserInfo(L_b, 4);
+        combination (L_b,ptype_Lamc, p_m, Dst0_b, pi_p, pi_m);
+        setUserInfo(L_b, 41);
+        combination (L_b,ptype_Lamc, p_m, Dst0_b, pi0);
+        setUserInfo(L_b, 42);
         
-        //combination (L_,ptype_ALamc, p_p, D0);
-        //setUserInfo(L_, 1);
-        //combination (L_,ptype_ALamc, p_p, D_p, pi_m);
-        //setUserInfo(L_, 2);
+        combination (L_,ptype_ALamc, p_p, D0);
+        setUserInfo(L_, 1);
+        combination (L_,ptype_ALamc, p_p, D0, pi_m, pi_p);
+        setUserInfo(L_, 11);
+        combination (L_,ptype_ALamc, p_p, D0, pi0);
+        setUserInfo(L_, 12);
+        combination (L_,ptype_ALamc, p_p, D_p, pi_m);
+        setUserInfo(L_, 2);
+        combination (L_,ptype_ALamc, p_p, D_p, pi_m, pi0);
+        setUserInfo(L_, 22);
         combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
         setUserInfo(L_, 3);
+        combination (L_,ptype_ALamc, p_p, Dst_p, pi_m, pi0);
+        setUserInfo(L_, 32);
         combination (L_,ptype_ALamc, p_p, Dst0);
         setUserInfo(L_, 4);
+        combination (L_,ptype_ALamc, p_p, Dst0, pi_m, pi_p);
+        setUserInfo(L_, 41);
+        combination (L_,ptype_ALamc, p_p, Dst0, pi0);
+        setUserInfo(L_, 42);
         
         
         //######################################    SIGNAL SIDE
@@ -379,10 +403,10 @@ namespace Belle {
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
-        combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.05);
-        combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.05);
-        setUserInfo(Lc,5);
-        setUserInfo(Lcb,5);
+        //combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.05);
+        //combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.05);
+        //setUserInfo(Lc,5);
+        //setUserInfo(Lcb,5);
         
         if(!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
         
@@ -405,21 +429,21 @@ namespace Belle {
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
                 pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10;
         
-                if (tag==1)
+                if (tag==1 || tag==11 || tag==12)
                 {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     if( dch==3 || dch==6 ) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                     //mKs = ALamC.child(1).child(0).mass();
                 }
-                else if (tag==2)
+                else if (tag==2 || tag==22)
                 {
                     dch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                     mD =  dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
                     if( dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).userInfo()).mass();
                         else if (dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(2).userInfo()).mass();
                 }
-                else if (tag==3)
+                else if (tag==3 || tag==32)
                 {
                     dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
@@ -429,7 +453,7 @@ namespace Belle {
                     else if (dstch==2 && dch==2) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(0).userInfo()).mass();
                     else if (dstch==2 && dch == 3) mKs = dynamic_cast<UserInfo&>(ALamC.child(1).child(0).child(2).userInfo()).mass();
                 }
-                else if (tag==4)
+                else if (tag==4 || tag==41 || tag==42)
                 {
                     dstch = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).channel();
                     mDst = dynamic_cast<UserInfo&>(ALamC.child(1).userInfo()).mass();
