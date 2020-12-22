@@ -315,7 +315,7 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
         
         combination (L_b,ptype_Lamc, p_m, D0_b, pi_p, pi_m);
-        combination (L_b,ptype_Lamc, p_m, D_m, pi_p, pi_p, pi_m);
+        combination (L_b,ptype_Lamc, pi_p, pi_p, p_m, D_m, pi_m);
         
         combination (L_b,ptype_Lamc, p_m, D0_b, pi0);
         combination (L_b,ptype_Lamc, p_m, D_m, pi_p, pi0);
@@ -323,7 +323,7 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         
-        combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p, pi_p, pi_m);
+        combination (L_b,ptype_Lamc, pi_p, pi_p, p_m, Dst_m, pi_m);
         combination (L_b,ptype_Lamc, p_m, Dst0_b, pi_p, pi_m);
         
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p, pi0);
@@ -337,7 +337,7 @@ namespace Belle {
         combination (L_,ptype_ALamc, p_p, D_p, pi_m);
         
         combination (L_,ptype_ALamc, p_p, D0, pi_m, pi_p);
-        combination (L_,ptype_ALamc, p_p, D_p, pi_m, pi_m, pi_p);
+        combination (L_,ptype_ALamc, pi_m, pi_m, p_p, D_p, pi_p);
         
         combination (L_,ptype_ALamc, p_p, D0, pi0);
         combination (L_,ptype_ALamc, p_p, D_p, pi_m, pi0);
@@ -345,7 +345,7 @@ namespace Belle {
         combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
         combination (L_,ptype_ALamc, p_p, Dst0);
         
-        combination (L_,ptype_ALamc, p_p, Dst_p, pi_m, pi_m, pi_p);
+        combination (L_,ptype_ALamc, pi_m, pi_m, p_p, Dst_p, pi_p);
         combination (L_,ptype_ALamc, p_p, Dst0, pi_m, pi_p);
         
         combination (L_,ptype_ALamc, p_p, Dst_p, pi_m, pi0);
