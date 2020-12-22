@@ -24,7 +24,7 @@
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    TCut commonLcLpiCut = "lcch==4 && abs(ml-1.11568)<0.003 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+    TCut commonLcLpiCut = "q>0 && abs(plslc-1./(2*2.28646)*sqrt((11.57456-q*fabs(q))*(1.370726-q*fabs(q))))<0.05 && lcch==4 && abs(ml-1.11568)<0.003 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
     TCut rmxlsbCut = "rmx-2.29 < -0.15 && rmx-2.29 > -0.25";
     TCut rmxrsbCut = "rmx-2.29 > 0.15 && rmx-2.29 < 0.25";
     Ntot +=  ch1dat -> Draw("rmvis*fabs(rmvis)>>+hdat","abs(rmx-2.29)<0.1"+ commonLcLpiCut+Mwindow,"goff");
@@ -37,7 +37,7 @@
     TF1* fbkg = new TF1("fbkg","[0]",lend,rend);    
     
 
-    fdat -> SetParameters(10,0,0.05,1); //100,MLambdac,0.01,40,-300
+    fdat -> SetParameters(100,0,0.05,1); //100,MLambdac,0.01,40,-300
     fdat -> SetParLimits(1,-0.1,+0.1);
     fdat -> SetParLimits(0,0,1e5);
 
@@ -70,7 +70,7 @@
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M^{2}_{recoil}(#Lambda#mu^{+}#bar{p}#bar{D}^{*0})||M^{2}_{recoil}(#Lambda#mu^{+}#bar{p}D^{*-}#pi^{+})[GeV^{2}]");
+    hdat -> GetXaxis()-> SetTitle("M^{2}_{recoil}(#Lambda#mu^{+}X)[GeV^{2}]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetXaxis()-> SetTitleOffset(1.1);
@@ -118,8 +118,8 @@
    // leg->AddEntry("fsig","Signal","l");
     leg -> AddEntry("fdat","fit","l");
     leg -> AddEntry("fbkg","background","l");
-    leg -> AddEntry("hrsb","M(#Lambda#pi^{+}) right sb","l");
-    leg -> AddEntry("hlsb","M(#Lambda#pi^{+}) left sb","l");
+    leg -> AddEntry("hrsb","M_{recoil}(X) right sb","l");
+    leg -> AddEntry("hlsb","M_{recoil}(X) left sb","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
     leg -> Draw("same");
@@ -129,10 +129,12 @@
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
-    tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); //
+    tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); 
+    tstatfit -> DrawLatex(0.67, 0.6, "#Lambda^{+}_{c} #rightarrow #Lambda#mu^{+}#nu_{#mu}");
+    //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
-    tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
-    tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
+   // tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
+   // tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
    
     
