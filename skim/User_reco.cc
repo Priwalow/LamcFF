@@ -77,15 +77,6 @@ namespace Belle {
         
         if(p_p.size()+p_m.size()==0) return; 
         
-        //Lambda hyperons
-        std::vector<Particle> lam, lamb;
-        makeLam(lam,lamb);
-        
-        doMassVertexFit(lam);
-        doMassVertexFit(lamb);
-        
-        if(lam.size()+lamb.size()==0) return; 
-        
         //kaons and pions
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
@@ -314,20 +305,20 @@ namespace Belle {
         combination (L_b,ptype_Lamc, p_m, D0_b);
         combination (L_b,ptype_Lamc, p_m, D_m, pi_p);
         
-        combination (L_b,ptype_Lamc, p_m, D0_b, pi_p, pi_m);
+        //combination (L_b,ptype_Lamc, p_m, D0_b, pi_p, pi_m);
         //combination (L_b,ptype_Lamc, pi_p, pi_p, p_m, D_m, pi_m);
         
-        combination (L_b,ptype_Lamc, p_m, D0_b, pi0);
-        combination (L_b,ptype_Lamc, p_m, D_m, pi_p, pi0);
+        //combination (L_b,ptype_Lamc, p_m, D0_b, pi0);
+        //combination (L_b,ptype_Lamc, p_m, D_m, pi_p, pi0);
         
         combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p);
         combination (L_b,ptype_Lamc, p_m, Dst0_b);
         
         //combination (L_b,ptype_Lamc, pi_p, pi_p, p_m, Dst_m, pi_m);
-        combination (L_b,ptype_Lamc, p_m, Dst0_b, pi_p, pi_m);
+        //combination (L_b,ptype_Lamc, p_m, Dst0_b, pi_p, pi_m);
         
-        combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p, pi0);
-        combination (L_b,ptype_Lamc, p_m, Dst0_b, pi0);
+        //combination (L_b,ptype_Lamc, p_m, Dst_m, pi_p, pi0);
+        //combination (L_b,ptype_Lamc, p_m, Dst0_b, pi0);
         
         
         
@@ -336,20 +327,20 @@ namespace Belle {
         combination (L_,ptype_ALamc, p_p, D0);
         combination (L_,ptype_ALamc, p_p, D_p, pi_m);
         
-        combination (L_,ptype_ALamc, p_p, D0, pi_m, pi_p);
+        //combination (L_,ptype_ALamc, p_p, D0, pi_m, pi_p);
         //combination (L_,ptype_ALamc, pi_m, pi_m, p_p, D_p, pi_p);
         
-        combination (L_,ptype_ALamc, p_p, D0, pi0);
-        combination (L_,ptype_ALamc, p_p, D_p, pi_m, pi0);
+        //combination (L_,ptype_ALamc, p_p, D0, pi0);
+        //combination (L_,ptype_ALamc, p_p, D_p, pi_m, pi0);
         
         combination (L_,ptype_ALamc, p_p, Dst_p, pi_m);
         combination (L_,ptype_ALamc, p_p, Dst0);
         
         //combination (L_,ptype_ALamc, pi_m, pi_m, p_p, Dst_p, pi_p);
-        combination (L_,ptype_ALamc, p_p, Dst0, pi_m, pi_p);
+        //combination (L_,ptype_ALamc, p_p, Dst0, pi_m, pi_p);
         
-        combination (L_,ptype_ALamc, p_p, Dst_p, pi_m, pi0);
-        combination (L_,ptype_ALamc, p_p, Dst0, pi0);
+        //combination (L_,ptype_ALamc, p_p, Dst_p, pi_m, pi0);
+        //combination (L_,ptype_ALamc, p_p, Dst0, pi0);
         
         if (L_b.size()+L_.size()==0) return;
         
@@ -362,23 +353,13 @@ namespace Belle {
         {
             Particle &ALamC=*a;
             
-            bool siglam = 0;
-            for(std::vector<Particle>::iterator l=lam.begin(); l!=lam.end();++l)
-            {
-                    if (!checkSame(*a,*l))
-                    {
-                        siglam = 1;
-                        break;
-                    }
-            }
-            
 
             HepLorentzVector momentum=ALamC.p();
             //       std::cout <<"a1\n";
             // final selection 
             mrec = (pUPS-momentum).mag();
             
-            if (mrec > 1.5 && mrec <2.6 && siglam) 
+            if (mrec > 1.3 && mrec <2.6) 
             {*status=1; skimmed++; return;}
         }
         
@@ -386,15 +367,6 @@ namespace Belle {
         {
             Particle &ALamC=*a;
             
-            bool siglam = 0;
-            for(std::vector<Particle>::iterator l=lamb.begin(); l!=lamb.end();++l)
-            {
-                    if (!checkSame(*a,*l))
-                    {
-                        siglam = 1;
-                        break;
-                    }
-            }
             
             
             HepLorentzVector momentum=ALamC.p();
@@ -402,7 +374,7 @@ namespace Belle {
             // final selection 
             mrec = (pUPS-momentum).mag();
             
-            if (mrec > 1.5 && mrec < 2.6 && siglam) 
+            if (mrec > 1.3 && mrec < 2.6) 
             {*status=1; skimmed++; return;}
         }
         
