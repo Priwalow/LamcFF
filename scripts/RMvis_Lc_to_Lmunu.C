@@ -10,7 +10,8 @@
     
     
     TString datapath = "../analysis/hmerge/";    
-    TChain* ch1dat = new TChain("h1"); //without pi0
+    //TString datapath = "../mc_analysis/hmerge/";   
+    TChain* ch1dat = new TChain("h1"); 
     ch1dat -> Add(datapath+"*.root");
     
     double lend=-0.25, rend=0.25, MLambdac=2.28646; //lend=2.21, rend=2.36
@@ -24,7 +25,7 @@
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    TCut commonLcLpiCut = "q>0 && abs(plslc-1./(2*2.28646)*sqrt((11.57456-q*fabs(q))*(1.370726-q*fabs(q))))<0.05 && lcch==4 && abs(ml-1.11568)<0.003 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+    TCut commonLcLpiCut = "abs(rmx-2.29)<0.1 && lcch==4 && abs(ml-1.11568)<0.003 && q>0 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))))";
     TCut rmxlsbCut = "rmx-2.29 < -0.15 && rmx-2.29 > -0.25";
     TCut rmxrsbCut = "rmx-2.29 > 0.15 && rmx-2.29 < 0.25";
     Ntot +=  ch1dat -> Draw("rmvis*fabs(rmvis)>>+hdat","abs(rmx-2.29)<0.1"+ commonLcLpiCut+Mwindow,"goff");
@@ -70,7 +71,7 @@
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M^{2}_{recoil}(#Lambda#mu^{+}X)[GeV^{2}]");
+    hdat -> GetXaxis()-> SetTitle("M^{2}_{recoil}(#Lambda#mu^{+}#bar{p}D^{*-}#pi^{+})[GeV^{2}]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetXaxis()-> SetTitleOffset(1.1);
@@ -136,7 +137,13 @@
    // tstatfit -> DrawLatex(0.67, 0.59, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
    // tstatfit -> DrawLatex(0.67, 0.53, Form("#sigma_{sig} = %0.4lf #pm %0.4lf",par[2], fdat -> GetParError(2)));
 
-   
+    double top = hdat->GetMaximum();
+    TLine* line2 = new TLine(-0.1,0,-0.1,top*0.95);
+    TLine* line3 = new TLine(0.1,0,0.1,top*0.95);
+    line2 -> SetLineWidth(4);
+    line3 -> SetLineWidth(4);
+    line2 -> Draw("same");
+    line3 -> Draw("same");
     
 } 
  

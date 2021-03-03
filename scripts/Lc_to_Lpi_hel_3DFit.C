@@ -1,5 +1,5 @@
 
-TCut totCUT =  "lcch==1 && abs(mlc-2.28646)<0.02 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && ((tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))))";
+TCut totCUT =  "lcch==1 && abs(mlc-2.28646)<0.02 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))))";
 
 double minX=-TMath::Pi(), maxX=TMath::Pi(), minY=-1, maxY=1, minZ=-1, maxZ=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; 
 int NbinsX=3, NbinsY=2, NbinsZ=2;
@@ -146,7 +146,7 @@ void Lc2Lpi3Dfit()
 
     
     TF3* fmain = new TF3("fmain",myfdat,minX,maxX,minY,maxY,minZ,maxZ,3);
-    fmain -> SetParameters(4,0.5,0);
+    fmain -> SetParameters(4,0,3);
     fmain -> SetParLimits(2,-TMath::Pi()-0.005,TMath::Pi()+0.005);
     //fmain -> FixParameter(2,TMath::Pi());
     
