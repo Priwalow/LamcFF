@@ -279,7 +279,7 @@ namespace Belle {
         t2 -> column("hw",mc_cosW);
         t2 -> column("chi",mc_angchi);
         t2 -> column("plslc",boostT(mc_lam.p(), mc_LamC.p()).vect().mag());
-        t2 -> column("pnulc",boostT(mc_p_nu.p(), mc_LamC.p()).vect().mag());        
+        t2 -> column("pnulc",boostT(mc_p_nu, mc_LamC.p()).vect().mag());        
         
         t2 -> column("philclam",mc_dphi_lc_lam);
         t2 -> column("lcp2dcm",pStar(mc_P_2d_from_LamC,elec,posi).vect().mag());
