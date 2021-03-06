@@ -471,7 +471,7 @@ namespace Belle {
                     }
             }
  
-            if (LamC.child(0).relation().genHepevt().mother() && LamC.child(1).relation().genHepevt().mother()) 
+            /*if (LamC.child(0).relation().genHepevt().mother() && LamC.child(1).relation().genHepevt().mother()) 
             { // mothers
                 if (LamC.child(0).relation().genHepevt().mother()==LamC.child(1).relation().genHepevt().mother()) 
                 { // eq mothers
@@ -480,7 +480,7 @@ namespace Belle {
                         lamc_flag++;
                     }
                 }
-            }
+            }*/
             
             
             t1 -> column("fox", fox);  
