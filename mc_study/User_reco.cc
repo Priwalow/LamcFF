@@ -458,13 +458,13 @@ namespace Belle {
             
             if (pi_from_lam.relation().genHepevt()) lam_flag++;
             
-            if (LamC.child(1).relation().genHepevt()) lamc_flag++;
+            //if (LamC.child(1).relation().genHepevt()) lamc_flag++;
             
             if (proton_from_lam.relation().genHepevt().mother() && pi_from_lam.relation().genHepevt().mother()) 
             { // mothers
                 if (proton_from_lam.relation().genHepevt().mother()==pi_from_lam.relation().genHepevt().mother()) 
                 { // eq mothers
-                    if (abs(proton_from_lam.relation().genHepevt().mother().idhep())==3122 && proton_from_lam.relation().genHepevt().mother()==LamC.child(0).relation().genHepevt())
+                    if (abs(proton_from_lam.relation().genHepevt().mother().idhep())==3122)
                     {
                         lam_flag++;
                         lamc_flag++;
