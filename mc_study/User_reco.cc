@@ -402,7 +402,8 @@ namespace Belle {
             Particle &LamC=*l;
             lam_c_rec++;
             
-            double mL, mLc, hlc=-10, hl=-10;
+            int lcch;
+            double mL, mLc, hlc=-10, hl=-10, dphi_lc_lam=-10;
             
             lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
             mLc = LamC.mass();          
@@ -424,14 +425,14 @@ namespace Belle {
                 if (abs(LamC.child(0).child(0).lund())>1000)
                 {
                     proton_from_lam = LamC.child(0).child(0);
-                    pi_from_lam = LamC.child(0).child(1)
+                    pi_from_lam = LamC.child(0).child(1);
                     p_proton_from_lam=proton_from_lam.p(); 
                     p_pi_from_lam=pi_from_lam.p();
                 }
                 else
                 {
                     proton_from_lam = LamC.child(0).child(1);
-                    pi_from_lam = LamC.child(0).child(0)
+                    pi_from_lam = LamC.child(0).child(0);
                     p_proton_from_lam=proton_from_lam.p(); 
                     p_pi_from_lam=pi_from_lam.p();
                 }
