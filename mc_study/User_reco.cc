@@ -453,14 +453,14 @@ namespace Belle {
             int  lam_flag = -2, lamc_flag = -2;
             
             
-            
+            cout << "Matching" << endl;
             if (proton_from_lam.relation().genHepevt()) lam_flag++;
-            
+            cout << "1" << endl;
             if (pi_from_lam.relation().genHepevt()) lam_flag++;
-            
+            cout << "2" << endl;
             if (LamC.child(1).relation().genHepevt()) lamc_flag++;
-            
-            if (proton_from_lam.relation().genHepevt().mother() && pi_from_lam.relation().genHepevt().mother()) 
+            cout << "3" << endl;
+            /*if (proton_from_lam.relation().genHepevt().mother() && pi_from_lam.relation().genHepevt().mother()) 
             { // mothers
                 if (proton_from_lam.relation().genHepevt().mother()==pi_from_lam.relation().genHepevt().mother()) 
                 { // eq mothers
@@ -471,6 +471,7 @@ namespace Belle {
                     }
                 }    
             }
+            */
  
             /*if (LamC.child(0).relation().genHepevt().mother() && LamC.child(1).relation().genHepevt().mother()) 
             { // mothers
