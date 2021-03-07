@@ -520,27 +520,6 @@ namespace Belle {
     
 }
 
-    Gen_hepevt My_mother(Gen_hepevt a, int fl, int & d){
-    if (a.mother()){
-        if ((abs(a.mother().idhep()) < fl*100 || abs(a.mother().idhep()) > 110*fl) && (abs(a.mother().idhep()) != 15)){
-            return My_mother(a.mother(),fl,d);
-        }else {
-            if (abs(a.mother().idhep()) == 15) {
-                d = 2;
-            } else {
-                if (abs(a.mother().idhep()) < 107*fl) {
-                    d = 0;
-                } else {
-                    d = 1;
-                }
-            }
-        }
-        return a.mother();
-    } else {
-        return a;
-    }
-    }
-
     
     void withdRdZcut(std::vector<Particle> &p,double ip_position, double drcut, double dzcut)
     {
