@@ -458,7 +458,7 @@ namespace Belle {
             
             if (pi_from_lam.relation().genHepevt()) lam_flag++;
             
-            //if (LamC.child(1).relation().genHepevt()) lamc_flag++;
+            if (LamC.child(1).relation().genHepevt()) lamc_flag++;
             
             if (proton_from_lam.relation().genHepevt().mother() && pi_from_lam.relation().genHepevt().mother()) 
             { // mothers
@@ -469,6 +469,7 @@ namespace Belle {
                         lam_flag++;
                         lamc_flag++;
                     }
+                }    
             }
  
             /*if (LamC.child(0).relation().genHepevt().mother() && LamC.child(1).relation().genHepevt().mother()) 
