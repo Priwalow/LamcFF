@@ -499,7 +499,7 @@ namespace Belle {
                 lam_from_lamc_moidhep = LamC.child(0).relation().genHepevt().mother().idhep();
                 lam_from_lamc_moID = LamC.child(0).relation().genHepevt().mother().get_ID();
             }
-            n_lam_daughters = LamC.child(0).relation().genHepevt().daLast()-LamC.child(0).relation().genHepevt().daFist()+1;
+            n_lam_daughters = LamC.child(0).relation().genHepevt().daLast()-LamC.child(0).relation().genHepevt().daFirst()+1;
             
             
             lamc_idhep = LamC.relation().genHepevt().idhep();
