@@ -328,8 +328,8 @@ namespace Belle {
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
-        setGenHepEvtInfoLambda(lam);
-        setGenHepEvtInfoLambda(lamb);
+        //setGenHepEvtInfoLambda(lam);
+        //setGenHepEvtInfoLambda(lamb);
         
         setUserInfo(lam,  11 ); 
         setUserInfo(lamb, 12 ); 
@@ -496,10 +496,12 @@ namespace Belle {
             cout << "Matching lam from lamc" << endl;
             if(LamC.child(0).genHepevt())
             {
+                cout << "Lam" << endl;
                 lam_from_lamc_idhep = LamC.child(0).genHepevt().idhep();
                 lam_from_lamc_ID = LamC.child(0).genHepevt().get_ID();
                 if(LamC.child(0).genHepevt().mother())
                 {
+                     cout << "Lam mother" << endl;
                     lam_from_lamc_moidhep = LamC.child(0).genHepevt().mother().idhep();
                     lam_from_lamc_moID = LamC.child(0).genHepevt().mother().get_ID();
                 }
