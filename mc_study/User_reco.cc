@@ -328,9 +328,6 @@ namespace Belle {
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
-        setGenHepInfoT(lam);
-        setGenHepInfoT(lamb);
-        
         setUserInfo(lam,  11 ); 
         setUserInfo(lamb, 12 ); 
         doMassVertexFit(lam);
@@ -392,9 +389,6 @@ namespace Belle {
         //setUserInfo(Lc,5);
         //setUserInfo(Lcb,5);
         
-        
-        setGenHepInfoT(Lc);
-        setGenHepInfoT(Lcb);
         
         for(std::vector<Particle>::iterator l = Lc.begin(); l!=Lc.end(); ++l)
             allLamc.push_back(*l);
@@ -494,7 +488,7 @@ namespace Belle {
                 d2_from_lamc_moID = i->hepevt().mother().get_ID();
             }
             
-            cout << "Matching lam from lamc" << endl;
+            /*cout << "Matching lam from lamc" << endl;
             lam_from_lamc_idhep = LamC.child(0).relation().genHepevt().idhep();
             lam_from_lamc_ID = LamC.child(0).relation().genHepevt().get_ID();
             if(LamC.child(0).relation().genHepevt().mother())
@@ -533,7 +527,7 @@ namespace Belle {
 
            
             
-             /*cout << "Matching" << endl;
+             cout << "Matching" << endl;
             if (proton_from_lam.relation().genHepevt()) lam_flag++;
             cout << "1" << endl;
             if (pi_from_lam.relation().genHepevt()) lam_flag++;
