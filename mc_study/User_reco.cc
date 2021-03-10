@@ -463,7 +463,7 @@ namespace Belle {
             proton_from_lam_moidhep=-1000, pion_from_lam_moidhep=-1000, lam_from_lamc_moidhep=-1000, d2_from_lamc_moidhep=-1000, lamc_moidhep=-1000, 
             lam_from_lamc_ID=-1000, lamc_ID=-1000, proton_from_lam_moID=-1000, pion_from_lam_moID = -1000, lam_from_lamc_moID=-1000, d2_from_lamc_moID=-1000, last_lamc_da_ID=-1000, first_lamc_da_ID=-1000, n_lamc_daughters= -1000, n_lam_daughters=-1000;
             
-            
+            cout << "Matching p from lam" << endl;
             Mdst_sim_trk_Manager &xrefMgr_ = Mdst_sim_trk_Manager::get_manager();
             for(std::vector<Mdst_sim_trk>::iterator i = xrefMgr_.begin(); i != xrefMgr_.end(); ++i) 
             {
@@ -474,6 +474,7 @@ namespace Belle {
                 proton_from_lam_moID = i->hepevt().mother().get_ID();
             }
             
+            cout << "Matching pi from lam" << endl;
             for(std::vector<Mdst_sim_trk>::iterator i = xrefMgr_.begin(); i != xrefMgr_.end(); ++i) 
             {
                 if (pi_from_lam.mdstCharged().trk() != i->trk()) continue;
@@ -483,6 +484,7 @@ namespace Belle {
                 pion_from_lam_moID = i->hepevt().mother().get_ID();
             }
             
+            cout << "Matching 2d from lamc" << endl;
             for(std::vector<Mdst_sim_trk>::iterator i = xrefMgr_.begin(); i != xrefMgr_.end(); ++i) 
             {
                 if (LamC.child(1).mdstCharged().trk() != i->trk()) continue;
@@ -492,6 +494,7 @@ namespace Belle {
                 d2_from_lamc_moID = i->hepevt().mother().get_ID();
             }
             
+            cout << "Matching lam from lamc" << endl;
             lam_from_lamc_idhep = LamC.child(0).relation().genHepevt().idhep();
             lam_from_lamc_ID = LamC.child(0).relation().genHepevt().get_ID();
             if(LamC.child(0).relation().genHepevt().mother())
@@ -501,12 +504,12 @@ namespace Belle {
             }
             n_lam_daughters = LamC.child(0).relation().genHepevt().daLast()-LamC.child(0).relation().genHepevt().daFirst()+1;
             
-            
+            cout << "Matching lamc" << endl;
             lamc_idhep = LamC.relation().genHepevt().idhep();
             lamc_ID = LamC.relation().genHepevt().get_ID();
             if(LamC.relation().genHepevt().mother()) lamc_moidhep = LamC.child(0).relation().genHepevt().mother().idhep();
             
-            
+            cout << "Matching 3d from lamc" << endl;
             last_lamc_da_ID = LamC.relation().genHepevt().daLast();
             first_lamc_da_ID = LamC.relation().genHepevt().daFirst();
             n_lamc_daughters = last_lamc_da_ID - first_lamc_da_ID + 1;
