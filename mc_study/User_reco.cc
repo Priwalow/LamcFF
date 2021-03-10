@@ -328,8 +328,8 @@ namespace Belle {
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
-        setGenHepEvtInfo(lam);
-        setGenHepEvtInfo(lamb);
+        lam.setGenHepEvtInfo();
+        lamb.setGenHepEvtInfo();
         
         setUserInfo(lam,  11 ); 
         setUserInfo(lamb, 12 ); 
