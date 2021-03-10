@@ -328,6 +328,9 @@ namespace Belle {
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
+        setGenHepEvtInfoLambda(lam);
+        setGenHepEvtInfoLambda(lamb);
+        
         setUserInfo(lam,  11 ); 
         setUserInfo(lamb, 12 ); 
         doMassVertexFit(lam);
@@ -488,17 +491,22 @@ namespace Belle {
                 d2_from_lamc_moID = i->hepevt().mother().get_ID();
             }
             
-            /*cout << "Matching lam from lamc" << endl;
-            lam_from_lamc_idhep = LamC.child(0).relation().genHepevt().idhep();
-            lam_from_lamc_ID = LamC.child(0).relation().genHepevt().get_ID();
-            if(LamC.child(0).relation().genHepevt().mother())
-            {
-                lam_from_lamc_moidhep = LamC.child(0).relation().genHepevt().mother().idhep();
-                lam_from_lamc_moID = LamC.child(0).relation().genHepevt().mother().get_ID();
-            }
-            n_lam_daughters = LamC.child(0).relation().genHepevt().daLast()-LamC.child(0).relation().genHepevt().daFirst()+1;
             
-            cout << "Matching lamc" << endl;
+            
+            cout << "Matching lam from lamc" << endl;
+            if(LamC.child(0).genHepevt())
+            {
+                lam_from_lamc_idhep = LamC.child(0).genHepevt().idhep();
+                lam_from_lamc_ID = LamC.child(0).genHepevt().get_ID();
+                if(LamC.child(0).genHepevt().mother())
+                {
+                    lam_from_lamc_moidhep = LamC.child(0).genHepevt().mother().idhep();
+                    lam_from_lamc_moID = LamC.child(0).genHepevt().mother().get_ID();
+                }
+                n_lam_daughters = LamC.child(0).genHepevt().daLast()-LamC.child(0).genHepevt().daFirst()+1;
+            }
+            
+            /*cout << "Matching lamc" << endl;
             lamc_idhep = LamC.relation().genHepevt().idhep();
             lamc_ID = LamC.relation().genHepevt().get_ID();
             if(LamC.relation().genHepevt().mother()) lamc_moidhep = LamC.child(0).relation().genHepevt().mother().idhep();
