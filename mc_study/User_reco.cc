@@ -461,7 +461,7 @@ namespace Belle {
             //test match
             int  proton_from_lam_idhep=-1000, pion_from_lam_idhep=-1000, lam_from_lamc_idhep=-1000, d2_from_lamc_idhep=-1000, lamc_idhep=-1000, d3_from_lamc_idhep=-1000,
             proton_from_lam_moidhep=-1000, pion_from_lam_moidhep=-1000, lam_from_lamc_moidhep=-1000, d2_from_lamc_moidhep=-1000, lamc_moidhep=-1000, 
-            lam_from_lamc_ID=-1000; lamc_ID=-1000, proton_from_lam_moID=-1000, pion_from_lam_moID = -1000, lam_from_lamc_moID=-1000, d2_from_lamc_moID=-1000, last_lamc_da_ID=-1000, first_lamc_da_ID=-1000, n_lamc_daughters= -1000, n_lam_daughters=-1000;
+            lam_from_lamc_ID=-1000, lamc_ID=-1000, proton_from_lam_moID=-1000, pion_from_lam_moID = -1000, lam_from_lamc_moID=-1000, d2_from_lamc_moID=-1000, last_lamc_da_ID=-1000, first_lamc_da_ID=-1000, n_lamc_daughters= -1000, n_lam_daughters=-1000;
             
             
             Mdst_sim_trk_Manager &xrefMgr_ = Mdst_sim_trk_Manager::get_manager();
