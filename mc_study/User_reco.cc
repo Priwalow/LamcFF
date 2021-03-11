@@ -27,8 +27,14 @@ namespace Belle {
     double heli (  HepLorentzVector   P4A, HepLorentzVector P4B, HepLorentzVector P4system);
     HepLorentzVector boostT( HepLorentzVector p, HepLorentzVector p_boost);
     HepLorentzVector boostT( HepLorentzVector *p, HepLorentzVector *p_boost);
+    
     void eraseLeptons(std::vector<Particle> &list);
-    Gen_hepevt My_mother(Gen_hepevt a, int fl, int & d);
+    void MysetGenHepEvtInfoCharged(vector<Particle> &plist );
+    bool MysetGenHepEvtInfoCharged(Particle & chg );
+    void MysetGenHepEvtInfoLambda(vector<Particle> & vlam );
+     
+    
+    
     
     void withdRdZcut(class std::vector<Particle> &p_list,double ip_position=0., double drcut = 2., double dzcut = 4.);
     void makeLam(std::vector<Particle> &lam0, std::vector<Particle> &lam0b);
@@ -307,8 +313,8 @@ namespace Belle {
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
         
-        setGenHepEvtInfo(pi_p);
-        setGenHepEvtInfo(pi_m);
+        MysetGenHepEvtInfo(pi_p);
+        MysetGenHepEvtInfo(pi_m);
         
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
@@ -337,8 +343,8 @@ namespace Belle {
         doMassVertexFit(lam);
         doMassVertexFit(lamb);
         
-        setGenHepEvtInfo(lam);
-        setGenHepEvtInfo(lamb);
+        MysetGenHepEvtInfo(lam);
+        MysetGenHepEvtInfo(lamb);
 
         
         
@@ -346,10 +352,10 @@ namespace Belle {
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
         
-        setGenHepEvtInfo(mu_p);
-        setGenHepEvtInfo(mu_m);
-        setGenHepEvtInfo(e_p);
-        setGenHepEvtInfo(e_m);
+        MysetGenHepEvtInfo(mu_p);
+        MysetGenHepEvtInfo(mu_m);
+        MysetGenHepEvtInfo(e_p);
+        MysetGenHepEvtInfo(e_m);
         
         
         withMuId(mu_p);
@@ -418,8 +424,7 @@ namespace Belle {
             Particle &LamC=*l;
             lam_c_rec++;
             
-            
-            
+
             int lcch;
             double mL, mLc, hlc=-10, hl=-10, dphi_lc_lam=-10;
             
@@ -473,12 +478,7 @@ namespace Belle {
             lam_from_lamc_ID=-1000, lamc_ID=-1000, proton_from_lam_moID=-1000, pion_from_lam_moID = -1000, lam_from_lamc_moID=-1000, d2_from_lamc_moID=-1000, last_lamc_da_ID=-1000, first_lamc_da_ID=-1000, n_lamc_daughters= -1000, n_lam_daughters=-1000;
             
             
-            
-            
-            
-            
-            
-            /*cout << "Matching p from lam" << endl;
+            cout << "Matching p from lam" << endl;
             Mdst_sim_trk_Manager &xrefMgr_ = Mdst_sim_trk_Manager::get_manager();
             for(std::vector<Mdst_sim_trk>::iterator i = xrefMgr_.begin(); i != xrefMgr_.end(); ++i) 
             {
@@ -525,7 +525,7 @@ namespace Belle {
                 }
                 n_lam_daughters = LamC.child(0).genHepevt().daLast()-LamC.child(0).genHepevt().daFirst()+1;
             }
-            
+            /*
             cout << "Matching lamc" << endl;
             lamc_idhep = LamC.relation().genHepevt().idhep();
             lamc_ID = LamC.relation().genHepevt().get_ID();
@@ -941,6 +941,88 @@ namespace Belle {
                 list.erase(list.begin()+i);
                 --i;
             }
+        }
+    }
+    
+    
+    
+    void  MysetGenHepEvtInfoCharged(vector<Particle> &plist )
+    {
+        if ( plist.size() == 0 ) { return; }
+        
+        // loop over the plist
+        for ( vector<Particle>::iterator i = plist.begin();
+             i != plist.end(); ++i ) {
+            setGenHepEvtInfoCharged( (Particle &)*i );
+             }
+    }
+    
+    bool MysetGenHepEvtInfoCharged(Particle & chg )
+    {
+        //
+        bool bret = false;
+        if ( !chg.mdstCharged() ) { return bret; }
+        
+        const Gen_hepevt & gen = get_hepevt(chg.mdstCharged());
+        if ( gen ) {
+            chg.relation().genHepevt( gen );
+            bret = true;
+        }
+        
+        return bret;
+    }
+    
+    
+    
+    
+    
+    
+    
+    void MysetGenHepEvtInfoLambda(vector<Particle> & vlam )
+    { 
+        if ( vlam.size() <= 0 ) { return; }
+        
+        for ( vector<Particle>::iterator i = vlam.begin(); i!= vlam.end(); i++ ) 
+        {
+            
+            // 
+            if ( abs((*i).lund()) != 3122 ) { continue; }
+            
+            // set children pion
+            if ( (*i).relation().nChildren() != 2 ) { continue; }
+            Particle & pos = (*i).child(0);
+        Particle & neg = (*i).child(1); 
+        if ( !pos || !neg ) { continue; }
+        
+        // set Gen_hepevt on children
+        bool setGen1 = setGenHepEvtInfoCharged( pos );
+        bool setGen2 = setGenHepEvtInfoCharged( neg );
+        if ( !setGen1 || !setGen2 ) { continue; }
+        
+        // get Gen_hepevt of children
+        const Gen_hepevt & gen1 = pos.genHepevt();
+        const Gen_hepevt & gen2 = neg.genHepevt();
+        if ( !gen1 || !gen2 ) { continue; }
+        
+        // check children 
+        if ((*i).lund() > 0){
+            if ( gen1.idhep() != 2212 || gen2.idhep() != -211  ) { continue; }
+        }else{ 
+            if ( gen1.idhep() != 211  || gen2.idhep() != -2212 ) { continue; }
+        }
+        
+        // get mother Gen_hepevt of chilren
+        const Gen_hepevt & mom1 = gen1.mother();
+        const Gen_hepevt & mom2 = gen2.mother();
+        if ( !mom1 || !mom2 ) { continue; }
+        
+        // mom1 == mom2 == lambda
+        if ( mom1.get_ID() == mom2.get_ID() &&
+            abs(mom1.idhep()) == 3122 ) {
+            (*i).relation().genHepevt( mom1 );
+        break;
+            }
+            
         }
     }
     

@@ -15,7 +15,6 @@
 #include "mdst/Muid_mdst.h"
 #include "eid/eid.h"
 #include "ip/IpProfile.h"
-#include "hamlet/Particle_List.h"
 
 #if defined(BELLE_NAMESPACE)
 namespace Belle {
