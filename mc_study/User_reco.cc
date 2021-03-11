@@ -566,7 +566,7 @@ namespace Belle {
                             
                         }
                     }
-                    if(LamC.child(0).genHepevt().mother().genHepevt().mother())
+                    if(LamC.child(0).genHepevt().mother().mother())
                     {
                         lamc_moidhep = LamC.child(0).genHepevt().mother().mother().idhep();
                     }
