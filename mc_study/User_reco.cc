@@ -534,13 +534,14 @@ namespace Belle {
                         
                         
                     n_lamc_daughters = LamC.child(0).genHepevt().mother().daLast()-LamC.child(0).genHepevt().mother().daFirst()+1;
+                    int first_lamc_da_ID = LamC.child(0).genHepevt().mother().daFirst();
                     if(n_lamc_daughters == 3)
                     {
                         int tempid = 0, tempidhep = -1000, sametype=0;
                         Particle tmpPart;
                         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
                         {
-                            tmpPart = Particle(*evt)
+                            tmpPart = Particle(*evt);
                             tempid++;
                             if (tempid<first_lamc_da_ID) continue;
                             tempidhep = evt->idhep();
@@ -567,7 +568,7 @@ namespace Belle {
                     }
                     if(LamC.child(0).genHepevt().mother().genHepevt().mother())
                     {
-                        lamc_moidhep = LamC.child(0).genHepevt().mother().genHepevt().mother().idhep();
+                        lamc_moidhep = LamC.child(0).genHepevt().mother().mother().idhep();
                     }
                 }
                 n_lam_daughters = LamC.child(0).genHepevt().daLast()-LamC.child(0).genHepevt().daFirst()+1;
