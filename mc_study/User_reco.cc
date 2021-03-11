@@ -307,6 +307,10 @@ namespace Belle {
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
         
+        Particle_List::setGenHepEvtInfoCharged(pi_p);
+        Particle_List::setGenHepEvtInfoCharged(pi_m);
+        
+        
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
@@ -328,17 +332,25 @@ namespace Belle {
         std::vector<Particle> lam, lamb;
         makeLam(lam,lamb);
         
-        lam.setGenHepEvtInfo();
-        lamb.setGenHepEvtInfo();
-        
         setUserInfo(lam,  11 ); 
         setUserInfo(lamb, 12 ); 
         doMassVertexFit(lam);
         doMassVertexFit(lamb);
         
+        Particle_List::setGenHepEvtInfoLambda(lam);
+        Particle_List::setGenHepEvtInfoLambda(lamb);
+
+        
+        
         //leptons (e, mu) 
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
+        
+        Particle_List::setGenHepEvtInfoCharged(mu_p);
+        Particle_List::setGenHepEvtInfoCharged(mu_m);
+        Particle_List::setGenHepEvtInfoCharged(e_p);
+        Particle_List::setGenHepEvtInfoCharged(e_m);
+        
         
         withMuId(mu_p);
         withMuId(mu_m);
@@ -460,7 +472,13 @@ namespace Belle {
             proton_from_lam_moidhep=-1000, pion_from_lam_moidhep=-1000, lam_from_lamc_moidhep=-1000, d2_from_lamc_moidhep=-1000, lamc_moidhep=-1000, 
             lam_from_lamc_ID=-1000, lamc_ID=-1000, proton_from_lam_moID=-1000, pion_from_lam_moID = -1000, lam_from_lamc_moID=-1000, d2_from_lamc_moID=-1000, last_lamc_da_ID=-1000, first_lamc_da_ID=-1000, n_lamc_daughters= -1000, n_lam_daughters=-1000;
             
-            cout << "Matching p from lam" << endl;
+            
+            
+            
+            
+            
+            
+            /*cout << "Matching p from lam" << endl;
             Mdst_sim_trk_Manager &xrefMgr_ = Mdst_sim_trk_Manager::get_manager();
             for(std::vector<Mdst_sim_trk>::iterator i = xrefMgr_.begin(); i != xrefMgr_.end(); ++i) 
             {
@@ -508,7 +526,7 @@ namespace Belle {
                 n_lam_daughters = LamC.child(0).genHepevt().daLast()-LamC.child(0).genHepevt().daFirst()+1;
             }
             
-            /*cout << "Matching lamc" << endl;
+            cout << "Matching lamc" << endl;
             lamc_idhep = LamC.relation().genHepevt().idhep();
             lamc_ID = LamC.relation().genHepevt().get_ID();
             if(LamC.relation().genHepevt().mother()) lamc_moidhep = LamC.child(0).relation().genHepevt().mother().idhep();
@@ -603,16 +621,16 @@ namespace Belle {
             t1 -> column("pflmidh", proton_from_lam_moidhep);
             t1 -> column("piflmidh",pion_from_lam_moidhep);
             t1 -> column("lflcmidh",lam_from_lamc_moidhep);
-            t1 -> column("d2flcmid",d2_from_lamc_moidhep);
+            t1 -> column("d2lcmidh",d2_from_lamc_moidhep);
             t1 -> column("lcmidh", lamc_moidhep);
             
-            t1 -> column("lflcID",lam_from_lamc_ID);
-            t1 -> column("lamcID",lamc_ID);
+            t1 -> column("lflcid",lam_from_lamc_ID);
+            t1 -> column("lamcid",lamc_ID);
             
-            t1 -> column("pflmoID",proton_from_lam_moID);
-            t1 -> column("piflmoID",pion_from_lam_moID);
-            t1 -> column("lflcmoID",lam_from_lamc_moID);
-            t1 -> column("d2flcmID", d2_from_lamc_moID);
+            t1 -> column("pflmoid",proton_from_lam_moID);
+            t1 -> column("piflmoid",pion_from_lam_moID);
+            t1 -> column("lflcmoid",lam_from_lamc_moID);
+            t1 -> column("d2flcmid", d2_from_lamc_moID);
             
             
             t1 -> column("nlcda", n_lamc_daughters);
