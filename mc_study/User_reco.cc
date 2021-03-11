@@ -11,7 +11,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data_mc","fox ecms lcch ml mlc ch_lamc hl hlc philclam plamclab plamccms coslclab coslccms mc_lcch mc_pnu mcplccms mcclccms mcplclab mcclclab pflidh piflidh lflcidh d2flcidh lcidh d3flcidh pflmidh piflmidh lflcmidh d2lcmidh lcmidh ppiflsm l2dlcsm l3dlcsm 23dlcsm"); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data_mc","fox ecms lcch ml mlc ch_lamc hl hlc philclam plamclab plamccms coslclab coslccms mc_lcch mc_pnu mcplccms mcclccms mcplclab mcclclab pflidh piflidh lflcidh d2flcidh lcidh d3flcidh pflmidh piflmidh lflcmidh d2lcmidh lcmidh ppiflsm l2dlcsm nlda nlcda"); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab  philclam plslc pnulc plamclab plamccms coslclab coslccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
@@ -535,33 +535,27 @@ namespace Belle {
                         
                     n_lamc_daughters = LamC.child(0).genHepevt().mother().daLast()-LamC.child(0).genHepevt().mother().daFirst()+1;
                     int first_lamc_da_ID = LamC.child(0).genHepevt().mother().daFirst();
-                    if(n_lamc_daughters == 3)
+                    
+                    
+                    
+                    if(n_lamc_daughters == 3 && lam_d2lc_same_mother==1)
                     {
                         int tempid = 0, tempidhep = -1000, sametype=0;
-                        Particle tmpPart;
+                        
                         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
                         {
-                            tmpPart = Particle(*evt);
                             tempid++;
                             if (tempid<first_lamc_da_ID) continue;
                             tempidhep = evt->idhep();
-                            if (tmpPart==LamC.child(0) || tmpPart==LamC.child(1)) continue;
+                            if ((tempidhep==lam_from_lamc_idhep || tempidhep==d2_from_lamc_idhep) && !sametype) //3d particle should be neutral
+                            {
+                                sametype++;
+                                continue;
+                            }
                             else 
                             {
                                 d3_from_lamc_idhep=tempidhep;
-                                
-                                if(evt->mother() == LamC.child(0).genHepevt().mother())
-                                {
-                                    lam_d3lc_same_mother=1;
-                                }
-                                else lam_d3lc_same_mother=0;
-                                
-                                if(evt->mother() == LamC.child(1).genHepevt().mother())
-                                {
-                                    d2lc_d3lc_same_mother=1;
-                                }
-                                else d2lc_d3lc_same_mother=0;
-                                break;
+
                             }
                             
                         }
@@ -674,9 +668,6 @@ namespace Belle {
             
             t1 -> column("ppiflsm",ppi_from_same_mother);
             t1 -> column("l2dlcsm",lam_d2lc_same_mother);
-            t1 -> column("l3dlcsm",lam_d3lc_same_mother);
-            t1 -> column("23dlcsm",d2lc_d3lc_same_mother);
-            
             
             t1 -> column("nlcda", n_lamc_daughters);
             t1 -> column("nlda",n_lam_daughters);
