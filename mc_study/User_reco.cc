@@ -313,8 +313,8 @@ namespace Belle {
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
         
-        MysetGenHepEvtInfo(pi_p);
-        MysetGenHepEvtInfo(pi_m);
+        MysetGenHepEvtInfoCharged(pi_p);
+        MysetGenHepEvtInfoCharged(pi_m);
         
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
@@ -343,8 +343,8 @@ namespace Belle {
         doMassVertexFit(lam);
         doMassVertexFit(lamb);
         
-        MysetGenHepEvtInfo(lam);
-        MysetGenHepEvtInfo(lamb);
+        MysetGenHepEvtInfoLambda(lam);
+        MysetGenHepEvtInfoLambda(lamb);
 
         
         
@@ -352,10 +352,10 @@ namespace Belle {
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
         
-        MysetGenHepEvtInfo(mu_p);
-        MysetGenHepEvtInfo(mu_m);
-        MysetGenHepEvtInfo(e_p);
-        MysetGenHepEvtInfo(e_m);
+        MysetGenHepEvtInfoCharged(mu_p);
+        MysetGenHepEvtInfoCharged(mu_m);
+        MysetGenHepEvtInfoCharged(e_p);
+        MysetGenHepEvtInfoCharged(e_m);
         
         
         withMuId(mu_p);
@@ -953,7 +953,7 @@ namespace Belle {
         // loop over the plist
         for ( vector<Particle>::iterator i = plist.begin();
              i != plist.end(); ++i ) {
-            setGenHepEvtInfoCharged( (Particle &)*i );
+            MysetGenHepEvtInfoCharged( (Particle &)*i );
              }
     }
     
@@ -995,8 +995,8 @@ namespace Belle {
         if ( !pos || !neg ) { continue; }
         
         // set Gen_hepevt on children
-        bool setGen1 = setGenHepEvtInfoCharged( pos );
-        bool setGen2 = setGenHepEvtInfoCharged( neg );
+        bool setGen1 = MysetGenHepEvtInfoCharged( pos );
+        bool setGen2 = MysetGenHepEvtInfoCharged( neg );
         if ( !setGen1 || !setGen2 ) { continue; }
         
         // get Gen_hepevt of children
