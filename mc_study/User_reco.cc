@@ -536,7 +536,7 @@ namespace Belle {
                             else 
                             {
                                 d3_from_lamc_idhep=tempidhep;
-                                d3_moid = evt->mo();
+                                d3_moid = evt->mo(0);
                                 break;
                             }
                             
