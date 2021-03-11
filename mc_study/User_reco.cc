@@ -307,8 +307,8 @@ namespace Belle {
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
         
-        Particle_List::setGenHepEvtInfoCharged(pi_p);
-        Particle_List::setGenHepEvtInfoCharged(pi_m);
+        setGenHepEvtInfo(pi_p);
+        setGenHepEvtInfo(pi_m);
         
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
@@ -337,8 +337,8 @@ namespace Belle {
         doMassVertexFit(lam);
         doMassVertexFit(lamb);
         
-        Particle_List::setGenHepEvtInfoLambda(lam);
-        Particle_List::setGenHepEvtInfoLambda(lamb);
+        setGenHepEvtInfo(lam);
+        setGenHepEvtInfo(lamb);
 
         
         
@@ -346,10 +346,10 @@ namespace Belle {
         std::vector<Particle>  e_p,e_m,mu_p,mu_m;
         makeLepton(e_p,e_m,mu_p,mu_m);
         
-        Particle_List::setGenHepEvtInfoCharged(mu_p);
-        Particle_List::setGenHepEvtInfoCharged(mu_m);
-        Particle_List::setGenHepEvtInfoCharged(e_p);
-        Particle_List::setGenHepEvtInfoCharged(e_m);
+        setGenHepEvtInfo(mu_p);
+        setGenHepEvtInfo(mu_m);
+        setGenHepEvtInfo(e_p);
+        setGenHepEvtInfo(e_m);
         
         
         withMuId(mu_p);
