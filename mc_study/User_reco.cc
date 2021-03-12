@@ -11,7 +11,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data_mc","fox ecms lcch ml mlc ch_lamc hl hlc philclam plamclab plamccms coslclab coslccms mc_lcch mc_pnu mcplccms mcclccms mcplclab mcclclab pflidh piflidh lflcidh d2flcidh lcidh d3flcidh pflmidh piflmidh lflcmidh d2lcmidh lcmidh ppiflsm l2dlcsm nlda nlcda"); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data_mc","fox ecms lcch ml mlc ch_lamc hl hlc philclam plamclab plamccms coslclab coslccms mc_lcch mc_pnu mcplccms mcclccms mcplclab mcclclab pflidh piflidh lflcidh d2flcidh d3flcidh pflmidh piflmidh lflcmidh d2lcmidh lcmidh ppiflsm l2dlcsm nlda nlcda mcq mchw mcchi mcplslc mcpnulc"); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab  philclam plslc pnulc plamclab plamccms coslclab coslccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
@@ -473,7 +473,7 @@ namespace Belle {
             
             
             //test match
-            int  proton_from_lam_idhep=-1000, pion_from_lam_idhep=-1000, lam_from_lamc_idhep=-1000, d2_from_lamc_idhep=-1000, lamc_idhep=-1000, d3_from_lamc_idhep=-1000,
+            int  proton_from_lam_idhep=-1000, pion_from_lam_idhep=-1000, lam_from_lamc_idhep=-1000, d2_from_lamc_idhep=-1000, d3_from_lamc_idhep=-1000,
             proton_from_lam_moidhep=-1000, pion_from_lam_moidhep=-1000, lam_from_lamc_moidhep=-1000, d2_from_lamc_moidhep=-1000, lamc_moidhep=-1000, 
             ppi_from_same_mother=-1000, lam_d2lc_same_mother=-1000, lam_d3lc_same_mother=-1000, d2lc_d3lc_same_mother=-1000, n_lamc_daughters= -1000, n_lam_daughters=-1000;
             
@@ -533,8 +533,9 @@ namespace Belle {
                     }
                         
                         
-                    n_lamc_daughters = LamC.child(0).genHepevt().mother().daLast()-LamC.child(0).genHepevt().mother().daFirst()+1;
-                    int first_lamc_da_ID = LamC.child(0).genHepevt().mother().daFirst();
+                    int first_lamc_da_ID = LamC.child(0).genHepevt().mother().daFirst(), last_lamc_da_ID = LamC.child(0).genHepevt().mother().daLast();
+                    n_lamc_daughters = last_lamc_da_ID-first_lamc_da_ID+1;
+                    
                     
                     
                     
@@ -545,6 +546,7 @@ namespace Belle {
                         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
                         {
                             tempid++;
+                            if (tempid>last_lamc_da_ID) break;
                             if (tempid<first_lamc_da_ID) continue;
                             tempidhep = evt->idhep();
                             if ((tempidhep==lam_from_lamc_idhep || tempidhep==d2_from_lamc_idhep) && !sametype) //3d particle should be neutral
@@ -555,7 +557,7 @@ namespace Belle {
                             else 
                             {
                                 d3_from_lamc_idhep=tempidhep;
-
+                                break;
                             }
                             
                         }
@@ -657,7 +659,6 @@ namespace Belle {
             t1 -> column("piflidh",pion_from_lam_idhep);
             t1 -> column("lflcidh", lam_from_lamc_idhep);
             t1 -> column("d2flcidh",d2_from_lamc_idhep);
-            t1 -> column("lcidh", lamc_idhep);
             t1 -> column("d3flcidh",d3_from_lamc_idhep);
            
             t1 -> column("pflmidh", proton_from_lam_moidhep);
@@ -671,6 +672,12 @@ namespace Belle {
             
             t1 -> column("nlcda", n_lamc_daughters);
             t1 -> column("nlda",n_lam_daughters);
+            
+            t1 -> column("mcq", (mc_LamC.p()-mc_lam.p()).mag());
+            t1 -> column("mchw",mc_cosW);
+            t1 -> column("mcchi",mc_angchi);
+            t1 -> column("mcplslc",boostT(mc_lam.p(), mc_LamC.p()).vect().mag());
+            t1 -> column("mcpnulc",boostT(mc_p_nu, mc_LamC.p()).vect().mag()); 
 
             t1->dumpData();
         }
