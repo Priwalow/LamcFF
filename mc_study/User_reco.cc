@@ -204,7 +204,7 @@ namespace Belle {
         
         if(!(nevent%1000)) cout << "mc_pUPS: " << mc_pUPS <<  ";  pUPS: "<< pUPS << endl;
         pUPS = mc_pUPS; //temp
-        elec = mc_elec; // because in MC elec and posi are constant 8 and 3.5 (Y(4S))
+        elec = mc_elec; // because in MC elec and posi are constant 8 and 3.5 (energy_cms = Y(4S) mass 10.58 GeV)
         posi = mc_posi; //
         
         

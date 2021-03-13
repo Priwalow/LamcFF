@@ -11,8 +11,8 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox addpi addpi0 totcharg ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx mc_rmx" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
-        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms" ); // not ALL momenta in CMS!
+        t1 = BASF_Histogram->ntuple ("data_mc","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox addpi addpi0 totcharg ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc mc_lcch mc_pnu mc_plamc mc_angnv mcanglcx mc_rmx coslclab coslccms" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t2 = BASF_Histogram->ntuple ("gen_mc","fox ecms mc_ecms mlc ch_lamc lcch hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc plamclab plamccms coslclab coslccms" ); // not ALL momenta in CMS!
     };
     //***********************************************************************
     void doMassVertexFit(class vector<Particle> &p_list, double mass=-1);
@@ -92,9 +92,10 @@ namespace Belle {
             if (!(evt->mother() && evt->mother()==1 && (evt->mother().idhep()==10022 || evt->mother().idhep()==553 || evt->mother().idhep()==100553 || evt->mother().idhep()==200553 || evt->mother().idhep()==300553 || evt->mother().idhep() == 9000553))) continue; 
             if (abs(evt->idhep())>=22)  mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
         }
-  
         //std::cout<<mc_pUPS.px()<<" "<<mc_pUPS.e()<<" "<<mc_pUPS.mag()<<std::endl;
-        
+        double mc_elec, mc_posi;
+        mc_elec = mc_pUPS.px()/sin(0.022);
+        mc_posi = mc_pUPS.e()-mc_elec;
         
         
         for (std::vector<Gen_hepevt>::iterator evt = evt_manager.begin(); evt != evt_manager.end(); ++evt) 
@@ -193,6 +194,8 @@ namespace Belle {
         
         if(!(nevent%1000)) cout << "mc_pUPS: " << mc_pUPS <<  ";  pUPS: "<< pUPS << endl;
         pUPS = mc_pUPS; //temp
+        elec = mc_elec; // because in MC elec and posi are constant 8 and 3.5 (energy_cms = Y(4S) mass 10.58 GeV)
+        posi = mc_posi; //
         
         //*****************FILLING GEN MC TREE**********************
          
@@ -286,6 +289,8 @@ namespace Belle {
         
         t2 -> column("plamclab",mc_LamC.p().vect().mag());
         t2 -> column("plamccms",pStar(mc_LamC.p(),elec,posi).vect().mag() );
+        t2 -> column("coslclab",mc_LamC.p().vect().cosTheta());
+        t2 -> column("coslccms",pStar(mc_LamC.p(),elec,posi).vect().cosTheta() );
         t2 -> dumpData();
         
         //***************************************************
@@ -644,7 +649,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
-                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10;
+                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10, coslamclab=-10, coslamccms=-10;
         
                 if (tag==1 || tag==11 || tag==12)
                 {
@@ -786,6 +791,8 @@ namespace Belle {
                     //lamc visible momentum
                     plamclab = p_lamc.vect().mag();
                     plamccms = pStar(p_lamc,elec,posi).vect().mag();
+                    coslamclab = p_lamc.vect().cosTheta();
+                    coslamccms = pStar(p_lamc,elec,posi).vect().cosTheta();
                     
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
@@ -821,6 +828,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("mc_lcch", mc_lcch);
                     t1 -> column("mc_pnu", pStar(mc_p_nu,elec,posi).vect().mag());
@@ -871,6 +880,9 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
+                    
                     t1 -> column("mc_lcch", mc_lcch);
                     t1 -> column("mc_pnu", -1);
                     t1 -> column("mc_plamc", -1);
@@ -902,7 +914,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
-                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10;
+                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10, coslamclab=-10, coslamccms=-10;
         
                 if (tag==1 || tag==11 || tag==12)
                 {
@@ -1040,6 +1052,8 @@ namespace Belle {
                     //lamc visible momentum
                     plamclab = p_lamc.vect().mag();
                     plamccms = pStar(p_lamc,elec,posi).vect().mag();
+                    coslamclab = p_lamc.vect().cosTheta();
+                    coslamccms = pStar(p_lamc,elec,posi).vect().cosTheta();
                     
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
@@ -1075,6 +1089,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("mc_lcch", mc_lcch);
                     t1 -> column("mc_pnu", pStar(mc_p_nu,elec,posi).vect().mag());
@@ -1124,6 +1140,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("mc_lcch", mc_lcch);
                     t1 -> column("mc_pnu", -1);
