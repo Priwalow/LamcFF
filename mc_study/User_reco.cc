@@ -99,7 +99,11 @@ namespace Belle {
             if (!(evt->mother() && evt->mother()==1 && (evt->mother().idhep()==10022 || evt->mother().idhep()==553 || evt->mother().idhep()==100553 || evt->mother().idhep()==200553 || evt->mother().idhep()==300553 || evt->mother().idhep() == 9000553))) continue; 
             if (abs(evt->idhep())>=22)  mc_pUPS+= HepLorentzVector(evt->PX(),evt->PY(),evt->PZ(),evt->E());
         }
-  
+        double mc_elec, mc_posi;
+        mc_elec = mc_pUPS.px()/sin(0.022);
+        mc_posi = mc_pUPS.e()-mc_elec;
+        
+        
         //std::cout<<mc_pUPS.px()<<" "<<mc_pUPS.e()<<" "<<mc_pUPS.mag()<<std::endl;
         
         
@@ -200,6 +204,9 @@ namespace Belle {
         
         if(!(nevent%1000)) cout << "mc_pUPS: " << mc_pUPS <<  ";  pUPS: "<< pUPS << endl;
         pUPS = mc_pUPS; //temp
+        elec = mc_elec; // because in MC elec and posi are constant 8 and 3.5 (Y(4S))
+        posi = mc_posi; //
+        
         
         //*****************FILLING GEN MC TREE**********************
          
