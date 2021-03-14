@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc addpi addpi0 totcharg" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms coslclab coslccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc addpi addpi0 totcharg" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -427,7 +427,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
-                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10;
+                pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10, coslamclab=-10, coslamccms=-10;
         
                 if (tag==1 || tag==11 || tag==12)
                 {
@@ -564,6 +564,8 @@ namespace Belle {
                     //lamc visible momentum
                     plamclab = p_lamc.vect().mag();
                     plamccms = pStar(p_lamc,elec,posi).vect().mag();
+                    coslamclab = p_lamc.vect().cosTheta();
+                    coslamccms = pStar(p_lamc,elec,posi).vect().cosTheta();
                     
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
@@ -599,6 +601,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("addpi",addpi);
                     t1 -> column("addpi0",addpi0);
@@ -641,6 +645,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("addpi",-1);
                     t1 -> column("addpi0",-1);
@@ -666,7 +672,7 @@ namespace Belle {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
                 dstch=-1, dch=-1, lcch=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
-                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10,plamclab = -10, plamccms=-10;
+                       pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10,plamclab = -10, plamccms=-10, coslamclab=-10, coslamccms=-10;
         
                 if (tag==1 || tag==11 || tag==12)
                 {
@@ -803,6 +809,8 @@ namespace Belle {
                     //lamc visible momentum
                     plamclab = p_lamc.vect().mag();
                     plamccms = pStar(p_lamc,elec,posi).vect().mag();
+                    coslamclab = p_lamc.vect().cosTheta();
+                    coslamccms = pStar(p_lamc,elec,posi).vect().cosTheta();
                     
                     t1 -> column("tag", tag);
                     t1 -> column("rmx", rmx);
@@ -838,6 +846,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("addpi",addpi);
                     t1 -> column("addpi0",addpi0);
@@ -880,6 +890,8 @@ namespace Belle {
                     
                     t1 -> column("plamclab",plamclab);
                     t1 -> column("plamccms",plamccms);
+                    t1 -> column("coslclab",coslamclab);
+                    t1 -> column("coslccms",coslamccms);
                     
                     t1 -> column("addpi",-1);
                     t1 -> column("addpi0",-1);
