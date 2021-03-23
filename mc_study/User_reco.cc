@@ -443,6 +443,7 @@ namespace Belle {
             // lamc heli
             HepLorentzVector p_lamc;
             if (lcch==1 || lcch==2 || lcch==5) p_lamc=LamC.p();
+                else p_lamc = mc_LamC.p();
             
             hlc = -cos(heli(LamC.child(0).p(),pUPS,p_lamc)); 
             

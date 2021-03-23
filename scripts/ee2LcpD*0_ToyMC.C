@@ -91,53 +91,67 @@ void PhaseSpace()
 
 void AngDist()
 {
-    double dphi, hlc, hl;
+    double dphi, hlc, hl, plccms, clccms;
     TFile *f = new TFile("ToyLc3bDecay.root", "recreate");
     TTree *tree = new TTree("h1", "Toy MC ROOT tree");
-    tree->Branch("dphi", &dphi, "dphi/D");
+    tree->Branch("philclam", &dphi, "philclam/D");
     tree->Branch("hlc", &hlc, "hlc/D");
     tree->Branch("hl", &hl, "hl/D");
+    tree->Branch("plamccms", &plccms, "plamccms/D");
+    tree->Branch("coslccms", &clccms, "coslccms/D");
+    
+    TTree *t2 = new TTree("h2", "Toy MC ROOT tree");
+    t2->Branch("philclam", &dphi, "philclam/D");
+    t2->Branch("hlc", &hlc, "hlc/D");
+    t2->Branch("hl", &hl, "hl/D");
+    t2->Branch("plamccms", &plccms, "plamccms/D");
+    t2->Branch("coslccms", &clccms, "coslccms/D");
     
     TRandom r; 
     r.SetSeed(0);
-    double P = 0.63, delta = 1.5*TMath::Pi(), alphaLam=0.732, alphaLam_c=-0.84;
+    double P = -0.7, delta = -0.5*TMath::Pi(), alphaLam=0.732, alphaLam_c=-0.84;
     
     //alphaLam = r.Gaus(0.732,0.014);
     //alphaLam_c = r.Gaus(-0.84,0.09);
     
-    TF3 fmain("fmain",Form("1+[0]*y+%lf*(z*([1]+[2]*y)-sqrt((1-y*y)*(1-z*z))*[3]*cos(%lf+x))",P,delta),0,2*TMath::Pi(),-1,1,-1,1);
+    TF3 fmain("fmain",Form("1+[0]*y+%lf*(z*([1]+[2]*y)-sqrt((1-y*y)*(1-z*z))*[3]*cos(%lf+x))",P,delta),-TMath::Pi(),TMath::Pi(),-1,1,-1,1);
     fmain.SetParameters(alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c));
     
     
-    for (Int_t n=0;n<1e8;n++) 
+    for (Int_t n=0;n<1e2;n++) 
     {
 
         fmain.GetRandom3(dphi,hl,hlc);
+        plccms = r.Uniform(0,5);
+        clccms = r.Uniform(-1,1);
         tree -> Fill();
+        t2->Fill();
         
     }
     
+    
     tree -> Write();
+    t2 -> Write();
     f->Close();
     
     
-    /*TChain* ch1dat = new TChain("h1");
+    TChain* ch1dat = new TChain("h1");
     ch1dat -> Add("ToyLc3bDecay.root");
     
     double lend=-1, rend=1; //lend=2.21, rend=2.36
     int Nbins=10;
-    TH3D* hmain = new TH3D("hmain","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",Nbins,0,2*TMath::Pi(),Nbins,lend,rend,Nbins,lend,rend);
-    ch1dat -> Draw("hlc:hl:dphi>>hmain","","goff"); 
+    TH3D* hmain = new TH3D("hmain","#Lambda^{+}_{c} #rightarrow #Lambda#pi^{+}",3,-TMath::Pi(),TMath::Pi(),2,lend,rend,2,lend,rend);
+    ch1dat -> Draw("hlc:hl:philclam>>hmain","","goff"); 
     
     TF3* fdat = new TF3("fdat",Form("[0]*(1+%lf*y+[1]*(z*(%lf+%lf*y)-sqrt((1-y*y)*(1-z*z))*%lf*cos([2]+x)))",
-                                    alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)),0,2*TMath::Pi(),lend,rend,lend,rend);
-    fdat -> SetParameters(1,0.1,TMath::Pi());
-    fdat -> SetParLimits(2,-0.005,2*TMath::Pi()+0.005);
+                                    alphaLam*alphaLam_c,alphaLam_c,alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)),-TMath::Pi(),TMath::Pi(),lend,rend,lend,rend);
+    fdat -> SetParameters(4,0.4,3);
+    fdat -> SetParLimits(2,-TMath::Pi()-0.1,TMath::Pi()+0.1);
     TFitResultPtr fitResult;
     fitResult = hmain -> Fit("fdat","L S M N","goff");
     double chisq = fdat->GetChisquare(), ndf = fdat->GetNDF(); 
     cout << "ChiSquare / ndf: " << chisq << " / " << ndf << " = " << chisq/ndf << "; Prob = " << fdat -> GetProb()<<  endl;
-    */
+    
 }
 
 
