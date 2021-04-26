@@ -38,13 +38,13 @@ void RM()
     
     
     TString datapath = "../analysis/hmerge/";    
-   // TString datapath = "../mc_analysis/hmerge/";
+    //TString datapath = "../mc_analysis/hmerge/";
     TChain* ch1dat = new TChain("h1"); //without pi0
     ch1dat -> Add(datapath+"*.root");
     
-    double lend=1.6, rend=2.6, MLambdac=2.28646, 
+    double lend=1.6, rend=2.55, MLambdac=2.28646, 
         MDst_p=2.01026, RightFitLimit = 2.5, LeftFitLimit=lend; //lend=2., rend=2.6
-    int Nbins=100;
+    int Nbins=95;
     TH1D* hdat = new TH1D("hdat","RM(D^{*0})|| RM(D^{*+})",Nbins,lend,rend);
     double hwidth = rend-lend, binw = hwidth/Nbins;
     
@@ -53,9 +53,9 @@ void RM()
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmx > %lf && rmx < %lf",lend,rend);
-    Ntot +=  ch1dat -> Draw("rmx>>+hdat","((tag==1  && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==2 &&  abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))))","goff");
+    Ntot +=  ch1dat -> Draw("rmx>>+hdat","((tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))))) )","goff");
 
-    // full (tag==1  && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==2 &&  abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))))
+    // full (tag==1  && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==2 &&  abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))))
     
     //Only D0 tag==1  && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))
     
@@ -109,10 +109,10 @@ void RM()
     pad2->Draw();
     
     pad1->cd();
-    hdat -> GetXaxis()-> SetTitle("M_{recoil}(X) [GeV]");
+    hdat -> GetXaxis()-> SetTitle("M_{recoil}(X) [GeV/c^{2}]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
-    hdat -> GetYaxis()-> SetTitle(Form("Events / %.2f GeV",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events / %.2f GeV/c^{2}",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(0.7);
@@ -145,8 +145,8 @@ void RM()
     TLegend* leg = new TLegend(0.2,0.7,0.4,0.9);
     leg->AddEntry("hdat","data","ep");
 	//leg->AddEntry("fsig","signal","l");    
-	leg->AddEntry("fdat","fit","l");
-    leg->AddEntry("fbkg","background","l");
+	leg->AddEntry("fdat","gaus+pol2 fit","l");
+    leg->AddEntry("fbkg","pol2 background","l");
     leg -> SetBorderSize(0);
     leg -> SetTextSize(axisFontSize);
     leg->Draw("same"); 
@@ -157,9 +157,18 @@ void RM()
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
     tstatfit -> DrawLatex(0.67, 0.45, Form("S = %0.lf #pm %0.lf",Nsig, dNsig)); //
-    tstatfit -> DrawLatex(0.67, 0.33, Form("#frac{#chi^{2}}{ndf} = %.2lf",chisq/ndf));
+    tstatfit -> DrawLatex(0.67, 0.33, Form("#chi^{2}/ndf = %.2lf",chisq/ndf));
+    tstatfit -> DrawLatex(0.67, 0.57, Form("gaus #sigma = %.1lf #pm %.1lf MeV/c^{2}",1000*par[2],1000*fdat->GetParError(2)));
+    tstatfit -> DrawLatex(0.67, 0.33, Form("S/B(3#sigma) = %0.3lf #pm %0.3lf",Nsig/Nbkg3s, fracsigm(Nsig,dNsig,Nbkg3s,dNbkg3s)));
+    
+    tstatfit -> SetTextColor(8);
+    tstatfit -> DrawLatex(0.67, 0.21, "left sideband");
+    
+    tstatfit -> SetTextColor(4);
+    tstatfit -> DrawLatex(0.67, 0.09, "right");
+    tstatfit -> DrawLatex(0.67, 0.0, "sideband");
     // tstatfit -> DrawLatex(0.67, 0.39, Form("B(3#sigma) = %0.lf #pm %0.lf",Nbkg3s, dNbkg3s));
-  //  tstatfit -> DrawLatex(0.67, 0.33, Form("S/B(3#sigma) = %0.3lf #pm %0.3lf",Nsig/Nbkg3s, fracsigm(Nsig,dNsig,Nbkg3s,dNbkg3s)));
+    
     
     // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //
    // tstatfit -> DrawLatex(0.67, 0.39, Form("Mean_{sig} = %0.4lf #pm %0.4lf",par[1], fdat -> GetParError(1)));
@@ -172,15 +181,19 @@ void RM()
     line1 -> SetLineWidth(4);
     line2 -> SetLineWidth(4);
     
-    TLine* line3 = new TLine(2.29-0.25,0,2.29-0.25,top*1.);
+    TLine* line3 = new TLine(2.29-0.65,0,2.29-0.65,top*1.);
     TLine* line4 = new TLine(2.29-0.15,0,2.29-0.15,top*1.);
     line3 -> SetLineWidth(4);
+    line3 -> SetLineColor(8);
     line4 -> SetLineWidth(4);
+    line4 -> SetLineColor(8);
     
     TLine* line5 = new TLine(2.29+0.15,0,2.29+0.15,top*1.);
     TLine* line6 = new TLine(2.29+0.25,0,2.29+0.25,top*1.);
     line5 -> SetLineWidth(4);
+    line5 -> SetLineColor(4);
     line6 -> SetLineWidth(4);
+    line6 -> SetLineColor(4);
     
     line1 -> Draw("same");
     line2 -> Draw("same");

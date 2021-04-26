@@ -647,7 +647,7 @@ namespace Belle {
             t1 -> column("mlc", mLc);
             t1 -> column("ch_lamc", LamC.charge());
             
-            t1->column("hl", hl);
+            t1 -> column("hl", hl);
             t1 -> column("hlc", hlc);
             t1 -> column("philclam",dphi_lc_lam);
             

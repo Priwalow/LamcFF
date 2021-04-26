@@ -1,12 +1,12 @@
 
-TCut totCUT =  "lcch==1 && abs(mlc-2.28646)<0.02 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && ((tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6)))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))) || (tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))))";
+TCut totCUT =  "lcch==1 && abs(mlc-2.28646)<0.02 && abs(ml-1.11568)<0.003 && abs(rmx-2.29)<0.1 && abs(pvis)<0.05 && abs(ecms-sqrt(mvis*mvis+pvis*pvis))<0.05 && ((tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))))) || (tag==1  && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==2 &&  abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))) )";
 
 TCut dirCUT =  "lcch==1 && abs(mlc-2.28646)<0.02 && abs(ml-1.11568)<0.003";
     
 TCut matchCUT = "abs(pflidh)==2212 && abs(piflidh)==211 && ppiflsm==1 && abs(pflmidh)==3122 && l2dlcsm==1 && nlcda==2 && abs(d2flcidh)==211 && abs(lflcmidh)==4122";
     
     
-double minX=-TMath::Pi(), maxX=TMath::Pi(), minY=-1, maxY=1, minZ=-1, maxZ=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; 
+double minX=-TMath::Pi(), maxX=TMath::Pi(), minY=-1, maxY=1, minZ=-1, maxZ=1, MLambdac=2.28646, alphaLam=0.732, alphaLam_c = -0.84; //alphaLam=0.732, alphaLam_c = -0.84
 int NbinsX=3, NbinsY=2, NbinsZ=2;
 
 
@@ -154,6 +154,7 @@ void Lc2Lpi3Dfit()
     fmain -> SetParLimits(2,-TMath::Pi()-0.1,TMath::Pi()+0.1);
     fmain -> SetParLimits(0,0,1e6);
     //fmain -> FixParameter(2,TMath::Pi());
+    //fmain -> FixParameter(1,0);
     
     TFitResultPtr fitResult;
     fitResult = hmain -> Fit("fmain","L S M N","goff"); //L S M N Q
@@ -169,6 +170,7 @@ void Lc2Lpi3Dfit()
     TF2* flphi = new TF2("flphi",Form("[0]*(1+%lf*y-[1]*%lf*cos([2]+x)*sqrt(1-y*y))",
                                       alphaLam_c*alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*TMath::Pi()/4),minX,maxX,minY,maxY);
     
+    par[1] = 0;
     flcl -> SetParameters(2*TMath::Pi()*par[0],par[1]);
     flcphi -> SetParameters(2*par[0],par[1],par[2]);
     flphi -> SetParameters(2*par[0],par[1],par[2]);

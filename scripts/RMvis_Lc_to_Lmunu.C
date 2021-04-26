@@ -9,8 +9,8 @@
     
     
     
-    TString datapath = "../analysis/hmerge/";    
-    //TString datapath = "../mc_analysis/hmerge/";   
+    //TString datapath = "../analysis/hmerge/";    
+    TString datapath = "../mc_analysis/hmerge/";   
     TChain* ch1dat = new TChain("h1"); 
     ch1dat -> Add(datapath+"*.root");
     
@@ -25,8 +25,8 @@
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    TCut commonLcLpiCut = "abs(rmx-2.29)<0.1 && lcch==4 && abs(ml-1.11568)<0.003 && q>0 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3)))))";
-    TCut rmxlsbCut = "rmx-2.29 < -0.15 && rmx-2.29 > -0.25";
+    TCut commonLcLpiCut = "lcch==4 && abs(ml-1.11568)<0.003 && q>0 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && ((tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))))))";
+    TCut rmxlsbCut = "rmx-2.29 < -0.15 && rmx-2.29 > -0.65";
     TCut rmxrsbCut = "rmx-2.29 > 0.15 && rmx-2.29 < 0.25";
     Ntot +=  ch1dat -> Draw("rmvis*fabs(rmvis)>>+hdat","abs(rmx-2.29)<0.1"+ commonLcLpiCut+Mwindow,"goff");
     ch1dat -> Draw("rmvis*fabs(rmvis)>>+hrsb",rmxrsbCut+commonLcLpiCut+Mwindow,"goff");
@@ -71,11 +71,11 @@
   
     
   
-    hdat -> GetXaxis()-> SetTitle("M^{2}_{recoil}(#Lambda#mu^{+}#bar{p}D^{*-}#pi^{+})[GeV^{2}]");
+    hdat -> GetXaxis()-> SetTitle("M^{2}_{recoil}(#Lambda#mu^{+}#bar{X})[GeV^{2}/c^{4}]");
     hdat -> GetXaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetXaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetXaxis()-> SetTitleOffset(1.1);
-    hdat -> GetYaxis()-> SetTitle(Form("Events /  %.2f GeV^{2} ",binw));
+    hdat -> GetYaxis()-> SetTitle(Form("Events /  %.2f GeV^{2}/c^{4} ",binw));
     hdat -> GetYaxis()-> SetTitleSize(axisFontSize);
     hdat -> GetYaxis()-> SetLabelSize(axisFontSize);
     hdat -> GetYaxis()-> SetTitleOffset(0.7);
@@ -93,15 +93,16 @@
     hrsb -> SetLineWidth(4);
     hrsb -> Draw("same");
     
+    hlsb -> Scale(0.2);
     hlsb -> SetLineColor(8);
     hlsb -> SetLineWidth(4);
-    hlsb -> Draw("same");
+    hlsb -> Draw("hist same");
     
     
     fbkg -> SetLineStyle(2);
     fbkg -> SetLineColor(12);
     fbkg -> SetLineWidth(4);
-    fbkg -> DrawCopy("same");
+    //fbkg -> DrawCopy("same");
     
     
     //fsig -> SetLineColor(4);
@@ -111,14 +112,14 @@
     
     fdat -> SetLineColor(2);
     fdat -> SetLineWidth(4);
-    fdat-> DrawCopy("same");
+    //fdat-> DrawCopy("same");
     
     
     TLegend* leg = new TLegend(0.77,0.75,0.89,0.95);
-    leg -> AddEntry("hdat","data","e p");
+    leg -> AddEntry("hdat","MC","e p");
    // leg->AddEntry("fsig","Signal","l");
-    leg -> AddEntry("fdat","fit","l");
-    leg -> AddEntry("fbkg","background","l");
+    //leg -> AddEntry("fdat","fit","l");
+    //leg -> AddEntry("fbkg","background","l");
     leg -> AddEntry("hrsb","M_{recoil}(X) right sb","l");
     leg -> AddEntry("hlsb","M_{recoil}(X) left sb","l");
     leg -> SetBorderSize(0);
@@ -130,7 +131,7 @@
     tstatfit -> SetTextColor(1);
     tstatfit -> SetTextSize(axisFontSize);
     tstatfit -> SetTextAngle(0);
-    tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); 
+    //tstatfit -> DrawLatex(0.67, 0.65, Form("N_{sig} = %0.lf #pm %0.lf",Nsig, dNsig)); 
     tstatfit -> DrawLatex(0.67, 0.6, "#Lambda^{+}_{c} #rightarrow #Lambda#mu^{+}#nu_{#mu}");
     //
    // tstatfit -> DrawLatex(0.67, 0.59, Form("N_{bkg} = %0.lf #pm %0.lf",Nbkg, dNbkg)); //

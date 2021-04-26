@@ -10,7 +10,7 @@ namespace Belle {
     {
         
         extern BelleTupleManager* BASF_Histogram;
-        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms coslclab coslccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc addpi addpi0 totcharg" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
+        t1 = BASF_Histogram->ntuple ("data","tag dch dstch md mdst rmx rmvis rmvis_nopi0 mvis px plamclab plamccms coslclab coslccms pvis fox ecms mks ch_tag lcch ml mlc hlc hl q hw chi lcp2dcm lcp2dlab philclam plslc addpi addpi0 mcwadpi0 totcharg" ); // not ALL momenta in CMS! 	lepton cosTheta in CMS, rholam, rholamcms	
         //t2 = BASF_Histogram->ntuple ("withGamma","lcch tag ml mlc mx mvis npi npi0 ngamma ecms egammatot rmx rmvis plc px pvis ml1 hl hlc phi q fox hw chi" ); // ALL momenta in CMS! 
         //"tag dch dstch mlc ml md rmx rmvis px npi npi0 nk ngam fox pvis ecms hlc hl hw chi q lcch"
     };
@@ -384,6 +384,27 @@ namespace Belle {
         setUserInfo(Lc,400);
         setUserInfo(Lcb,400);
         
+        /*combination (Lc,ptype_Lamc, lam, e_p, pi0);
+        combination (Lcb,ptype_Lamc, lamb, e_m, pi0);
+        setUserInfo(Lc,6);
+        setUserInfo(Lcb,6);  
+        
+        combination (Lc,ptype_Lamc, lam, mu_p, pi0);
+        combination (Lcb,ptype_Lamc, lamb, mu_m, pi0);
+        setUserInfo(Lc,7);
+        setUserInfo(Lcb,7);
+       
+    
+        combination (Lc,ptype_Lamc, lam, e_p, pi_p, pi_m);
+        combination (Lcb,ptype_Lamc, lamb, e_m, pi_p, pi_m);
+        setUserInfo(Lc,8);
+        setUserInfo(Lcb,8);  
+        
+        combination (Lc,ptype_Lamc, lam, mu_p, pi_p, pi_m);
+        combination (Lcb,ptype_Lamc, lamb, mu_m, pi_p, pi_m);
+        setUserInfo(Lc,9);
+        setUserInfo(Lcb,9);
+        */
         
         for(std::vector<Particle>::iterator l = Lc.begin(); l!=Lc.end(); ++l)
             if (l->mass()>ptype_Lamc.mass()+0.1)
@@ -403,10 +424,10 @@ namespace Belle {
         setUserInfo(Lc,2);
         setUserInfo(Lcb,2);
         
-        //combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.05);
-        //combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.05);
-        //setUserInfo(Lc,5);
-        //setUserInfo(Lcb,5);
+        combination (Lc,ptype_Lamc, p_p, k_m, pi_p, 0.05);
+        combination (Lcb,ptype_Lamc, p_m, k_p, pi_m, 0.05);
+        setUserInfo(Lc,5);
+        setUserInfo(Lcb,5);
         
         if(!(nevent%100))std::cout<<nevent<<" event. Number of candidates p = " << p_p.size() << "; pbar = " << p_m.size() << "; pi+ = "<< pi_p.size() << "; pi- = "<< pi_m.size() << "; K+ = "<< k_p.size() << "; K- = "<< k_m.size() << "; K_S = "<< k_s.size() << "; pi0 = "<< pi0.size() << "; D0 = " << D0.size() << "; D0bar = " << D0_b.size() << "; D+ = " << D_p.size() << "; D- = "<< D_m.size() << "; Dst0 = " << Dst0.size() << "; Dst0_b = " << Dst0_b.size() << "; D*+ = " << Dst_p.size() << "; D*- = " << Dst_m.size() << "; Lam = " << lam.size() << "; Lam_bar = "<< lamb.size() << "; Lam_c = " << Lc.size() << "; Lam_c_bar = " << Lcb.size() << "; e+ = " << e_p.size() <<"; e- = " << e_m.size() <<"; mu+ = " << mu_p.size() <<"; mu- = " << mu_m.size() << "; Number of recoil candidates L_ = " << L_.size() << "; L_b = " << L_b.size() << '\n';
         
@@ -425,7 +446,7 @@ namespace Belle {
             {
                 //std::cout<<nevent<<" Selected!" << endl;
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                dstch=-1, dch=-1, lcch=0;
+                dstch=-1, dch=-1, lcch=0, mconsaddpi0 = 0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
                 pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10, plamclab = -10, plamccms=-10, coslamclab=-10, coslamccms=-10;
         
@@ -470,7 +491,12 @@ namespace Belle {
                     int addpi=0, addpi0=0, totcharge=calcuCharge(&(*l))+calcuCharge(&(*a));
                     for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
                     {
-                        if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) addpi0++;
+                        if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
+                        {
+                            addpi0++;
+                            if ( (Lcb.p()+i->p()).mag()<2.265) 
+                                {mconsaddpi0 = 1; break;}
+                        }
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
                     {
@@ -531,7 +557,7 @@ namespace Belle {
                     if ((lcch==1) || (lcch==2) || (lcch==5)) qW = (LamC.p()-LamC.child(0).p()).mag(); 
                     else qW =  p_W_from_lamc.mag();	
                     
-                    //W heli and angle chi
+                    //W heli, angle chi and additional pi0 and pi+pi-
                     if (lcch==3 || lcch==4)
                     {
                         HepLorentzVector p_l, p_nu;
@@ -606,6 +632,7 @@ namespace Belle {
                     
                     t1 -> column("addpi",addpi);
                     t1 -> column("addpi0",addpi0);
+                    t1 -> column("mcwadpi0",mconsaddpi0);
                     t1 -> column("totcharg",totcharge);
                     t1->dumpData();
                 }
@@ -650,6 +677,7 @@ namespace Belle {
                     
                     t1 -> column("addpi",-1);
                     t1 -> column("addpi0",-1);
+                    t1 -> column("mcwadpi0",mconsaddpi0);
                     t1 -> column("totcharg",-100);
                     t1->dumpData();
                 }
@@ -670,7 +698,7 @@ namespace Belle {
             if (rmx > 1.5 && rmx < 2.6) 
             {
                 int tag = dynamic_cast<UserInfo&>(ALamC.userInfo()).channel(),
-                dstch=-1, dch=-1, lcch=0;
+                dstch=-1, dch=-1, lcch=0, mconsaddpi0=0;
                 double mD=-1, mDst=-1, mKs=-1, mL=-1, mLc=-1, hl = -10, hlc = -10, cosW = -10, angchi = -10, 
                        pvis=-10, qW=1000, p_2d_from_lamc_cms=-1, p_2d_from_lamc_labs=-1, dphi_lc_lam = -1000, plamlcs = -10,plamclab = -10, plamccms=-10, coslamclab=-10, coslamccms=-10;
         
@@ -715,7 +743,12 @@ namespace Belle {
                     int addpi=0, addpi0=0, totcharge=calcuCharge(&(*l))+calcuCharge(&(*a));
                     for(std::vector<Particle>::iterator i=pi0.begin(); i!=pi0.end();++i)
                     {
-                        if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) addpi0++;
+                        if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
+                        {
+                            addpi0++;
+                            if ( (Lc.p()+i->p()).mag()<2.265) 
+                                {mconsaddpi0 = 1; break;}
+                        }
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
                     {
@@ -851,6 +884,7 @@ namespace Belle {
                     
                     t1 -> column("addpi",addpi);
                     t1 -> column("addpi0",addpi0);
+                    t1 -> column("mcwadpi0",mconsaddpi0);
                     t1 -> column("totcharg",totcharge);
                     t1->dumpData();
                 }
@@ -895,6 +929,7 @@ namespace Belle {
                     
                     t1 -> column("addpi",-1);
                     t1 -> column("addpi0",-1);
+                    t1 -> column("mcwadpi0",mconsaddpi0);
                     t1 -> column("totcharg",-100);
                     t1->dumpData();
                 }
