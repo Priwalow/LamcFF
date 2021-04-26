@@ -731,7 +731,7 @@ namespace Belle {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
                         {
                             addpi0++;
-                            if ( (Lcb.p()+i->p()).mag()<2.265) 
+                            if ( (LamC.p()+i->p()).mag()<2.265) 
                                 {mconsaddpi0 = 1; break;}
                         }
                     }
@@ -1001,7 +1001,7 @@ namespace Belle {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
                         {
                             addpi0++;
-                            if ( (Lc.p()+i->p()).mag()<2.265) 
+                            if ( (LamC.p()+i->p()).mag()<2.265) 
                                 {mconsaddpi0 = 1; break;}
                         }
                     }
