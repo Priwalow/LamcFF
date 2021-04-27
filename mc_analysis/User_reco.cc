@@ -210,7 +210,7 @@ namespace Belle {
         }
         else if(!lamhere && prothere && khere && pihere && !pi0here && !ehere && !nuehere && !muhere && !numuhere && nlamc_daughters==3 )
         {
-            mc_lcch==5;
+            mc_lcch=5;
         }
         else return;
         

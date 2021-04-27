@@ -9,8 +9,8 @@
     
     
     
-    //TString datapath = "../analysis/hmerge/";    
-    TString datapath = "../mc_analysis/hmerge/";   
+    TString datapath = "../analysis/hmerge/";    
+    //TString datapath = "../mc_analysis/hmerge/";   
     TChain* ch1dat = new TChain("h1"); 
     ch1dat -> Add(datapath+"*.root");
     
@@ -25,7 +25,7 @@
     
     double Ntot=0, Nsig, dNsig, Nbkg3s, dNbkg3s;
     TCut Mwindow = Form("rmvis*fabs(rmvis) > %lf && rmvis*fabs(rmvis) < %lf",lend,rend);
-    TCut commonLcLpiCut = "lcch==4 && abs(ml-1.11568)<0.003 && q>0 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && ((tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))))))";
+    TCut commonLcLpiCut = "lcch==4 && abs(ml-1.11568)<0.003 && q>0 && pvis>0.05 && ecms-sqrt(mvis*mvis+pvis*pvis)>0.05 && mcwadpi0==0 && ((tag==4 && dstch==1 && abs(mdst-2.00685)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==3 && ((dstch==1 && abs(mdst-2.01026)<0.002 && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (dstch==2 && abs(mdst-2.01026)<0.002 && abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))))) || (tag==1  && abs(md-1.86483)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=3 && dch!=6))) || (tag==2 &&  abs(md-1.86965)<0.015 && (abs(mks-0.497611)<0.0075 || (dch!=2 && dch!=3))) )";
     TCut rmxlsbCut = "rmx-2.29 < -0.15 && rmx-2.29 > -0.65";
     TCut rmxrsbCut = "rmx-2.29 > 0.15 && rmx-2.29 < 0.25";
     Ntot +=  ch1dat -> Draw("rmvis*fabs(rmvis)>>+hdat","abs(rmx-2.29)<0.1"+ commonLcLpiCut+Mwindow,"goff");

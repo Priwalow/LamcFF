@@ -170,7 +170,6 @@ void Lc2Lpi3Dfit()
     TF2* flphi = new TF2("flphi",Form("[0]*(1+%lf*y-[1]*%lf*cos([2]+x)*sqrt(1-y*y))",
                                       alphaLam_c*alphaLam,alphaLam*sqrt(1-alphaLam_c*alphaLam_c)*TMath::Pi()/4),minX,maxX,minY,maxY);
     
-    par[1] = 0;
     flcl -> SetParameters(2*TMath::Pi()*par[0],par[1]);
     flcphi -> SetParameters(2*par[0],par[1],par[2]);
     flphi -> SetParameters(2*par[0],par[1],par[2]);
