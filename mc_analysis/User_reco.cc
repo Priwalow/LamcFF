@@ -639,6 +639,16 @@ namespace Belle {
         setUserInfo(Lc,400);
         setUserInfo(Lcb,400);
         
+        combination (Lc,ptype_Lamc, lam, e_p, pi0);
+        combination (Lcb,ptype_Lamc, lamb, e_m, pi0);
+        setUserInfo(Lc,6);
+        setUserInfo(Lcb,6);  
+        
+        combination (Lc,ptype_Lamc, lam, mu_p, pi0);
+        combination (Lcb,ptype_Lamc, lamb, mu_m, pi0);
+        setUserInfo(Lc,7);
+        setUserInfo(Lcb,7);
+        
         
         for(std::vector<Particle>::iterator l = Lc.begin(); l!=Lc.end(); ++l)
             if (l->mass()>ptype_Lamc.mass()+0.1)
@@ -749,7 +759,7 @@ namespace Belle {
                     mLc = LamC.mass();          
                    
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
-                    if(lcch==2)
+                    if(lcch==2 || lcch==6 || lcch==7)
                     {
                         rmNopi0 = (pUPS-(momentum+LamC.child(0).p()+LamC.child(1).p())).mag();
                     }
@@ -1018,7 +1028,7 @@ namespace Belle {
                     lcch = dynamic_cast<UserInfo&>(LamC.userInfo()).channel(); 
                     mLc = LamC.mass();          
                     pvis = pStar(momentum+LamC.p(),elec,posi).vect().mag();
-                    if(lcch==2)
+                    if(lcch==2 || lcch==6 || lcch==7)
                     {
                         rmNopi0 = (pUPS-(momentum+LamC.child(0).p()+LamC.child(1).p())).mag();
                     }
