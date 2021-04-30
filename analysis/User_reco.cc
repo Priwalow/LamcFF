@@ -494,7 +494,7 @@ namespace Belle {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
                         {
                             addpi0++;
-                            if ( (LamC.p()+i->p()).mag()<2.265) mconsaddpi0 = 1;
+                            if ( (LamC.p()+i->p()).mag()<2.265) mconsaddpi0++;
                         }
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
@@ -557,7 +557,7 @@ namespace Belle {
                     else qW =  p_W_from_lamc.mag();	
                     
                     //W heli, angle chi and additional pi0 and pi+pi-
-                    if (lcch==3 || lcch==4)
+                    if (lcch==3 || lcch==4 || lcch==6 || lcch==7)
                     {
                         HepLorentzVector p_l, p_nu;
                         p_l = LamC.child(1).p();
@@ -745,7 +745,7 @@ namespace Belle {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
                         {
                             addpi0++;
-                            if ( (LamC.p()+i->p()).mag()<2.265) mconsaddpi0 = 1;
+                            if ( (LamC.p()+i->p()).mag()<2.265) mconsaddpi0++;
                         }
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
@@ -809,7 +809,7 @@ namespace Belle {
                     else qW =  p_W_from_lamc.mag();	
                     
                     //W heli and angle chi
-                    if (lcch==3 || lcch==4)
+                    if (lcch==3 || lcch==4 || lcch==6 || lcch==7)
                     {
                         HepLorentzVector p_l, p_nu;
                         p_l = LamC.child(1).p();
