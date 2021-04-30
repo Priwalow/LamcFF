@@ -494,8 +494,7 @@ namespace Belle {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
                         {
                             addpi0++;
-                            if ( (LamC.p()+i->p()).mag()<2.265) 
-                                {mconsaddpi0 = 1; break;}
+                            if ( (LamC.p()+i->p()).mag()<2.265) mconsaddpi0 = 1;
                         }
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
@@ -746,8 +745,7 @@ namespace Belle {
                         if( !(checkSame(*l,*i)||checkSame(*a,*i)) ) 
                         {
                             addpi0++;
-                            if ( (LamC.p()+i->p()).mag()<2.265) 
-                                {mconsaddpi0 = 1; break;}
+                            if ( (LamC.p()+i->p()).mag()<2.265) mconsaddpi0 = 1;
                         }
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
