@@ -323,7 +323,14 @@ namespace Belle {
         MysetGenHepEvtInfoCharged(pi_p);
         MysetGenHepEvtInfoCharged(pi_m);
         
+       
+        ntrk=k_p.size()+k_m.size();
         
+        withdRdZcut(k_p,runIp.z());
+        withdRdZcut(pi_p,runIp.z());
+        withdRdZcut(k_m,runIp.z());
+        withdRdZcut(pi_m,runIp.z());
+
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
         for(std::vector<Particle>::iterator l = pi_p.begin(); l!=pi_p.end(); ++l)
@@ -333,13 +340,8 @@ namespace Belle {
         withKaonId(k_p,0.6,3,1,5,3,2);
         withKaonId(k_m,0.6,3,1,5,3,4);
         withKaonId(k_m,0.6,3,1,5,3,2);
-        
-        ntrk=k_p.size()+k_m.size();
 
-        withdRdZcut(k_p,runIp.z());
-        withdRdZcut(pi_p,runIp.z());
-        withdRdZcut(k_m,runIp.z());
-        withdRdZcut(pi_m,runIp.z());
+        
         
         //Lambda hyperons
         std::vector<Particle> lam, lamb;

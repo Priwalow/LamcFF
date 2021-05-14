@@ -89,11 +89,12 @@
     hdat -> SetMinimum(0);
     hdat -> Draw("e p");
     
+    hrsb -> Scale(2);
     hrsb -> SetLineColor(4);
     hrsb -> SetLineWidth(4);
-    hrsb -> Draw("same");
+    hrsb -> Draw("hist same");
     
-    hlsb -> Scale(0.2);
+    hlsb -> Scale(0.4);
     hlsb -> SetLineColor(8);
     hlsb -> SetLineWidth(4);
     hlsb -> Draw("hist same");

@@ -346,6 +346,13 @@ namespace Belle {
         std::vector<Particle>  k_p, k_m, pi_p, pi_m, pions;
         makeKPi(k_p, k_m, pi_p, pi_m,1);
         
+
+        ntrk=k_p.size()+k_m.size();
+
+        withdRdZcut(k_p,runIp.z());
+        withdRdZcut(pi_p,runIp.z());
+        withdRdZcut(k_m,runIp.z());
+        withdRdZcut(pi_m,runIp.z());
         
         for(std::vector<Particle>::iterator l = pi_m.begin(); l!=pi_m.end(); ++l)
             pions.push_back(*l);
@@ -356,13 +363,6 @@ namespace Belle {
         withKaonId(k_p,0.6,3,1,5,3,2);
         withKaonId(k_m,0.6,3,1,5,3,4);
         withKaonId(k_m,0.6,3,1,5,3,2);
-        
-        ntrk=k_p.size()+k_m.size();
-
-        withdRdZcut(k_p,runIp.z());
-        withdRdZcut(pi_p,runIp.z());
-        withdRdZcut(k_m,runIp.z());
-        withdRdZcut(pi_m,runIp.z());
         
         //Ks mesons
         std::vector<Particle> k_s;
@@ -746,8 +746,11 @@ namespace Belle {
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
                     {
-                        if( !(checkSame(*l,*pi)||checkSame(*a,*pi)) ) addpi++;
-                        totcharge += pi->charge();
+                        if( !(checkSame(*l,*pi)||checkSame(*a,*pi)) ) 
+                        {   
+                            addpi++;
+                            totcharge += pi->charge();
+                        }
                     }
                     
                     
@@ -1015,8 +1018,11 @@ namespace Belle {
                     }
                     for(std::vector<Particle>::iterator pi = pions.begin(); pi!=pions.end(); ++pi)
                     {
-                        if( !(checkSame(*l,*pi)||checkSame(*a,*pi)) ) addpi++;
-                        totcharge += pi->charge();
+                        if( !(checkSame(*l,*pi)||checkSame(*a,*pi)) ) 
+                        {   
+                            addpi++;
+                            totcharge += pi->charge();
+                        }
                     }
                     
                     rm =(pUPS-(momentum+LamC.p())).mag();
